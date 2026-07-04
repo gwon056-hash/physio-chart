@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="app-version" content="2026.07.05-2">
+<meta name="app-version" content="2026.07.05-3">
 <meta name="theme-color" content="#0e7d74">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="차팅생성기">
@@ -429,6 +429,177 @@ body.sheet-open{overflow:hidden}
   .more-sheet{bottom:18px;border-radius:28px}
 }
 
+
+/* ===== mobile layout polish: 2026.07.05-3 ===== */
+.brand-copy{min-width:0}
+.brand-copy p{
+  line-height:1.5;
+  color:var(--ink-soft);
+  word-break:keep-all;
+}
+
+/* region buttons */
+.region-btn{
+  flex-direction:column;
+  gap:4px;
+  text-align:center;
+  padding:10px 6px;
+}
+.region-btn .rb-ko{
+  display:block;
+  font-size:.98rem;
+  font-weight:900;
+  letter-spacing:-.03em;
+  line-height:1.12;
+  word-break:keep-all;
+}
+.region-btn .rb-en{
+  display:block;
+  font-size:.76rem;
+  font-weight:700;
+  color:#7a8995;
+  line-height:1.08;
+}
+.region-btn.on .rb-en{color:rgba(255,255,255,.82)}
+
+/* preview area */
+.preview-tools{
+  display:grid;
+  grid-template-columns:1fr 1.35fr;
+  gap:8px;
+  margin-bottom:10px;
+}
+.preview-tools .mini-btn{
+  width:100%;
+  min-height:46px;
+  font-size:.86rem;
+  font-weight:900;
+}
+.preview-note{
+  font-size:.79rem;
+  color:var(--ink-soft);
+  margin:0 0 10px;
+}
+.preview-shell{
+  border:1.5px solid var(--line);
+  border-radius:16px;
+  background:linear-gradient(180deg,#ffffff 0,#fbfdfe 100%);
+  padding:12px;
+}
+.preview-label{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:.78rem;
+  font-weight:900;
+  color:var(--ink-soft);
+  margin-bottom:8px;
+}
+.preview-label::before{
+  content:"●";
+  font-size:.62rem;
+  color:var(--accent);
+}
+
+#preview{
+  margin-top:0;
+  min-height:180px;
+  background:#fcfdfe;
+  border-style:solid;
+  border-radius:14px;
+}
+
+/* mobile polish */
+@media(max-width:760px){
+  .moa-header{
+    display:block;
+    padding:14px 14px 12px;
+  }
+  .brand-block{
+    display:grid;
+    grid-template-columns:54px minmax(0,1fr);
+    align-items:center;
+    column-gap:12px;
+    row-gap:4px;
+  }
+  .brand-logo{
+    width:54px;
+    height:54px;
+  }
+  .brand-copy h1{
+    font-size:1.28rem;
+    line-height:1.05;
+    margin-bottom:2px;
+  }
+  .brand-copy p{
+    font-size:.78rem;
+    line-height:1.45;
+  }
+  .compact-actions{
+    width:100%;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:14px;
+  }
+  .compact-actions .mini-btn{
+    min-height:48px;
+    padding:10px 6px;
+    font-size:.78rem;
+    white-space:nowrap;
+  }
+
+  .patient-card .regions{
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+  }
+  .region-btn{
+    min-height:74px;
+    border-radius:16px;
+  }
+  .region-btn .rb-ko{font-size:.95rem}
+  .region-btn .rb-en{font-size:.72rem}
+
+  .preview-tools{
+    grid-template-columns:1fr 1fr;
+  }
+  .preview-tools .mini-btn{
+    min-height:48px;
+    font-size:.84rem;
+  }
+  .preview-shell{
+    padding:10px;
+  }
+  #preview{
+    min-height:170px;
+    padding:14px;
+    font-size:.92rem;
+  }
+}
+
+@media(max-width:430px){
+  .brand-block{
+    grid-template-columns:50px minmax(0,1fr);
+    column-gap:10px;
+  }
+  .brand-logo{width:50px;height:50px}
+  .brand-copy h1{font-size:1.22rem}
+  .brand-copy p{font-size:.74rem}
+  .compact-actions .mini-btn{
+    font-size:.74rem;
+    padding:10px 4px;
+  }
+  .region-btn{
+    min-height:76px;
+    padding:8px 5px;
+  }
+  .region-btn .rb-ko{font-size:.91rem}
+  .region-btn .rb-en{font-size:.69rem}
+  .preview-tools{
+    grid-template-columns:1fr;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -436,7 +607,7 @@ body.sheet-open{overflow:hidden}
 <header class="moa-header">
   <div class="brand-block">
     <img class="brand-logo" src="icon-192.png" alt="MOA Charting">
-    <div>
+    <div class="brand-copy">
       <h1>MOA Charting</h1>
       <p>빠른 임상 기록 보조 · 선택하고 바로 차팅</p>
     </div>
@@ -479,8 +650,8 @@ body.sheet-open{overflow:hidden}
 
 <div class="card soap-card p-card"><div class="sec-tag"><span class="chip p">P</span>계획 <span class="section-copy"><button data-copy="P">P 복사</button></span></div><div class="phrasebar" id="phraseP"></div><label class="fld">시행 기법</label><textarea id="pTech" placeholder="예: Grade III GH joint mobilization, 15 min"></textarea><label class="fld">NRS (치료 후)</label><div class="nrs-grid" id="nrsPost"></div><label class="fld">치료 반응</label><textarea id="pResp" placeholder="예: ROM improved, pain decreased post Tx"></textarea></div>
 
-<div class="card preview-card"><div class="sec-tag"><span class="chip i">출력</span>차팅 미리보기</div><div class="split-actions"><button class="mini-btn" id="cleanBtn">문장 정리</button><button class="mini-btn" id="copySubjectBtn">S/O/A/P 전체 복사</button></div><div id="preview" class="empty">항목을 입력하면 여기에 차팅이 생성됩니다</div></div>
-<footer class="app-footer">MOA Charting Beta v2026.07.05-2 · © MOA BUSAN · @physio_geun_1</footer>
+<div class="card preview-card"><div class="sec-tag"><span class="chip i">출력</span>차팅 미리보기</div><div class="preview-tools"><button class="mini-btn" id="cleanBtn">문장 정리</button><button class="mini-btn" id="copySubjectBtn">S/O/A/P 전체 복사</button></div><div class="preview-note">선택한 내용이 아래에 실시간으로 정리됩니다.</div><div class="preview-shell"><div class="preview-label">미리 생성된 차팅</div><div id="preview" class="empty">항목을 입력하면 여기에 차팅이 생성됩니다</div></div></div>
+<footer class="app-footer">MOA Charting Beta v2026.07.05-3 · © MOA BUSAN · @physio_geun_1</footer>
 </div>
 <div class="bottombar">
   <div class="inner">
@@ -488,7 +659,7 @@ body.sheet-open{overflow:hidden}
     <button class="big" id="saveBtn">💾 저장</button>
     <button class="big" id="copyBtn">📋 복사</button>
   </div>
-  <div class="desktop-copyright">MOA Charting Beta v2026.07.05-2 · © MOA BUSAN · @physio_geun_1</div>
+  <div class="desktop-copyright">MOA Charting Beta v2026.07.05-3 · © MOA BUSAN · @physio_geun_1</div>
 </div><div class="toast" id="toast">복사 완료</div>
 
 <div class="more-backdrop" id="moreBackdrop"></div>
@@ -564,7 +735,7 @@ body.sheet-open{overflow:hidden}
 
 <script>
 const DATA={"Cervical":{st:[{n:"Spurling test",s:"Rule-in · Sp .93"},{n:"Cervical distraction test",s:"Sp .90"},{n:"ULTT (median)",s:"Rule-out · Sn .97"},{n:"Flexion-rotation test",s:"CGH · Sn .90/Sp .88"},{n:"Sharp-Purser test",s:"상위경추 불안정"},{n:"Vertebral artery test",s:"VBI screening"},{n:"Cervical rotation <60°",s:"CGH 지표"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Cervical flexion","Cervical extension","Lt. lateral flexion","Rt. lateral flexion","Deep neck flexor (CCFT)"]},"Thoracic":{st:[{n:"Thoracic rotation test",s:""},{n:"Rib spring test",s:""},{n:"Adam forward bend test",s:"측만 screening"},{n:"Cervical rotation lateral flexion test",s:"1st rib"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Trunk extension","Scapular retraction"]},"Lumbar":{st:[{n:"SLR",s:"Rule-out · Sn .92/Sp .28"},{n:"Crossed SLR",s:"Rule-in · Sn .28/Sp .90"},{n:"Slump test",s:"Sn .84/Sp .83"},{n:"Femoral nerve tension test",s:"상위요추 신경근"},{n:"Kemp / Quadrant test",s:"Facet"},{n:"Extension-rotation test",s:"Facet"},{n:"PA spring test",s:"분절 irritability"},{n:"Prone instability test",s:"불안정성"},{n:"Passive lumbar extension test",s:"불안정성 · Sn .84/Sp .90"},{n:"Romberg test",s:"Stenosis screening"},{n:"Myotome/Dermatome/Reflex exam",s:"신경학적 검사"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Trunk flexion","Trunk extension","Hip flexion (L2-3)","Knee extension (L3-4)","Ankle dorsiflexion (L4-5)","Great toe extension (L5)","Plantarflexion/heel raise (S1)"]},"SI Joint":{st:[{n:"Distraction test",s:"Laslett cluster"},{n:"Compression test",s:"Laslett cluster"},{n:"Thigh thrust test",s:"Laslett cluster"},{n:"Sacral thrust test",s:"Laslett cluster"},{n:"Gaenslen test",s:"Laslett cluster"},{n:"FABER / Patrick test",s:""},{n:"Laslett cluster ≥3/5 (+)",s:"Sn .91-.94/Sp .78"},{n:"Gillet test",s:""}],rom:[],mmt:["Hip extension","Hip abduction"]},"Shoulder":{st:[{n:"Neer test",s:"Sn .78"},{n:"Hawkins-Kennedy test",s:"Sn .79"},{n:"Painful arc",s:"Sn .74/Sp .81"},{n:"Empty can test",s:"Supraspinatus"},{n:"Full can test",s:"Supraspinatus"},{n:"Drop arm test",s:"Rule-in · Sp .92"},{n:"ER lag sign",s:"Infra/supra · Sp .94"},{n:"Lift-off test",s:"Subscapularis"},{n:"Belly press test",s:"Subscapularis"},{n:"Bear hug test",s:"Subscapularis · Sn .79"},{n:"Speed test",s:"Biceps/SLAP"},{n:"Yergason test",s:"Biceps · Sp .79"},{n:"O'Brien test",s:"SLAP"},{n:"Apprehension test",s:"전방 불안정"},{n:"Relocation test",s:"Sp .90"},{n:"Sulcus sign",s:"하방 불안정"},{n:"Cross-body adduction test",s:"AC joint"}],rom:["Flexion","Extension","Abduction","Adduction","Internal rotation","External rotation","Horizontal adduction"],mmt:["Shoulder flexion","Shoulder abduction","Internal rotation","External rotation","Scapular protraction (SA)","Scapular retraction (MT/LT)"]},"Elbow":{st:[{n:"Cozen test",s:"Lateral epicondylalgia"},{n:"Mill test",s:"Lateral epicondylalgia"},{n:"Maudsley test",s:"3rd finger ext"},{n:"Moving valgus stress test",s:"UCL · Sn 1.0/Sp .75"},{n:"Valgus stress test",s:"UCL"},{n:"Varus stress test",s:"LCL"},{n:"Tinel sign (elbow)",s:"Ulnar n."}],rom:["Flexion","Extension","Pronation","Supination"],mmt:["Elbow flexion","Elbow extension","Pronation","Supination","Grip strength"]},"Wrist/Hand":{st:[{n:"Phalen test",s:"CTS · Sn .68"},{n:"Reverse Phalen test",s:"CTS"},{n:"Durkan compression test",s:"CTS · Sn .87/Sp .90"},{n:"Tinel sign (wrist)",s:"CTS"},{n:"Finkelstein/Eichhoff test",s:"De Quervain"},{n:"Watson scaphoid shift test",s:"SL 불안정"},{n:"TFCC compression test",s:"척측 손목통증"}],rom:["Flexion","Extension","Radial deviation","Ulnar deviation"],mmt:["Wrist flexion","Wrist extension","Radial deviation","Ulnar deviation","Grip strength","Finger flexion","Finger extension"]},"Hip":{st:[{n:"FADIR test",s:"FAI Rule-out · Sn .94-.99"},{n:"FABER test",s:"Sn .81-.82 · 서혜부 통증 재현"},{n:"Scour test",s:"관절내 병리"},{n:"Stinchfield test",s:"저항성 SLR 20-30°"},{n:"Squat pain",s:"Hip OA 지표"},{n:"Hip IR <25°",s:"Hip OA 지표"},{n:"30-sec single-leg stance",s:"GTPS Rule-in · Sn 1.0/Sp .97"},{n:"Greater trochanter palpation",s:"GTPS Rule-out · Sn .83"},{n:"Resisted abduction (ADD-R)",s:"GTPS · Sn .71/Sp .84"},{n:"FADER-R test",s:"GTPS Rule-in"},{n:"Thomas test",s:"굴곡구축/장요근"},{n:"Ober test",s:"ITB"},{n:"Trendelenburg test",s:"중둔근 기능"}],rom:["Flexion","Extension","Abduction","Adduction","Internal rotation","External rotation"],mmt:["Hip flexion","Hip extension","Hip abduction","Hip adduction","Internal rotation","External rotation"]},"Knee":{st:[{n:"Lachman test",s:"ACL · Sn .85/Sp .94"},{n:"Anterior drawer test",s:"ACL"},{n:"Pivot shift test",s:"ACL Rule-in · Sp .98"},{n:"Posterior drawer test",s:"PCL · Sn .90"},{n:"McMurray test",s:"Meniscus · Sp .78"},{n:"Thessaly test",s:"Meniscus"},{n:"Joint line tenderness",s:"Meniscus · Sn .83"},{n:"Valgus stress test",s:"MCL"},{n:"Varus stress test",s:"LCL"},{n:"Patellar apprehension test",s:"슬개골 불안정"},{n:"Clarke test",s:"PFPS"}],rom:["Flexion","Extension"],mmt:["Knee flexion","Knee extension"]},"Ankle/Foot":{st:[{n:"Anterior drawer test",s:"ATFL"},{n:"Talar tilt test",s:"CFL"},{n:"Thompson test",s:"Achilles rupture"},{n:"Squeeze test",s:"Syndesmosis"},{n:"External rotation test",s:"Syndesmosis"},{n:"Windlass test",s:"Plantar fascia"},{n:"Navicular drop test",s:"과회내"}],rom:["Dorsiflexion","Plantarflexion","Inversion","Eversion"],mmt:["Dorsiflexion","Plantarflexion/heel raise","Inversion","Eversion","Great toe extension"]}};
-const REGION_KO={"Cervical":"경추","Thoracic":"흉추","Lumbar":"요추","SI Joint":"천장관절","Shoulder":"어깨","Elbow":"팔꿈치","Wrist/Hand":"손목/손","Hip":"고관절","Knee":"무릎","Ankle/Foot":"발목/발"};const REGION_ORDER=Object.keys(DATA);const $=id=>document.getElementById(id);let regions=new Set(),sel={st:new Set(),rom:new Set(),mmt:new Set()},nrsPre=null,nrsPost=null,currentId=null,manageRecords=false,selectedRecordIds=new Set(),chartSearchQuery='';const LS="chartingPWA.v1";const state=()=>JSON.parse(localStorage.getItem(LS)||'{"records":[],"draft":{},"theme":"light"}');const saveState=s=>localStorage.setItem(LS,JSON.stringify(s));function setToday(){let d=new Date();$("pDate").value=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}function fields(){return {pName:$('pName').value,pVisit:$('pVisit').value,pAgeSex:$('pAgeSex').value,pDate:$('pDate').value,sChief:$('sChief').value,sOnset:$('sOnset').value,aText:$('aText').value,pTech:$('pTech').value,pResp:$('pResp').value,regions:[...regions],st:[...sel.st],rom:[...sel.rom],mmt:[...sel.mmt],nrsPre,nrsPost,currentId}}function apply(d={}){['pName','pVisit','pAgeSex','pDate','sChief','sOnset','aText','pTech','pResp'].forEach(id=>$(id).value=d[id]||'');regions=new Set(d.regions||[]);sel={st:new Set(d.st||[]),rom:new Set(d.rom||[]),mmt:new Set(d.mmt||[])};nrsPre=d.nrsPre??null;nrsPost=d.nrsPost??null;currentId=d.currentId||null;document.querySelectorAll('.region-btn').forEach((b,i)=>b.classList.toggle('on',regions.has(REGION_ORDER[i])));document.querySelectorAll('#nrsPre .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPre));document.querySelectorAll('#nrsPost .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPost));if(!$("pDate").value)setToday();renderOpts();render()}
+const REGION_KO={"Cervical":"경추","Thoracic":"흉추","Lumbar":"요추","SI Joint":"천장관절","Shoulder":"어깨","Elbow":"팔꿈치","Wrist/Hand":"손목·손","Hip":"고관절","Knee":"무릎","Ankle/Foot":"발목·발"};const REGION_ORDER=Object.keys(DATA);const $=id=>document.getElementById(id);let regions=new Set(),sel={st:new Set(),rom:new Set(),mmt:new Set()},nrsPre=null,nrsPost=null,currentId=null,manageRecords=false,selectedRecordIds=new Set(),chartSearchQuery='';const LS="chartingPWA.v1";const state=()=>JSON.parse(localStorage.getItem(LS)||'{"records":[],"draft":{},"theme":"light"}');const saveState=s=>localStorage.setItem(LS,JSON.stringify(s));function setToday(){let d=new Date();$("pDate").value=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}function fields(){return {pName:$('pName').value,pVisit:$('pVisit').value,pAgeSex:$('pAgeSex').value,pDate:$('pDate').value,sChief:$('sChief').value,sOnset:$('sOnset').value,aText:$('aText').value,pTech:$('pTech').value,pResp:$('pResp').value,regions:[...regions],st:[...sel.st],rom:[...sel.rom],mmt:[...sel.mmt],nrsPre,nrsPost,currentId}}function apply(d={}){['pName','pVisit','pAgeSex','pDate','sChief','sOnset','aText','pTech','pResp'].forEach(id=>$(id).value=d[id]||'');regions=new Set(d.regions||[]);sel={st:new Set(d.st||[]),rom:new Set(d.rom||[]),mmt:new Set(d.mmt||[])};nrsPre=d.nrsPre??null;nrsPost=d.nrsPost??null;currentId=d.currentId||null;document.querySelectorAll('.region-btn').forEach((b,i)=>b.classList.toggle('on',regions.has(REGION_ORDER[i])));document.querySelectorAll('#nrsPre .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPre));document.querySelectorAll('#nrsPost .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPost));if(!$("pDate").value)setToday();renderOpts();render()}
 function persistDraft(){let s=state();s.draft=fields();saveState(s)}function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
 function openMoreSheet(){
   $('moreBackdrop').classList.add('show');
@@ -579,7 +750,7 @@ function closeMoreSheet(){
   document.body.classList.remove('sheet-open');
 }
 
-REGION_ORDER.forEach(r=>{const b=document.createElement('button');b.type='button';b.className='region-btn';b.innerHTML=REGION_KO[r]+"<br><span style='font-size:.7rem;font-weight:600;opacity:.8'>"+r+"</span>";b.onclick=()=>{if(regions.has(r)){regions.delete(r);['st','rom','mmt'].forEach(k=>[...sel[k]].forEach(key=>{if(key.startsWith(r+'|'))sel[k].delete(key)}));}else regions.add(r);b.classList.toggle('on',regions.has(r));renderOpts();render();persistDraft()};$('regionGrid').appendChild(b)});
+REGION_ORDER.forEach(r=>{const b=document.createElement('button');b.type='button';b.className='region-btn';b.innerHTML="<span class='rb-ko'>"+REGION_KO[r]+"</span><span class='rb-en'>"+r.replace('/',' / ')+"</span>";b.onclick=()=>{if(regions.has(r)){regions.delete(r);['st','rom','mmt'].forEach(k=>[...sel[k]].forEach(key=>{if(key.startsWith(r+'|'))sel[k].delete(key)}));}else regions.add(r);b.classList.toggle('on',regions.has(r));renderOpts();render();persistDraft()};$('regionGrid').appendChild(b)});
 function buildArea(areaId,key,isObj){const area=$(areaId);area.innerHTML='';const active=REGION_ORDER.filter(r=>regions.has(r));if(!active.length){area.innerHTML="<div class='hint'>부위를 먼저 선택하세요</div>";return}let any=false;active.forEach(r=>{const items=DATA[r][key];if(!items.length)return;any=true;if(active.length>1){let h=document.createElement('div');h.className='region-sub';h.textContent='▸ '+REGION_KO[r]+' ('+r+')';area.appendChild(h)}let g=document.createElement('div');g.className='opt-grid';items.forEach(item=>{const name=isObj?item.n:item,subT=isObj?item.s:'',k=r+'|'+name,c=document.createElement('div');c.className='opt'+(sel[key].has(k)?' on':'');c.innerHTML=name+(subT?'<small>'+subT+'</small>':'');c.onclick=()=>{sel[key].has(k)?sel[key].delete(k):sel[key].add(k);c.classList.toggle('on');render();persistDraft()};g.appendChild(c)});area.appendChild(g)});if(!any)area.innerHTML="<div class='hint'>해당 항목 없음</div>"}function renderOpts(){buildArea('stArea','st',true);buildArea('romArea','rom',false);buildArea('mmtArea','mmt',false)}
 function buildNRS(gridId,side){const g=$(gridId);for(let i=0;i<=10;i++){const c=document.createElement('div');c.className='nrs'+(side==='post'?' p-side':'');c.textContent=i;c.onclick=()=>{let cur=side==='pre'?nrsPre:nrsPost,val=cur===i?null:i;if(side==='pre')nrsPre=val;else nrsPost=val;[...g.children].forEach((el,idx)=>el.classList.toggle('on',idx===val));render();persistDraft()};g.appendChild(c)}}buildNRS('nrsPre','pre');buildNRS('nrsPost','post');
 const phrases={S:['통증은 이전보다 감소함','특정 동작 시 통증 잔존','야간통은 감소함','일상생활 불편감 감소'],A:['ROM 제한 및 통증으로 기능 저하','연부조직 긴장 및 관절가동성 저하','도수치료 및 운동교육 지속 필요','증상 호전 추세'],P:['STM 및 joint mobilization 시행','통증 범위 내 ROM exercise 교육','HEP 재교육','치료 후 통증 감소 및 움직임 개선']};function addPhrase(area,id){phrases[area].forEach(p=>{let b=document.createElement('button');b.className='phrase';b.textContent=p;b.onclick=()=>{const target=area==='S'?'sChief':area==='A'?'aText':'pResp';$(target).value=($(target).value?$(target).value+'\n':'')+p;render();persistDraft()};$(id).appendChild(b)})}addPhrase('S','phraseS');addPhrase('A','phraseA');addPhrase('P','phraseP');

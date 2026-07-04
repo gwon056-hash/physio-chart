@@ -1,29 +1,20 @@
-MOA Charting More Menu + Version
-버전: 2026.07.05-2
+MOA Charting mobile layout fix
+버전: 2026.07.05-3
 
 변경사항
-- 상단을 새 차팅 / 이전 차팅 / 더보기 3개로 단순화
-- 설치, 전체 백업, 전체 복원, 업데이트 확인, 화면 모드를 더보기 바텀시트에 통합
-- 현재 버전 표시
-- 하단 저작권 문구에도 버전 표시
-- 업데이트 확인 버튼 추가
+- 모바일 상단 로고/제목/버튼 간격 정리
+- 상단 버튼을 한 줄 3개 구조로 안정화
+- 부위 선택 버튼 레이아웃 개선
+- 손목·손 / 발목·발 표기 개선
+- 한글/영문을 분리 표시
+- 차팅 미리보기 영역 버튼/박스 레이아웃 개선
+- 기존 기능과 저장 데이터 구조 유지
 
 유지사항
-- 기존 모든 평가 데이터
-- 기존 Special Test / ROM / MMT
-- 기존 저장 차팅
-- 기존 localStorage 키 chartingPWA.v1
+- localStorage 키: chartingPWA.v1
+- 저장 데이터 유지
 - 이전 차팅 검색
 - 선택 삭제
 - 자동 업데이트
-- 백업/복원
-
-GitHub 업로드
-1. index.html
-2. sw.js
-3. manifest.json
-4. icon-192.png
-5. icon-512.png
-
-Commit message:
-Add more menu and version display
+- 전체 백업/복원
+- 더보기 패널

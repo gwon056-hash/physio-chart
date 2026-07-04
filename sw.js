@@ -1,4 +1,4 @@
-const CACHE_NAME = 'moa-charting-2026.07.05-2';
+const CACHE_NAME = 'moa-charting-2026.07.05-3';
 const APP_SHELL = ['./','./index.html','./manifest.json','./icon-192.png','./icon-512.png'];
 
 self.addEventListener('install', event => {
