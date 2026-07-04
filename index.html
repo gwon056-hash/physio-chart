@@ -43,13 +43,42 @@ input[type=date]::-webkit-calendar-picker-indicator{
   margin-top:2px;
 }
 
+
+/* Saved chart selection management */
+.record-manage{display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 10px}
+.item.manage{grid-template-columns:auto 1fr;align-items:center;column-gap:10px}
+.item.manage input[type=checkbox]{width:20px;height:20px;accent-color:var(--accent)}
+.item.manage .item-body{display:grid;gap:3px;min-width:0}
+
+/* Copyright: always visible + desktop fixed-bar copy */
+.desktop-copyright{
+  display:none;
+  text-align:center;
+  color:var(--ink-soft);
+  font-size:.72rem;
+  font-weight:700;
+  padding-top:8px;
+}
+@media(min-width:761px){
+  body{padding-bottom:164px}
+  .desktop-copyright{display:block}
+  .bottombar .inner{max-width:760px}
+}
+
 </style>
 </head>
 <body>
 <div class="wrap">
 <header><div><h1>도수치료 차팅 생성기</h1><p>설치형 PWA · 자동 저장 · 이전 차팅 불러오기 · EMR 복사</p></div><div class="top-actions"><button class="mini-btn" id="themeBtn">🌙 다크</button><button class="mini-btn" id="installHelpBtn">📲 설치</button><button class="mini-btn" id="backupBtn">백업</button><button class="mini-btn" id="restoreBtn">복원</button><input class="hidden" type="file" id="restoreFile" accept="application/json"></div></header>
 
-<div class="card" id="dashCard"><div class="sec-tag"><span class="chip i">홈</span>최근 기록</div><div class="row2"><button class="mini-btn on" id="newChartBtn">+ 새 차팅</button><button class="mini-btn" id="duplicateLastBtn">마지막 차팅 이어쓰기</button></div><div class="subhead">최근 저장</div><div class="list" id="recentList"><div class="hint">아직 저장된 차팅이 없습니다.</div></div><div class="notice">데이터는 현재 기기 브라우저에 저장됩니다. 여러 기기 동기화는 GitHub Pages 같은 주소에 올린 뒤 각 기기에서 백업/복원을 사용하세요.</div></div>
+<div class="card" id="dashCard"><div class="sec-tag"><span class="chip i">홈</span>최근 기록</div><div class="row2"><button class="mini-btn on" id="newChartBtn">+ 새 차팅</button><button class="mini-btn" id="duplicateLastBtn">마지막 차팅 이어쓰기</button></div><div class="subhead">최근 저장</div>
+<div class="record-manage">
+  <button class="mini-btn" id="manageRecordsBtn">선택 삭제</button>
+  <button class="mini-btn hidden" id="selectAllBtn">전체 선택</button>
+  <button class="mini-btn danger hidden" id="deleteSelectedBtn">삭제 (0)</button>
+  <button class="mini-btn hidden" id="cancelManageBtn">취소</button>
+</div>
+<div class="list" id="recentList"><div class="hint">아직 저장된 차팅이 없습니다.</div></div><div class="notice">데이터는 현재 기기 브라우저에 저장됩니다. 여러 기기 동기화는 GitHub Pages 같은 주소에 올린 뒤 각 기기에서 백업/복원을 사용하세요.</div></div>
 
 <div class="card"><div class="sec-tag"><span class="chip i">환자</span>기본 정보</div><div class="row3"><div><label class="fld">환자 이름</label><input type="text" id="pName" placeholder="홍길동"></div><div><label class="fld">회차</label><input type="number" id="pVisit" placeholder="3" min="1"></div><div><label class="fld">나이/성별</label><input type="text" id="pAgeSex" placeholder="42/M"></div></div><label class="fld">날짜</label><input type="date" id="pDate"><label class="fld">부위 (복수 선택 가능)</label><div class="regions" id="regionGrid"></div></div>
 
@@ -64,10 +93,17 @@ input[type=date]::-webkit-calendar-picker-indicator{
 <div class="card"><div class="sec-tag"><span class="chip i">출력</span>차팅 미리보기</div><div class="split-actions"><button class="mini-btn" id="cleanBtn">문장 정리</button><button class="mini-btn" id="copySubjectBtn">S/O/A/P 전체 복사</button></div><div id="preview" class="empty">항목을 입력하면 여기에 차팅이 생성됩니다</div></div>
 <footer class="app-footer">MOA Charting Beta · © MOA BUSAN · @physio_geun_1</footer>
 </div>
-<div class="bottombar"><div class="inner"><button class="big" id="resetBtn">초기화</button><button class="big" id="saveBtn">💾 저장</button><button class="big" id="copyBtn">📋 복사</button></div></div><div class="toast" id="toast">복사 완료</div>
+<div class="bottombar">
+  <div class="inner">
+    <button class="big" id="resetBtn">초기화</button>
+    <button class="big" id="saveBtn">💾 저장</button>
+    <button class="big" id="copyBtn">📋 복사</button>
+  </div>
+  <div class="desktop-copyright">MOA Charting Beta · © MOA BUSAN · @physio_geun_1</div>
+</div><div class="toast" id="toast">복사 완료</div>
 <script>
 const DATA={"Cervical":{st:[{n:"Spurling test",s:"Rule-in · Sp .93"},{n:"Cervical distraction test",s:"Sp .90"},{n:"ULTT (median)",s:"Rule-out · Sn .97"},{n:"Flexion-rotation test",s:"CGH · Sn .90/Sp .88"},{n:"Sharp-Purser test",s:"상위경추 불안정"},{n:"Vertebral artery test",s:"VBI screening"},{n:"Cervical rotation <60°",s:"CGH 지표"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Cervical flexion","Cervical extension","Lt. lateral flexion","Rt. lateral flexion","Deep neck flexor (CCFT)"]},"Thoracic":{st:[{n:"Thoracic rotation test",s:""},{n:"Rib spring test",s:""},{n:"Adam forward bend test",s:"측만 screening"},{n:"Cervical rotation lateral flexion test",s:"1st rib"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Trunk extension","Scapular retraction"]},"Lumbar":{st:[{n:"SLR",s:"Rule-out · Sn .92/Sp .28"},{n:"Crossed SLR",s:"Rule-in · Sn .28/Sp .90"},{n:"Slump test",s:"Sn .84/Sp .83"},{n:"Femoral nerve tension test",s:"상위요추 신경근"},{n:"Kemp / Quadrant test",s:"Facet"},{n:"Extension-rotation test",s:"Facet"},{n:"PA spring test",s:"분절 irritability"},{n:"Prone instability test",s:"불안정성"},{n:"Passive lumbar extension test",s:"불안정성 · Sn .84/Sp .90"},{n:"Romberg test",s:"Stenosis screening"},{n:"Myotome/Dermatome/Reflex exam",s:"신경학적 검사"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Trunk flexion","Trunk extension","Hip flexion (L2-3)","Knee extension (L3-4)","Ankle dorsiflexion (L4-5)","Great toe extension (L5)","Plantarflexion/heel raise (S1)"]},"SI Joint":{st:[{n:"Distraction test",s:"Laslett cluster"},{n:"Compression test",s:"Laslett cluster"},{n:"Thigh thrust test",s:"Laslett cluster"},{n:"Sacral thrust test",s:"Laslett cluster"},{n:"Gaenslen test",s:"Laslett cluster"},{n:"FABER / Patrick test",s:""},{n:"Laslett cluster ≥3/5 (+)",s:"Sn .91-.94/Sp .78"},{n:"Gillet test",s:""}],rom:[],mmt:["Hip extension","Hip abduction"]},"Shoulder":{st:[{n:"Neer test",s:"Sn .78"},{n:"Hawkins-Kennedy test",s:"Sn .79"},{n:"Painful arc",s:"Sn .74/Sp .81"},{n:"Empty can test",s:"Supraspinatus"},{n:"Full can test",s:"Supraspinatus"},{n:"Drop arm test",s:"Rule-in · Sp .92"},{n:"ER lag sign",s:"Infra/supra · Sp .94"},{n:"Lift-off test",s:"Subscapularis"},{n:"Belly press test",s:"Subscapularis"},{n:"Bear hug test",s:"Subscapularis · Sn .79"},{n:"Speed test",s:"Biceps/SLAP"},{n:"Yergason test",s:"Biceps · Sp .79"},{n:"O'Brien test",s:"SLAP"},{n:"Apprehension test",s:"전방 불안정"},{n:"Relocation test",s:"Sp .90"},{n:"Sulcus sign",s:"하방 불안정"},{n:"Cross-body adduction test",s:"AC joint"}],rom:["Flexion","Extension","Abduction","Adduction","Internal rotation","External rotation","Horizontal adduction"],mmt:["Shoulder flexion","Shoulder abduction","Internal rotation","External rotation","Scapular protraction (SA)","Scapular retraction (MT/LT)"]},"Elbow":{st:[{n:"Cozen test",s:"Lateral epicondylalgia"},{n:"Mill test",s:"Lateral epicondylalgia"},{n:"Maudsley test",s:"3rd finger ext"},{n:"Moving valgus stress test",s:"UCL · Sn 1.0/Sp .75"},{n:"Valgus stress test",s:"UCL"},{n:"Varus stress test",s:"LCL"},{n:"Tinel sign (elbow)",s:"Ulnar n."}],rom:["Flexion","Extension","Pronation","Supination"],mmt:["Elbow flexion","Elbow extension","Pronation","Supination","Grip strength"]},"Wrist/Hand":{st:[{n:"Phalen test",s:"CTS · Sn .68"},{n:"Reverse Phalen test",s:"CTS"},{n:"Durkan compression test",s:"CTS · Sn .87/Sp .90"},{n:"Tinel sign (wrist)",s:"CTS"},{n:"Finkelstein/Eichhoff test",s:"De Quervain"},{n:"Watson scaphoid shift test",s:"SL 불안정"},{n:"TFCC compression test",s:"척측 손목통증"}],rom:["Flexion","Extension","Radial deviation","Ulnar deviation"],mmt:["Wrist flexion","Wrist extension","Radial deviation","Ulnar deviation","Grip strength","Finger flexion","Finger extension"]},"Hip":{st:[{n:"FADIR test",s:"FAI Rule-out · Sn .94-.99"},{n:"FABER test",s:"Sn .81-.82 · 서혜부 통증 재현"},{n:"Scour test",s:"관절내 병리"},{n:"Stinchfield test",s:"저항성 SLR 20-30°"},{n:"Squat pain",s:"Hip OA 지표"},{n:"Hip IR <25°",s:"Hip OA 지표"},{n:"30-sec single-leg stance",s:"GTPS Rule-in · Sn 1.0/Sp .97"},{n:"Greater trochanter palpation",s:"GTPS Rule-out · Sn .83"},{n:"Resisted abduction (ADD-R)",s:"GTPS · Sn .71/Sp .84"},{n:"FADER-R test",s:"GTPS Rule-in"},{n:"Thomas test",s:"굴곡구축/장요근"},{n:"Ober test",s:"ITB"},{n:"Trendelenburg test",s:"중둔근 기능"}],rom:["Flexion","Extension","Abduction","Adduction","Internal rotation","External rotation"],mmt:["Hip flexion","Hip extension","Hip abduction","Hip adduction","Internal rotation","External rotation"]},"Knee":{st:[{n:"Lachman test",s:"ACL · Sn .85/Sp .94"},{n:"Anterior drawer test",s:"ACL"},{n:"Pivot shift test",s:"ACL Rule-in · Sp .98"},{n:"Posterior drawer test",s:"PCL · Sn .90"},{n:"McMurray test",s:"Meniscus · Sp .78"},{n:"Thessaly test",s:"Meniscus"},{n:"Joint line tenderness",s:"Meniscus · Sn .83"},{n:"Valgus stress test",s:"MCL"},{n:"Varus stress test",s:"LCL"},{n:"Patellar apprehension test",s:"슬개골 불안정"},{n:"Clarke test",s:"PFPS"}],rom:["Flexion","Extension"],mmt:["Knee flexion","Knee extension"]},"Ankle/Foot":{st:[{n:"Anterior drawer test",s:"ATFL"},{n:"Talar tilt test",s:"CFL"},{n:"Thompson test",s:"Achilles rupture"},{n:"Squeeze test",s:"Syndesmosis"},{n:"External rotation test",s:"Syndesmosis"},{n:"Windlass test",s:"Plantar fascia"},{n:"Navicular drop test",s:"과회내"}],rom:["Dorsiflexion","Plantarflexion","Inversion","Eversion"],mmt:["Dorsiflexion","Plantarflexion/heel raise","Inversion","Eversion","Great toe extension"]}};
-const REGION_KO={"Cervical":"경추","Thoracic":"흉추","Lumbar":"요추","SI Joint":"천장관절","Shoulder":"어깨","Elbow":"팔꿈치","Wrist/Hand":"손목/손","Hip":"고관절","Knee":"무릎","Ankle/Foot":"발목/발"};const REGION_ORDER=Object.keys(DATA);const $=id=>document.getElementById(id);let regions=new Set(),sel={st:new Set(),rom:new Set(),mmt:new Set()},nrsPre=null,nrsPost=null,currentId=null;const LS="chartingPWA.v1";const state=()=>JSON.parse(localStorage.getItem(LS)||'{"records":[],"draft":{},"theme":"light"}');const saveState=s=>localStorage.setItem(LS,JSON.stringify(s));function setToday(){let d=new Date();$("pDate").value=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}function fields(){return {pName:$('pName').value,pVisit:$('pVisit').value,pAgeSex:$('pAgeSex').value,pDate:$('pDate').value,sChief:$('sChief').value,sOnset:$('sOnset').value,aText:$('aText').value,pTech:$('pTech').value,pResp:$('pResp').value,regions:[...regions],st:[...sel.st],rom:[...sel.rom],mmt:[...sel.mmt],nrsPre,nrsPost,currentId}}function apply(d={}){['pName','pVisit','pAgeSex','pDate','sChief','sOnset','aText','pTech','pResp'].forEach(id=>$(id).value=d[id]||'');regions=new Set(d.regions||[]);sel={st:new Set(d.st||[]),rom:new Set(d.rom||[]),mmt:new Set(d.mmt||[])};nrsPre=d.nrsPre??null;nrsPost=d.nrsPost??null;currentId=d.currentId||null;document.querySelectorAll('.region-btn').forEach((b,i)=>b.classList.toggle('on',regions.has(REGION_ORDER[i])));document.querySelectorAll('#nrsPre .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPre));document.querySelectorAll('#nrsPost .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPost));if(!$("pDate").value)setToday();renderOpts();render()}
+const REGION_KO={"Cervical":"경추","Thoracic":"흉추","Lumbar":"요추","SI Joint":"천장관절","Shoulder":"어깨","Elbow":"팔꿈치","Wrist/Hand":"손목/손","Hip":"고관절","Knee":"무릎","Ankle/Foot":"발목/발"};const REGION_ORDER=Object.keys(DATA);const $=id=>document.getElementById(id);let regions=new Set(),sel={st:new Set(),rom:new Set(),mmt:new Set()},nrsPre=null,nrsPost=null,currentId=null,manageRecords=false,selectedRecordIds=new Set();const LS="chartingPWA.v1";const state=()=>JSON.parse(localStorage.getItem(LS)||'{"records":[],"draft":{},"theme":"light"}');const saveState=s=>localStorage.setItem(LS,JSON.stringify(s));function setToday(){let d=new Date();$("pDate").value=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}function fields(){return {pName:$('pName').value,pVisit:$('pVisit').value,pAgeSex:$('pAgeSex').value,pDate:$('pDate').value,sChief:$('sChief').value,sOnset:$('sOnset').value,aText:$('aText').value,pTech:$('pTech').value,pResp:$('pResp').value,regions:[...regions],st:[...sel.st],rom:[...sel.rom],mmt:[...sel.mmt],nrsPre,nrsPost,currentId}}function apply(d={}){['pName','pVisit','pAgeSex','pDate','sChief','sOnset','aText','pTech','pResp'].forEach(id=>$(id).value=d[id]||'');regions=new Set(d.regions||[]);sel={st:new Set(d.st||[]),rom:new Set(d.rom||[]),mmt:new Set(d.mmt||[])};nrsPre=d.nrsPre??null;nrsPost=d.nrsPost??null;currentId=d.currentId||null;document.querySelectorAll('.region-btn').forEach((b,i)=>b.classList.toggle('on',regions.has(REGION_ORDER[i])));document.querySelectorAll('#nrsPre .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPre));document.querySelectorAll('#nrsPost .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPost));if(!$("pDate").value)setToday();renderOpts();render()}
 function persistDraft(){let s=state();s.draft=fields();saveState(s)}function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
 REGION_ORDER.forEach(r=>{const b=document.createElement('button');b.type='button';b.className='region-btn';b.innerHTML=REGION_KO[r]+"<br><span style='font-size:.7rem;font-weight:600;opacity:.8'>"+r+"</span>";b.onclick=()=>{if(regions.has(r)){regions.delete(r);['st','rom','mmt'].forEach(k=>[...sel[k]].forEach(key=>{if(key.startsWith(r+'|'))sel[k].delete(key)}));}else regions.add(r);b.classList.toggle('on',regions.has(r));renderOpts();render();persistDraft()};$('regionGrid').appendChild(b)});
 function buildArea(areaId,key,isObj){const area=$(areaId);area.innerHTML='';const active=REGION_ORDER.filter(r=>regions.has(r));if(!active.length){area.innerHTML="<div class='hint'>부위를 먼저 선택하세요</div>";return}let any=false;active.forEach(r=>{const items=DATA[r][key];if(!items.length)return;any=true;if(active.length>1){let h=document.createElement('div');h.className='region-sub';h.textContent='▸ '+REGION_KO[r]+' ('+r+')';area.appendChild(h)}let g=document.createElement('div');g.className='opt-grid';items.forEach(item=>{const name=isObj?item.n:item,subT=isObj?item.s:'',k=r+'|'+name,c=document.createElement('div');c.className='opt'+(sel[key].has(k)?' on':'');c.innerHTML=name+(subT?'<small>'+subT+'</small>':'');c.onclick=()=>{sel[key].has(k)?sel[key].delete(k):sel[key].add(k);c.classList.toggle('on');render();persistDraft()};g.appendChild(c)});area.appendChild(g)});if(!any)area.innerHTML="<div class='hint'>해당 항목 없음</div>"}function renderOpts(){buildArea('stArea','st',true);buildArea('romArea','rom',false);buildArea('mmtArea','mmt',false)}
@@ -75,7 +111,81 @@ function buildNRS(gridId,side){const g=$(gridId);for(let i=0;i<=10;i++){const c=
 const phrases={S:['통증은 이전보다 감소함','특정 동작 시 통증 잔존','야간통은 감소함','일상생활 불편감 감소'],A:['ROM 제한 및 통증으로 기능 저하','연부조직 긴장 및 관절가동성 저하','도수치료 및 운동교육 지속 필요','증상 호전 추세'],P:['STM 및 joint mobilization 시행','통증 범위 내 ROM exercise 교육','HEP 재교육','치료 후 통증 감소 및 움직임 개선']};function addPhrase(area,id){phrases[area].forEach(p=>{let b=document.createElement('button');b.className='phrase';b.textContent=p;b.onclick=()=>{const target=area==='S'?'sChief':area==='A'?'aText':'pResp';$(target).value=($(target).value?$(target).value+'\n':'')+p;render();persistDraft()};$(id).appendChild(b)})}addPhrase('S','phraseS');addPhrase('A','phraseA');addPhrase('P','phraseP');
 function groupText(key){const active=REGION_ORDER.filter(r=>regions.has(r)),parts=[];active.forEach(r=>{const names=[...sel[key]].filter(k=>k.startsWith(r+'|')).map(k=>k.split('|')[1]);if(names.length)parts.push(active.length>1?'['+r+'] '+names.join(', '):names.join(', '))});return parts.join(' / ')}function sections(){let f=fields(),S=[],O=[],A=[],P=[];let sLine=f.sChief.trim();if(nrsPre!==null)sLine+=(sLine?', ':'')+'NRS '+nrsPre+'/10';if(sLine)S.push('[S] 주호소: '+sLine);if(f.sOnset.trim())S.push('[S] 발병경위: '+f.sOnset.trim());let st=groupText('st');if(st)O.push('[O] 스페셜테스트(+): '+st);let rom=groupText('rom');if(rom)O.push('[O] ROM 제한: '+rom);let mmt=groupText('mmt');if(mmt)O.push('[O] MMT 약화: '+mmt);if(f.aText.trim())A.push('[A] 평가: '+f.aText.trim());if(f.pTech.trim())P.push('[P] 시행기법: '+f.pTech.trim());let respLine='';if(nrsPre!==null&&nrsPost!==null)respLine='NRS '+nrsPre+' → '+nrsPost+' post Tx';else if(nrsPost!==null)respLine='치료 후 NRS '+nrsPost+'/10';if(f.pResp.trim())respLine+=(respLine?', ':'')+f.pResp.trim();if(respLine)P.push('[P] 치료반응: '+respLine);return {S:S.join('\n'),O:O.join('\n'),A:A.join('\n'),P:P.join('\n')}}function buildText(){let f=fields(),head=[];let h=f.pName.trim();if(f.pVisit)h+=(h?' ':'')+f.pVisit+'회차';if(f.pDate)h+=(h?' ':'')+'('+f.pDate+')';if(h)head.push(h);if(f.pAgeSex.trim())head.push('나이/성별: '+f.pAgeSex.trim());if(regions.size)head.push('부위: '+REGION_ORDER.filter(r=>regions.has(r)).join(', '));let sec=sections(),body=[sec.S,sec.O,sec.A,sec.P].filter(Boolean).join('\n');return (head.length?head.join('\n')+(body?'\n\n':''):'')+body}function render(){const t=buildText(),p=$('preview');if(t){p.textContent=t;p.classList.remove('empty')}else{p.textContent='항목을 입력하면 여기에 차팅이 생성됩니다';p.classList.add('empty')}renderRecent()}document.querySelectorAll('input,textarea').forEach(el=>el.addEventListener('input',()=>{render();persistDraft()}));
 async function copyText(t,msg='복사 완료'){if(!t){toast('복사할 내용이 없습니다');return}try{await navigator.clipboard.writeText(t);toast(msg)}catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast(msg)}}$('copyBtn').onclick=() => copyText(buildText(),'복사 완료 — EMR에 붙여넣으세요');$('copySubjectBtn').onclick=() => copyText(buildText(),'전체 복사 완료');document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>copyText(sections()[b.dataset.copy],b.dataset.copy+' 복사 완료'));
-$('saveBtn').onclick=()=>{let s=state(),f=fields(),id=currentId||String(Date.now());f.currentId=id;f.savedAt=new Date().toISOString();currentId=id;let idx=s.records.findIndex(r=>r.currentId===id);if(idx>=0)s.records[idx]=f;else s.records.unshift(f);s.records=s.records.slice(0,200);s.draft=f;saveState(s);toast('저장 완료')};function renderRecent(){const list=$('recentList'),s=state();list.innerHTML='';if(!s.records.length){list.innerHTML="<div class='hint'>아직 저장된 차팅이 없습니다.</div>";return}s.records.slice(0,8).forEach(r=>{let item=document.createElement('div');item.className='item';item.innerHTML=`<strong>${r.pName||'이름 없음'} ${r.pVisit? r.pVisit+'회차':''}</strong><span>${r.pDate||''} · ${(r.regions||[]).join(', ')||'부위 미선택'}</span><span>${(r.sChief||'').slice(0,60)}</span>`;item.onclick=()=>{apply(r);toast('이전 차팅 불러옴')};list.appendChild(item)})}
+$('saveBtn').onclick=()=>{let s=state(),f=fields(),id=currentId||String(Date.now());f.currentId=id;f.savedAt=new Date().toISOString();currentId=id;let idx=s.records.findIndex(r=>r.currentId===id);if(idx>=0)s.records[idx]=f;else s.records.unshift(f);s.records=s.records.slice(0,200);s.draft=f;saveState(s);toast('저장 완료')};function updateManageButtons(){
+  const count=selectedRecordIds.size;
+  $('manageRecordsBtn').classList.toggle('hidden',manageRecords);
+  $('selectAllBtn').classList.toggle('hidden',!manageRecords);
+  $('deleteSelectedBtn').classList.toggle('hidden',!manageRecords);
+  $('cancelManageBtn').classList.toggle('hidden',!manageRecords);
+  $('deleteSelectedBtn').textContent='삭제 ('+count+')';
+  $('deleteSelectedBtn').disabled=count===0;
+}
+function renderRecent(){
+  const list=$('recentList'),s=state();
+  list.innerHTML='';
+  updateManageButtons();
+  if(!s.records.length){
+    list.innerHTML="<div class='hint'>아직 저장된 차팅이 없습니다.</div>";
+    return;
+  }
+  const records=manageRecords?s.records:s.records.slice(0,8);
+  records.forEach(r=>{
+    let item=document.createElement('div');
+    item.className='item'+(manageRecords?' manage':'');
+    const body=`<div class="item-body"><strong>${r.pName||'이름 없음'} ${r.pVisit? r.pVisit+'회차':''}</strong><span>${r.pDate||''} · ${(r.regions||[]).join(', ')||'부위 미선택'}</span><span>${(r.sChief||'').slice(0,60)}</span></div>`;
+    if(manageRecords){
+      const checked=selectedRecordIds.has(r.currentId)?' checked':'';
+      item.innerHTML=`<input type="checkbox" aria-label="차팅 선택"${checked}>${body}`;
+      const cb=item.querySelector('input[type=checkbox]');
+      const toggle=()=>{
+        if(selectedRecordIds.has(r.currentId)) selectedRecordIds.delete(r.currentId);
+        else selectedRecordIds.add(r.currentId);
+        cb.checked=selectedRecordIds.has(r.currentId);
+        updateManageButtons();
+      };
+      cb.onclick=e=>{e.stopPropagation();toggle()};
+      item.onclick=toggle;
+    }else{
+      item.innerHTML=body;
+      item.onclick=()=>{apply(r);toast('이전 차팅 불러옴')};
+    }
+    list.appendChild(item);
+  });
+}
+$('manageRecordsBtn').onclick=()=>{
+  manageRecords=true;
+  selectedRecordIds.clear();
+  renderRecent();
+};
+$('cancelManageBtn').onclick=()=>{
+  manageRecords=false;
+  selectedRecordIds.clear();
+  renderRecent();
+};
+$('selectAllBtn').onclick=()=>{
+  const s=state();
+  if(selectedRecordIds.size===s.records.length) selectedRecordIds.clear();
+  else selectedRecordIds=new Set(s.records.map(r=>r.currentId));
+  renderRecent();
+};
+$('deleteSelectedBtn').onclick=()=>{
+  const count=selectedRecordIds.size;
+  if(!count){toast('삭제할 차팅을 선택하세요');return}
+  if(!confirm('선택한 '+count+'개의 차팅을 삭제하시겠습니까?')) return;
+  let s=state();
+  const deletingCurrent=currentId&&selectedRecordIds.has(currentId);
+  s.records=s.records.filter(r=>!selectedRecordIds.has(r.currentId));
+  if(deletingCurrent){
+    currentId=null;
+    s.draft=fields();
+    s.draft.currentId=null;
+  }
+  saveState(s);
+  selectedRecordIds.clear();
+  manageRecords=false;
+  renderRecent();
+  toast(count+'개 차팅 삭제 완료');
+};
 $('newChartBtn').onclick=()=>{apply({});setToday();persistDraft();toast('새 차팅')};$('duplicateLastBtn').onclick=()=>{let s=state(),r=s.records[0];if(!r){toast('저장된 차팅이 없습니다');return}let copy={...r,currentId:null,pVisit:r.pVisit?String(Number(r.pVisit)+1):'',pDate:''};apply(copy);setToday();persistDraft();toast('마지막 차팅 이어쓰기')};$('resetBtn').onclick=()=>{apply({});setToday();persistDraft();toast('초기화 완료')};
 $('cleanBtn').onclick=()=>{let map=[['좀 좋아짐','증상은 이전보다 호전됨'],['좋아짐','호전됨'],['아픔','통증 호소'],['줄음','감소함'],['늘음','증가함']];['sChief','sOnset','aText','pTech','pResp'].forEach(id=>{let v=$(id).value;map.forEach(([a,b])=>v=v.replaceAll(a,b));$(id).value=v.trim()});render();persistDraft();toast('문장 정리 완료')};
 $('themeBtn').onclick=()=>{let s=state();s.theme=s.theme==='dark'?'light':'dark';saveState(s);applyTheme()};function applyTheme(){let s=state();document.documentElement.dataset.theme=s.theme==='dark'?'dark':'light';$('themeBtn').textContent=s.theme==='dark'?'☀️ 라이트':'🌙 다크'}
