@@ -1,8 +1,14 @@
-MOA Charting 시행자 입력
-버전: 2026.07.05-8
+MOA Charting v10 test selection with visible evidence
+Version: 2026.07.05-10.2
 
-- 시행자 이름 입력칸 추가
-- 차팅 출력: 시행자: 홍길동 물리치료사
-- 저장, 검색, 불러오기, 백업/복원에 시행자 포함
-- 저장된 차팅 목록에도 시행자 표시
-- 기존 저장 키 chartingPWA.v1 유지
+Base
+- Built from v2026.07.05-10.1
+- Original v2026.07.05-10 functionality preserved
+
+Changed
+- Special Test evidence/description is always visible before selection
+- ROM/MMT subtext is also always visible when available
+- Selected tests still show check mark and accent styling
+- Desktop two-column and mobile one-column layout preserved
+- Dark mode and all clinical cluster behavior preserved
+- Existing storage key chartingPWA.v1 preserved

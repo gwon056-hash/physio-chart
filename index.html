@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="app-version" content="2026.07.05-8">
+<meta name="app-version" content="2026.07.05-10.2">
 <meta name="theme-color" content="#0e7d74">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="차팅생성기">
@@ -786,6 +786,658 @@ body.modal-open{overflow:hidden}
 }
 [data-theme="dark"] .practitioner-input-wrap span{background:#101817}
 
+
+/* =========================================================
+   Full dark mode palette
+   ========================================================= */
+[data-theme="dark"]{
+  --ink:#e7efec;
+  --ink-soft:#9caeaa;
+  --paper:#0d1413;
+  --card:#151f1d;
+  --line:#2b3a36;
+  --accent:#3eb3a7;
+  --accent-deep:#67c9bf;
+  --accent-soft:#193430;
+  --danger:#ef7474;
+  --s-col:#4f8fca;
+  --o-col:#3ea99e;
+  --a-col:#c38a4c;
+  --p-col:#9670c4;
+  --shadow:0 12px 30px rgba(0,0,0,.22);
+}
+
+[data-theme="dark"] html,
+[data-theme="dark"] body,
+html[data-theme="dark"],
+body[data-theme="dark"]{
+  background:linear-gradient(180deg,#0c1211 0,#101816 45%,#0d1413 100%);
+  color:var(--ink);
+}
+
+[data-theme="dark"] .moa-header,
+[data-theme="dark"] .card,
+[data-theme="dark"] .utility-card,
+[data-theme="dark"] .patient-card,
+[data-theme="dark"] .soap-card,
+[data-theme="dark"] .preview-card{
+  background:linear-gradient(180deg,#172220 0,#141e1c 100%);
+  border-color:var(--line);
+  box-shadow:var(--shadow);
+}
+
+[data-theme="dark"] .moa-header{
+  background:rgba(21,31,29,.95);
+}
+
+[data-theme="dark"] input[type=text],
+[data-theme="dark"] input[type=number],
+[data-theme="dark"] input[type=date],
+[data-theme="dark"] input[type=search],
+[data-theme="dark"] textarea,
+[data-theme="dark"] select{
+  background:#101816;
+  color:var(--ink);
+  border-color:#33453f;
+  color-scheme:dark;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder{
+  color:#6f827d;
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus,
+[data-theme="dark"] select:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(62,179,167,.14);
+}
+
+[data-theme="dark"] .mini-btn,
+[data-theme="dark"] .phrase,
+[data-theme="dark"] .opt,
+[data-theme="dark"] .nrs,
+[data-theme="dark"] .region-btn,
+[data-theme="dark"] .item,
+[data-theme="dark"] .section-copy button,
+[data-theme="dark"] .sheet-done,
+[data-theme="dark"] .modal-secondary{
+  background:#111a18;
+  color:var(--ink);
+  border-color:#33453f;
+}
+
+[data-theme="dark"] .mini-btn:hover,
+[data-theme="dark"] .phrase:hover,
+[data-theme="dark"] .opt:hover,
+[data-theme="dark"] .region-btn:hover,
+[data-theme="dark"] .item:hover{
+  border-color:#527168;
+  background:#16231f;
+}
+
+[data-theme="dark"] .mini-btn.on,
+[data-theme="dark"] .primary-lite{
+  background:#193a35;
+  color:#7ed6cc;
+  border-color:#3eb3a7;
+}
+
+[data-theme="dark"] .dark-more{
+  background:#243431;
+  border-color:#3a504a;
+  color:#f4f8f7;
+}
+
+[data-theme="dark"] .region-btn{
+  background:#101816;
+  color:#c7d2cf;
+}
+[data-theme="dark"] .region-btn .rb-en{color:#839590}
+[data-theme="dark"] .region-btn.on{
+  background:linear-gradient(135deg,#277f76 0,#359f94 100%);
+  color:#fff;
+  border-color:#48baae;
+  box-shadow:0 8px 18px rgba(0,0,0,.28);
+}
+[data-theme="dark"] .region-btn.on .rb-en{color:rgba(255,255,255,.82)}
+
+[data-theme="dark"] .opt.on{
+  background:#1c4b45;
+  border-color:#4bb8ad;
+  color:#d8fffa;
+  box-shadow:0 5px 14px rgba(0,0,0,.22);
+}
+[data-theme="dark"] .opt.on small{color:#a7d7d1}
+
+[data-theme="dark"] .nrs.on{
+  background:#3e78ad;
+  border-color:#5d9bd0;
+  color:#fff;
+}
+[data-theme="dark"] .nrs.on.p-side{
+  background:#7857a0;
+  border-color:#9a7bc0;
+}
+
+[data-theme="dark"] .notice{
+  background:#17312d;
+  border-color:#2f4c46;
+  color:#abc0bb;
+}
+
+[data-theme="dark"] #recentList.has-scroll{
+  background:#101816;
+  border-color:#2e403a;
+}
+[data-theme="dark"] #recentList::-webkit-scrollbar-track{background:#15201e}
+[data-theme="dark"] #recentList::-webkit-scrollbar-thumb{background:#425952}
+
+[data-theme="dark"] .preview-shell{
+  background:linear-gradient(180deg,#121b19 0,#0f1715 100%);
+  border-color:#30423d;
+}
+[data-theme="dark"] #preview{
+  background:#0d1513;
+  color:#e5eeeb;
+  border-color:#354a44;
+}
+[data-theme="dark"] #preview.empty{color:#738681}
+
+[data-theme="dark"] .more-sheet,
+[data-theme="dark"] .app-modal{
+  background:#151f1d;
+  color:var(--ink);
+  border:1px solid #30413c;
+}
+[data-theme="dark"] .more-sheet-head p,
+[data-theme="dark"] .app-modal-body,
+[data-theme="dark"] .sheet-note,
+[data-theme="dark"] .sheet-status{
+  color:var(--ink-soft);
+}
+[data-theme="dark"] .manage-item,
+[data-theme="dark"] .install-step,
+[data-theme="dark"] .version-box{
+  background:#101816;
+  border-color:#30413c;
+}
+[data-theme="dark"] .manage-item strong,
+[data-theme="dark"] .app-modal-body strong{
+  color:var(--ink);
+}
+[data-theme="dark"] .sheet-close{
+  background:#24312e;
+  color:#dbe7e3;
+}
+[data-theme="dark"] .app-modal-icon{
+  background:#23433e;
+  color:#d9fffa;
+}
+
+[data-theme="dark"] .bottombar{
+  background:rgba(12,19,18,.96);
+  border-color:#273733;
+  box-shadow:0 -10px 28px rgba(0,0,0,.30);
+}
+[data-theme="dark"] #resetBtn{
+  background:#263532;
+  color:#b7c6c2;
+}
+[data-theme="dark"] #saveBtn{
+  background:#183149;
+  color:#fff;
+  border:1px solid #315a7c;
+}
+[data-theme="dark"] #copyBtn{
+  background:linear-gradient(135deg,#208f84 0,#30aa9e 100%);
+  color:#fff;
+  border:1px solid #45bdb2;
+}
+
+[data-theme="dark"] .chip.i{
+  background:#243530;
+  color:#f1f7f5;
+}
+[data-theme="dark"] .chip.s{background:#437faf}
+[data-theme="dark"] .chip.o{background:#348e85}
+[data-theme="dark"] .chip.a{background:#a8743f}
+[data-theme="dark"] .chip.p{background:#795ba0}
+
+[data-theme="dark"] .practitioner-input-wrap span{
+  background:#101816;
+  border-color:#33453f;
+  color:#aabbb6;
+}
+
+[data-theme="dark"] .app-footer{
+  color:#82948f;
+}
+
+[data-theme="dark"] .toast{
+  background:#e6eeeb;
+  color:#12201d;
+}
+
+
+/* Clinical cluster UI */
+.cluster-section{
+  margin:4px 0 16px;
+  display:grid;
+  gap:10px;
+}
+.cluster-section-title{
+  font-size:.78rem;
+  font-weight:900;
+  color:var(--accent-deep);
+  letter-spacing:.02em;
+}
+.cluster-card{
+  border:1.5px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  background:#fbfdfe;
+}
+.cluster-card.active{border-color:#7bbfb8;background:#f2fbf9}
+.cluster-card.positive{border-color:var(--accent);box-shadow:0 0 0 3px rgba(17,139,128,.08)}
+.cluster-head{
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  border:0;
+  background:transparent;
+  padding:14px;
+  text-align:left;
+  cursor:pointer;
+  color:var(--ink);
+}
+.cluster-main{display:grid;gap:3px;min-width:0}
+.cluster-main strong{font-size:.92rem}
+.cluster-main small{
+  font-size:.76rem;
+  font-weight:700;
+  color:var(--ink-soft);
+  line-height:1.35;
+}
+.cluster-main em{
+  font-size:.72rem;
+  font-style:normal;
+  font-weight:800;
+  color:var(--accent-deep);
+}
+.cluster-toggle{
+  flex:0 0 auto;
+  padding:6px 9px;
+  border-radius:999px;
+  background:var(--accent-soft);
+  color:var(--accent-deep);
+  font-size:.7rem;
+  font-weight:900;
+}
+.cluster-body{
+  padding:0 12px 12px;
+  display:grid;
+  gap:7px;
+}
+.cluster-check{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:10px 11px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  cursor:pointer;
+  font-size:.82rem;
+  font-weight:800;
+}
+.cluster-check input{width:18px;height:18px;accent-color:var(--accent)}
+.cluster-check.checked{
+  background:var(--accent-soft);
+  border-color:var(--accent);
+  color:var(--accent-deep);
+}
+.cluster-status{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:10px 11px;
+  border-radius:12px;
+  font-size:.76rem;
+}
+.cluster-status.met{background:#e5f6f1;color:#0b786e}
+.cluster-status.not-met{background:#f1f4f5;color:#70817d}
+.cluster-status span{font-weight:800}
+
+[data-theme="dark"] .cluster-card{
+  background:#101816;
+  border-color:#33453f;
+}
+[data-theme="dark"] .cluster-card.active{
+  background:#142622;
+  border-color:#3b8179;
+}
+[data-theme="dark"] .cluster-card.positive{
+  border-color:#4cc0b5;
+  box-shadow:0 0 0 3px rgba(76,192,181,.10);
+}
+[data-theme="dark"] .cluster-head{color:#e7efec}
+[data-theme="dark"] .cluster-main small{color:#9caeaa}
+[data-theme="dark"] .cluster-main em{color:#67c9bf}
+[data-theme="dark"] .cluster-toggle{background:#1b3d38;color:#83ddd3}
+[data-theme="dark"] .cluster-check{
+  background:#111a18;
+  color:#d6e1de;
+  border-color:#33453f;
+}
+[data-theme="dark"] .cluster-check.checked{
+  background:#1b423d;
+  color:#cafff9;
+  border-color:#4cbdb2;
+}
+[data-theme="dark"] .cluster-status.met{background:#173e38;color:#9af0e6}
+[data-theme="dark"] .cluster-status.not-met{background:#202b28;color:#9caeaa}
+
+@media(max-width:520px){
+  .cluster-head{align-items:flex-start}
+  .cluster-main strong{font-size:.88rem}
+  .cluster-main small{font-size:.72rem}
+  .cluster-main em{font-size:.68rem}
+}
+
+
+/* =========================================================
+   v10 simplified test selection layout
+   Only Special Test / ROM / MMT selection areas are changed.
+   ========================================================= */
+
+/* Clear visual container for each test section */
+#stArea,
+#romArea,
+#mmtArea{
+  display:grid;
+  gap:10px;
+}
+
+/* Region divider */
+#stArea .region-sub,
+#romArea .region-sub,
+#mmtArea .region-sub{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:12px 0 2px;
+  padding:0;
+  color:var(--ink);
+  font-size:.78rem;
+  font-weight:900;
+}
+#stArea .region-sub::after,
+#romArea .region-sub::after,
+#mmtArea .region-sub::after{
+  content:"";
+  height:1px;
+  flex:1;
+  background:var(--line);
+}
+
+/* Ordered grid instead of scattered pill buttons */
+#stArea .opt-grid,
+#romArea .opt-grid,
+#mmtArea .opt-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:7px;
+  width:100%;
+}
+
+/* Simple rectangular test choice */
+#stArea .opt,
+#romArea .opt,
+#mmtArea .opt{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+  min-width:0;
+  min-height:48px;
+  padding:9px 34px 9px 11px;
+  border-radius:11px;
+  border:1.5px solid var(--line);
+  background:#fbfcfd;
+  color:var(--ink);
+  font-size:.79rem;
+  font-weight:800;
+  line-height:1.25;
+  text-align:left;
+  word-break:keep-all;
+  overflow-wrap:anywhere;
+  box-shadow:none;
+}
+
+/* Quiet unselected information */
+#stArea .opt small,
+#romArea .opt small,
+#mmtArea .opt small{
+  display:block;
+  max-height:0;
+  margin:0;
+  overflow:hidden;
+  opacity:0;
+  color:var(--ink-soft);
+  font-size:.65rem;
+  font-weight:700;
+  line-height:1.3;
+  transition:max-height .15s ease,opacity .15s ease,margin .15s ease;
+}
+
+/* Neutral selection marker */
+#stArea .opt::after,
+#romArea .opt::after,
+#mmtArea .opt::after{
+  content:"";
+  position:absolute;
+  right:11px;
+  top:50%;
+  width:17px;
+  height:17px;
+  transform:translateY(-50%);
+  border:1.5px solid #b6c2c7;
+  border-radius:5px;
+  background:transparent;
+}
+
+/* Selected choice */
+#stArea .opt.on,
+#romArea .opt.on,
+#mmtArea .opt.on{
+  padding-left:13px;
+  background:var(--accent-soft);
+  border-color:var(--accent);
+  color:var(--accent-deep);
+  box-shadow:inset 4px 0 0 var(--accent);
+}
+
+#stArea .opt.on::after,
+#romArea .opt.on::after,
+#mmtArea .opt.on::after{
+  content:"✓";
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-color:var(--accent);
+  background:var(--accent);
+  color:#fff;
+  font-size:.72rem;
+  font-weight:900;
+}
+
+#stArea .opt.on small,
+#romArea .opt.on small,
+#mmtArea .opt.on small{
+  max-height:34px;
+  margin-top:3px;
+  opacity:1;
+  color:var(--accent-deep);
+}
+
+/* Cluster section is clearly separate from standalone tests */
+#stArea .cluster-section{
+  margin:0 0 6px;
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:rgba(17,139,128,.035);
+}
+
+#stArea .cluster-section-title{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-bottom:1px;
+  color:var(--accent-deep);
+}
+#stArea .cluster-section-title::before{
+  content:"CLUSTER";
+  padding:3px 6px;
+  border-radius:6px;
+  background:var(--accent-soft);
+  color:var(--accent-deep);
+  font-size:.58rem;
+  letter-spacing:.04em;
+}
+
+/* Slightly simplify cluster cards without changing behavior */
+#stArea .cluster-card{
+  border-radius:12px;
+  box-shadow:none;
+}
+#stArea .cluster-head{
+  padding:10px 11px;
+}
+#stArea .cluster-main strong{
+  font-size:.84rem;
+}
+#stArea .cluster-main small{
+  font-size:.68rem;
+}
+#stArea .cluster-main em{
+  font-size:.64rem;
+}
+#stArea .cluster-body{
+  gap:5px;
+  padding:0 9px 9px;
+}
+#stArea .cluster-check{
+  padding:8px 9px;
+  border-radius:9px;
+  font-size:.75rem;
+}
+
+/* Dark mode */
+[data-theme="dark"] #stArea .opt,
+[data-theme="dark"] #romArea .opt,
+[data-theme="dark"] #mmtArea .opt{
+  background:#101816;
+  color:#dbe5e2;
+  border-color:#33453f;
+}
+[data-theme="dark"] #stArea .opt::after,
+[data-theme="dark"] #romArea .opt::after,
+[data-theme="dark"] #mmtArea .opt::after{
+  border-color:#61736e;
+}
+[data-theme="dark"] #stArea .opt.on,
+[data-theme="dark"] #romArea .opt.on,
+[data-theme="dark"] #mmtArea .opt.on{
+  background:#193d38;
+  border-color:#4bb8ad;
+  color:#cafff9;
+  box-shadow:inset 4px 0 0 #4bb8ad;
+}
+[data-theme="dark"] #stArea .opt.on small,
+[data-theme="dark"] #romArea .opt.on small,
+[data-theme="dark"] #mmtArea .opt.on small{
+  color:#8bd9d0;
+}
+[data-theme="dark"] #stArea .cluster-section{
+  background:rgba(62,179,167,.055);
+  border-color:#30423d;
+}
+
+/* Mobile: one clean vertical list */
+@media(max-width:600px){
+  #stArea .opt-grid,
+  #romArea .opt-grid,
+  #mmtArea .opt-grid{
+    grid-template-columns:1fr;
+    gap:6px;
+  }
+
+  #stArea .opt,
+  #romArea .opt,
+  #mmtArea .opt{
+    min-height:44px;
+    padding-top:8px;
+    padding-bottom:8px;
+    font-size:.77rem;
+  }
+
+  #stArea .cluster-section{
+    padding:8px;
+  }
+}
+
+
+/* v10.2: Always show test evidence before selection */
+#stArea .opt small,
+#romArea .opt small,
+#mmtArea .opt small{
+  display:block;
+  max-height:none;
+  margin-top:3px;
+  overflow:visible;
+  opacity:1;
+  color:var(--ink-soft);
+  font-size:.65rem;
+  font-weight:700;
+  line-height:1.3;
+  transition:none;
+}
+
+#stArea .opt.on small,
+#romArea .opt.on small,
+#mmtArea .opt.on small{
+  max-height:none;
+  margin-top:3px;
+  opacity:1;
+  color:var(--accent-deep);
+}
+
+[data-theme="dark"] #stArea .opt small,
+[data-theme="dark"] #romArea .opt small,
+[data-theme="dark"] #mmtArea .opt small{
+  color:#8fa29d;
+}
+
+[data-theme="dark"] #stArea .opt.on small,
+[data-theme="dark"] #romArea .opt.on small,
+[data-theme="dark"] #mmtArea .opt.on small{
+  color:#8bd9d0;
+}
+
+/* Give unselected options enough room for title + evidence */
+#stArea .opt,
+#romArea .opt,
+#mmtArea .opt{
+  min-height:58px;
+}
+
 </style>
 </head>
 <body>
@@ -853,7 +1505,7 @@ body.modal-open{overflow:hidden}
 <div class="card soap-card p-card"><div class="sec-tag"><span class="chip p">P</span>계획 <span class="section-copy"><button data-copy="P">P 복사</button></span></div><div class="phrasebar" id="phraseP"></div><label class="fld">시행 기법</label><textarea id="pTech" placeholder="예: Grade III GH joint mobilization, 15 min"></textarea><label class="fld">NRS (치료 후)</label><div class="nrs-grid" id="nrsPost"></div><label class="fld">치료 반응</label><textarea id="pResp" placeholder="예: ROM improved, pain decreased post Tx"></textarea></div>
 
 <div class="card preview-card"><div class="sec-tag"><span class="chip i">출력</span>차팅 미리보기</div><div class="preview-tools"><button class="mini-btn" id="cleanBtn">문장 정리</button><button class="mini-btn" id="copySubjectBtn">S/O/A/P 전체 복사</button></div><div class="preview-note">선택한 내용이 아래에 실시간으로 정리됩니다.</div><div class="preview-shell"><div class="preview-label">미리 생성된 차팅</div><div id="preview" class="empty">항목을 입력하면 여기에 차팅이 생성됩니다</div></div></div>
-<footer class="app-footer">MOA Charting Beta v2026.07.05-8 · © MOA BUSAN · @physio_geun_1</footer>
+<footer class="app-footer">MOA Charting Beta v2026.07.05-10.2 · © MOA BUSAN · @physio_geun_1</footer>
 </div>
 <div class="bottombar">
   <div class="inner">
@@ -861,7 +1513,7 @@ body.modal-open{overflow:hidden}
     <button class="big" id="saveBtn">💾 저장</button>
     <button class="big" id="copyBtn">📋 복사</button>
   </div>
-  <div class="desktop-copyright">MOA Charting Beta v2026.07.05-8 · © MOA BUSAN · @physio_geun_1</div>
+  <div class="desktop-copyright">MOA Charting Beta v2026.07.05-10.2 · © MOA BUSAN · @physio_geun_1</div>
 </div><div class="toast" id="toast">복사 완료</div>
 
 <div class="more-backdrop" id="moreBackdrop"></div>
@@ -903,7 +1555,7 @@ body.modal-open{overflow:hidden}
     <button class="manage-item" id="updateCheckBtn" type="button">
       <div>
         <strong>업데이트 확인</strong>
-        <span id="updateMenuText">현재 버전 v2026.07.05-8 · 새 버전을 확인합니다.</span>
+        <span id="updateMenuText">현재 버전 v2026.07.05-10.2 · 새 버전을 확인합니다.</span>
       </div>
       <b>›</b>
     </button>
@@ -919,7 +1571,7 @@ body.modal-open{overflow:hidden}
 
   <div class="sheet-status">
     <span><i class="status-dot"></i> 온라인</span>
-    <strong id="currentVersionLabel">v2026.07.05-8</strong>
+    <strong id="currentVersionLabel">v2026.07.05-10.2</strong>
   </div>
   <p class="sheet-note">저장된 차팅은 이 기기·이 브라우저에 보관됩니다. 업데이트·앱 삭제·기기 변경 전 전체 백업을 권장합니다.</p>
   <button class="sheet-done" id="sheetDoneBtn" type="button">닫기</button>
@@ -947,8 +1599,84 @@ body.modal-open{overflow:hidden}
 </div>
 
 <script>
-const DATA={"Cervical":{st:[{n:"Spurling test",s:"Rule-in · Sp .93"},{n:"Cervical distraction test",s:"Sp .90"},{n:"ULTT (median)",s:"Rule-out · Sn .97"},{n:"Flexion-rotation test",s:"CGH · Sn .90/Sp .88"},{n:"Sharp-Purser test",s:"상위경추 불안정"},{n:"Vertebral artery test",s:"VBI screening"},{n:"Cervical rotation <60°",s:"CGH 지표"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Cervical flexion","Cervical extension","Lt. lateral flexion","Rt. lateral flexion","Deep neck flexor (CCFT)"]},"Thoracic":{st:[{n:"Thoracic rotation test",s:""},{n:"Rib spring test",s:""},{n:"Adam forward bend test",s:"측만 screening"},{n:"Cervical rotation lateral flexion test",s:"1st rib"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Trunk extension","Scapular retraction"]},"Lumbar":{st:[{n:"SLR",s:"Rule-out · Sn .92/Sp .28"},{n:"Crossed SLR",s:"Rule-in · Sn .28/Sp .90"},{n:"Slump test",s:"Sn .84/Sp .83"},{n:"Femoral nerve tension test",s:"상위요추 신경근"},{n:"Kemp / Quadrant test",s:"Facet"},{n:"Extension-rotation test",s:"Facet"},{n:"PA spring test",s:"분절 irritability"},{n:"Prone instability test",s:"불안정성"},{n:"Passive lumbar extension test",s:"불안정성 · Sn .84/Sp .90"},{n:"Romberg test",s:"Stenosis screening"},{n:"Myotome/Dermatome/Reflex exam",s:"신경학적 검사"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Trunk flexion","Trunk extension","Hip flexion (L2-3)","Knee extension (L3-4)","Ankle dorsiflexion (L4-5)","Great toe extension (L5)","Plantarflexion/heel raise (S1)"]},"SI Joint":{st:[{n:"Distraction test",s:"Laslett cluster"},{n:"Compression test",s:"Laslett cluster"},{n:"Thigh thrust test",s:"Laslett cluster"},{n:"Sacral thrust test",s:"Laslett cluster"},{n:"Gaenslen test",s:"Laslett cluster"},{n:"FABER / Patrick test",s:""},{n:"Laslett cluster ≥3/5 (+)",s:"Sn .91-.94/Sp .78"},{n:"Gillet test",s:""}],rom:[],mmt:["Hip extension","Hip abduction"]},"Shoulder":{st:[{n:"Neer test",s:"Sn .78"},{n:"Hawkins-Kennedy test",s:"Sn .79"},{n:"Painful arc",s:"Sn .74/Sp .81"},{n:"Empty can test",s:"Supraspinatus"},{n:"Full can test",s:"Supraspinatus"},{n:"Drop arm test",s:"Rule-in · Sp .92"},{n:"ER lag sign",s:"Infra/supra · Sp .94"},{n:"Lift-off test",s:"Subscapularis"},{n:"Belly press test",s:"Subscapularis"},{n:"Bear hug test",s:"Subscapularis · Sn .79"},{n:"Speed test",s:"Biceps/SLAP"},{n:"Yergason test",s:"Biceps · Sp .79"},{n:"O'Brien test",s:"SLAP"},{n:"Apprehension test",s:"전방 불안정"},{n:"Relocation test",s:"Sp .90"},{n:"Sulcus sign",s:"하방 불안정"},{n:"Cross-body adduction test",s:"AC joint"}],rom:["Flexion","Extension","Abduction","Adduction","Internal rotation","External rotation","Horizontal adduction"],mmt:["Shoulder flexion","Shoulder abduction","Internal rotation","External rotation","Scapular protraction (SA)","Scapular retraction (MT/LT)"]},"Elbow":{st:[{n:"Cozen test",s:"Lateral epicondylalgia"},{n:"Mill test",s:"Lateral epicondylalgia"},{n:"Maudsley test",s:"3rd finger ext"},{n:"Moving valgus stress test",s:"UCL · Sn 1.0/Sp .75"},{n:"Valgus stress test",s:"UCL"},{n:"Varus stress test",s:"LCL"},{n:"Tinel sign (elbow)",s:"Ulnar n."}],rom:["Flexion","Extension","Pronation","Supination"],mmt:["Elbow flexion","Elbow extension","Pronation","Supination","Grip strength"]},"Wrist/Hand":{st:[{n:"Phalen test",s:"CTS · Sn .68"},{n:"Reverse Phalen test",s:"CTS"},{n:"Durkan compression test",s:"CTS · Sn .87/Sp .90"},{n:"Tinel sign (wrist)",s:"CTS"},{n:"Finkelstein/Eichhoff test",s:"De Quervain"},{n:"Watson scaphoid shift test",s:"SL 불안정"},{n:"TFCC compression test",s:"척측 손목통증"}],rom:["Flexion","Extension","Radial deviation","Ulnar deviation"],mmt:["Wrist flexion","Wrist extension","Radial deviation","Ulnar deviation","Grip strength","Finger flexion","Finger extension"]},"Hip":{st:[{n:"FADIR test",s:"FAI Rule-out · Sn .94-.99"},{n:"FABER test",s:"Sn .81-.82 · 서혜부 통증 재현"},{n:"Scour test",s:"관절내 병리"},{n:"Stinchfield test",s:"저항성 SLR 20-30°"},{n:"Squat pain",s:"Hip OA 지표"},{n:"Hip IR <25°",s:"Hip OA 지표"},{n:"30-sec single-leg stance",s:"GTPS Rule-in · Sn 1.0/Sp .97"},{n:"Greater trochanter palpation",s:"GTPS Rule-out · Sn .83"},{n:"Resisted abduction (ADD-R)",s:"GTPS · Sn .71/Sp .84"},{n:"FADER-R test",s:"GTPS Rule-in"},{n:"Thomas test",s:"굴곡구축/장요근"},{n:"Ober test",s:"ITB"},{n:"Trendelenburg test",s:"중둔근 기능"}],rom:["Flexion","Extension","Abduction","Adduction","Internal rotation","External rotation"],mmt:["Hip flexion","Hip extension","Hip abduction","Hip adduction","Internal rotation","External rotation"]},"Knee":{st:[{n:"Lachman test",s:"ACL · Sn .85/Sp .94"},{n:"Anterior drawer test",s:"ACL"},{n:"Pivot shift test",s:"ACL Rule-in · Sp .98"},{n:"Posterior drawer test",s:"PCL · Sn .90"},{n:"McMurray test",s:"Meniscus · Sp .78"},{n:"Thessaly test",s:"Meniscus"},{n:"Joint line tenderness",s:"Meniscus · Sn .83"},{n:"Valgus stress test",s:"MCL"},{n:"Varus stress test",s:"LCL"},{n:"Patellar apprehension test",s:"슬개골 불안정"},{n:"Clarke test",s:"PFPS"}],rom:["Flexion","Extension"],mmt:["Knee flexion","Knee extension"]},"Ankle/Foot":{st:[{n:"Anterior drawer test",s:"ATFL"},{n:"Talar tilt test",s:"CFL"},{n:"Thompson test",s:"Achilles rupture"},{n:"Squeeze test",s:"Syndesmosis"},{n:"External rotation test",s:"Syndesmosis"},{n:"Windlass test",s:"Plantar fascia"},{n:"Navicular drop test",s:"과회내"}],rom:["Dorsiflexion","Plantarflexion","Inversion","Eversion"],mmt:["Dorsiflexion","Plantarflexion/heel raise","Inversion","Eversion","Great toe extension"]}};
-const REGION_KO={"Cervical":"경추","Thoracic":"흉추","Lumbar":"요추","SI Joint":"천장관절","Shoulder":"어깨","Elbow":"팔꿈치","Wrist/Hand":"손목·손","Hip":"고관절","Knee":"무릎","Ankle/Foot":"발목·발"};const REGION_ORDER=Object.keys(DATA);const $=id=>document.getElementById(id);let regions=new Set(),sel={st:new Set(),rom:new Set(),mmt:new Set()},nrsPre=null,nrsPost=null,currentId=null,manageRecords=false,selectedRecordIds=new Set(),chartSearchQuery='';const LS="chartingPWA.v1";const state=()=>JSON.parse(localStorage.getItem(LS)||'{"records":[],"draft":{},"theme":"light"}');const saveState=s=>localStorage.setItem(LS,JSON.stringify(s));function setToday(){let d=new Date();$("pDate").value=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}function initTimeOptions(){
+const DATA={"Cervical":{st:[{n:"Spurling test",s:"Rule-in · Sp .93"},{n:"Cervical distraction test",s:"Sp .90"},{n:"ULTT (median)",s:"Rule-out · Sn .97"},{n:"Flexion-rotation test",s:"CGH · Sn .90/Sp .88"},{n:"Sharp-Purser test",s:"상위경추 불안정"},{n:"Vertebral artery test",s:"VBI screening"},{n:"Cervical rotation <60°",s:"Wainner CPR 구성 항목"},{n:"Myotome/Dermatome/Reflex exam",s:"경추 신경근/경수증 스크리닝"},{n:"Hoffmann sign",s:"경수증 스크리닝"},{n:"Babinski sign",s:"상위운동신경원 스크리닝"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Cervical flexion","Cervical extension","Lt. lateral flexion","Rt. lateral flexion","Deep neck flexor (CCFT)"]},"Thoracic":{st:[{n:"Thoracic rotation test",s:""},{n:"Rib spring test",s:""},{n:"Adam forward bend test",s:"측만 screening"},{n:"Cervical rotation lateral flexion test",s:"1st rib"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Trunk extension","Scapular retraction"]},"Lumbar":{st:[{n:"SLR",s:"Rule-out · Sn .92/Sp .28"},{n:"Crossed SLR",s:"Rule-in · Sn .28/Sp .90"},{n:"Slump test",s:"Sn .84/Sp .83"},{n:"Femoral nerve tension test",s:"상위요추 신경근"},{n:"Kemp / Quadrant test",s:"Facet"},{n:"Extension-rotation test",s:"Facet"},{n:"PA spring test",s:"분절 irritability"},{n:"Prone instability test",s:"불안정성"},{n:"Passive lumbar extension test",s:"불안정성 · Sn .84/Sp .90"},{n:"Romberg test",s:"Stenosis screening"},{n:"Myotome/Dermatome/Reflex exam",s:"신경학적 검사"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Trunk flexion","Trunk extension","Hip flexion (L2-3)","Knee extension (L3-4)","Ankle dorsiflexion (L4-5)","Great toe extension (L5)","Plantarflexion/heel raise (S1)"]},"SI Joint":{st:[{n:"Distraction test",s:"Laslett cluster"},{n:"Compression test",s:"Laslett cluster"},{n:"Thigh thrust test",s:"Laslett cluster"},{n:"Sacral thrust test",s:"Laslett cluster"},{n:"Gaenslen test",s:"Laslett cluster"},{n:"FABER / Patrick test",s:""},{n:"Gillet test",s:""}],rom:[],mmt:["Hip extension","Hip abduction"]},"Shoulder":{st:[{n:"Neer test",s:"Sn .78"},{n:"Hawkins-Kennedy test",s:"Sn .79"},{n:"Painful arc",s:"Sn .74/Sp .81"},{n:"Empty can test",s:"Supraspinatus"},{n:"Full can test",s:"Supraspinatus"},{n:"Drop arm test",s:"Rule-in · Sp .92"},{n:"ER lag sign",s:"Infra/supra · Sp .94"},{n:"Lift-off test",s:"Subscapularis"},{n:"Belly press test",s:"Subscapularis"},{n:"Bear hug test",s:"Subscapularis · Sn .79"},{n:"Speed test",s:"Biceps/SLAP"},{n:"Yergason test",s:"Biceps · Sp .79"},{n:"O'Brien test",s:"SLAP"},{n:"Apprehension test",s:"전방 불안정"},{n:"Relocation test",s:"Sp .90"},{n:"Sulcus sign",s:"하방 불안정"},{n:"Cross-body adduction test",s:"AC joint"},{n:"Infraspinatus strength test",s:"Park cluster 구성 항목"}],rom:["Flexion","Extension","Abduction","Adduction","Internal rotation","External rotation","Horizontal adduction"],mmt:["Shoulder flexion","Shoulder abduction","Internal rotation","External rotation","Scapular protraction (SA)","Scapular retraction (MT/LT)"]},"Elbow":{st:[{n:"Cozen test",s:"Lateral epicondylalgia"},{n:"Mill test",s:"Lateral epicondylalgia"},{n:"Maudsley test",s:"3rd finger ext"},{n:"Moving valgus stress test",s:"UCL · Sn 1.0/Sp .75"},{n:"Valgus stress test",s:"UCL"},{n:"Varus stress test",s:"LCL"},{n:"Tinel sign (elbow)",s:"Ulnar n."}],rom:["Flexion","Extension","Pronation","Supination"],mmt:["Elbow flexion","Elbow extension","Pronation","Supination","Grip strength"]},"Wrist/Hand":{st:[{n:"Phalen test",s:"CTS · Sn .68"},{n:"Reverse Phalen test",s:"CTS"},{n:"Durkan compression test",s:"CTS · Sn .87/Sp .90"},{n:"Tinel sign (wrist)",s:"CTS"},{n:"Finkelstein/Eichhoff test",s:"De Quervain"},{n:"Watson scaphoid shift test",s:"SL 불안정"},{n:"TFCC compression test",s:"척측 손목통증"}],rom:["Flexion","Extension","Radial deviation","Ulnar deviation"],mmt:["Wrist flexion","Wrist extension","Radial deviation","Ulnar deviation","Grip strength","Finger flexion","Finger extension"]},"Hip":{st:[{n:"FADIR test",s:"FAI Rule-out · Sn .94-.99"},{n:"FABER test",s:"Sn .81-.82 · 서혜부 통증 재현"},{n:"Scour test",s:"관절내 병리"},{n:"Stinchfield test",s:"저항성 SLR 20-30°"},{n:"Squat pain",s:"Hip OA 지표"},{n:"Hip IR <25°",s:"Hip OA 지표"},{n:"30-sec single-leg stance",s:"GTPS Rule-in · Sn 1.0/Sp .97"},{n:"Greater trochanter palpation",s:"GTPS Rule-out · Sn .83"},{n:"Resisted abduction (ADD-R)",s:"GTPS · Sn .71/Sp .84"},{n:"FADER-R test",s:"GTPS Rule-in"},{n:"Thomas test",s:"굴곡구축/장요근"},{n:"Ober test",s:"ITB"},{n:"Trendelenburg test",s:"중둔근 기능"}],rom:["Flexion","Extension","Abduction","Adduction","Internal rotation","External rotation"],mmt:["Hip flexion","Hip extension","Hip abduction","Hip adduction","Internal rotation","External rotation"]},"Knee":{st:[{n:"Lachman test",s:"ACL · Sn .85/Sp .94"},{n:"Anterior drawer test",s:"ACL"},{n:"Pivot shift test",s:"ACL Rule-in · Sp .98"},{n:"Posterior drawer test",s:"PCL · Sn .90"},{n:"McMurray test",s:"Meniscus · Sp .78"},{n:"Thessaly test",s:"Meniscus"},{n:"Joint line tenderness",s:"Meniscus · Sn .83"},{n:"Valgus stress test",s:"MCL"},{n:"Varus stress test",s:"LCL"},{n:"Patellar apprehension test",s:"슬개골 불안정"},{n:"Clarke test",s:"PFPS"}],rom:["Flexion","Extension"],mmt:["Knee flexion","Knee extension"]},"Ankle/Foot":{st:[{n:"Anterior drawer test",s:"ATFL"},{n:"Talar tilt test",s:"CFL"},{n:"Thompson test",s:"Achilles rupture"},{n:"Squeeze test",s:"Syndesmosis"},{n:"External rotation test",s:"Syndesmosis"},{n:"Windlass test",s:"Plantar fascia"},{n:"Navicular drop test",s:"과회내"}],rom:["Dorsiflexion","Plantarflexion","Inversion","Eversion"],mmt:["Dorsiflexion","Plantarflexion/heel raise","Inversion","Eversion","Great toe extension"]}};
+
+const CLUSTERS={
+  "Cervical":[
+    {
+      id:"wainner-cpr",
+      name:"Wainner CPR",
+      disease:"경추 신경근병증 · Cervical Radiculopathy",
+      evidence:"3/4 positive · Sp .94 / Sn .24 · +LR 6.1",
+      threshold:3,
+      components:[
+        {label:"Spurling test",link:"Spurling test"},
+        {label:"Cervical distraction test",link:"Cervical distraction test"},
+        {label:"ULTT (median)",link:"ULTT (median)"},
+        {label:"동측 경추회전 <60°",link:"Cervical rotation <60°"}
+      ]
+    }
+  ],
+  "Shoulder":[
+    {
+      id:"park-rct",
+      name:"Park cluster — Full-thickness RCT",
+      disease:"전층 회전근개 파열 · Full-thickness Rotator Cuff Tear",
+      evidence:"3/3 positive · +LR 15.6",
+      threshold:3,
+      components:[
+        {label:"Painful arc",link:"Painful arc"},
+        {label:"Drop arm test",link:"Drop arm test"},
+        {label:"Infraspinatus strength test",link:"Infraspinatus strength test"}
+      ]
+    },
+    {
+      id:"park-impingement",
+      name:"Park cluster — Impingement",
+      disease:"견봉하 통증/충돌 증후군 · Subacromial Impingement",
+      evidence:"3/3 positive · +LR 10.6",
+      threshold:3,
+      components:[
+        {label:"Hawkins-Kennedy test",link:"Hawkins-Kennedy test"},
+        {label:"Painful arc",link:"Painful arc"},
+        {label:"Infraspinatus strength test",link:"Infraspinatus strength test"}
+      ]
+    }
+  ],
+  "Hip":[
+    {
+      id:"altman-hip-oa",
+      name:"Altman clinical criteria",
+      disease:"고관절 골관절염 · Hip Osteoarthritis",
+      evidence:"Sn .86 / Sp .75",
+      custom:"altman",
+      components:[
+        {label:"내회전 시 통증"},
+        {label:"조조강직 >60분"},
+        {label:"50세 이상"},
+        {label:"내회전 <15°",link:"Hip IR <25°"},
+        {label:"굴곡 ≤115°"}
+      ]
+    }
+  ],
+  "SI Joint":[
+    {
+      id:"laslett-sij",
+      name:"Laslett cluster",
+      disease:"천장관절 유래 통증 · SI Joint Pain",
+      evidence:"≥3/5 positive · Sn .91–.94 / Sp .78",
+      threshold:3,
+      components:[
+        {label:"Distraction test",link:"Distraction test"},
+        {label:"Compression test",link:"Compression test"},
+        {label:"Thigh thrust test",link:"Thigh thrust test"},
+        {label:"Sacral thrust test",link:"Sacral thrust test"},
+        {label:"Gaenslen test",link:"Gaenslen test"}
+      ]
+    }
+  ]
+};
+const REGION_KO={"Cervical":"경추","Thoracic":"흉추","Lumbar":"요추","SI Joint":"천장관절","Shoulder":"어깨","Elbow":"팔꿈치","Wrist/Hand":"손목·손","Hip":"고관절","Knee":"무릎","Ankle/Foot":"발목·발"};const REGION_ORDER=Object.keys(DATA);const $=id=>document.getElementById(id);let regions=new Set(),sel={st:new Set(),rom:new Set(),mmt:new Set()},clusterActive=new Set(),clusterFindings={},nrsPre=null,nrsPost=null,currentId=null,manageRecords=false,selectedRecordIds=new Set(),chartSearchQuery='';const LS="chartingPWA.v1";const state=()=>JSON.parse(localStorage.getItem(LS)||'{"records":[],"draft":{},"theme":"light"}');const saveState=s=>localStorage.setItem(LS,JSON.stringify(s));function setToday(){let d=new Date();$("pDate").value=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}function initTimeOptions(){
   const start=$('pStartTime'),end=$('pEndTime');
   if(!start||!end)return;
   const times=[];
@@ -979,14 +1707,14 @@ function syncEndTimeOptions(){
     option.disabled=Boolean(startValue&&option.value<=startValue);
   });
   if(startValue&&end.value&&end.value<=startValue)end.value='';
-}function fields(){return {pName:$('pName').value,pVisit:$('pVisit').value,pAgeSex:$('pAgeSex').value,pDate:$('pDate').value,pStartTime:$('pStartTime').value,pEndTime:$('pEndTime').value,practitionerName:$('practitionerName').value,sChief:$('sChief').value,sOnset:$('sOnset').value,aText:$('aText').value,pTech:$('pTech').value,pResp:$('pResp').value,regions:[...regions],st:[...sel.st],rom:[...sel.rom],mmt:[...sel.mmt],nrsPre,nrsPost,currentId}}function addThirtyMinutes(time){
+}function fields(){return {pName:$('pName').value,pVisit:$('pVisit').value,pAgeSex:$('pAgeSex').value,pDate:$('pDate').value,pStartTime:$('pStartTime').value,pEndTime:$('pEndTime').value,practitionerName:$('practitionerName').value,sChief:$('sChief').value,sOnset:$('sOnset').value,aText:$('aText').value,pTech:$('pTech').value,pResp:$('pResp').value,regions:[...regions],st:[...sel.st],rom:[...sel.rom],mmt:[...sel.mmt],clusterActive:[...clusterActive],clusterFindings:Object.fromEntries(Object.entries(clusterFindings).map(([k,v])=>[k,[...v]])),nrsPre,nrsPost,currentId}}function addThirtyMinutes(time){
   if(!time)return '';
   const [h,m]=time.split(':').map(Number);
   const total=h*60+m+30;
   if(total>=1440)return '';
   return String(Math.floor(total/60)).padStart(2,'0')+':'+String(total%60).padStart(2,'0');
 }
-function apply(d={}){if(d.pTime&&!d.pStartTime){d={...d,pStartTime:d.pTime,pEndTime:addThirtyMinutes(d.pTime)}}['pName','pVisit','pAgeSex','pDate','pStartTime','pEndTime','practitionerName','sChief','sOnset','aText','pTech','pResp'].forEach(id=>$(id).value=d[id]||'');regions=new Set(d.regions||[]);sel={st:new Set(d.st||[]),rom:new Set(d.rom||[]),mmt:new Set(d.mmt||[])};nrsPre=d.nrsPre??null;nrsPost=d.nrsPost??null;currentId=d.currentId||null;document.querySelectorAll('.region-btn').forEach((b,i)=>b.classList.toggle('on',regions.has(REGION_ORDER[i])));document.querySelectorAll('#nrsPre .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPre));document.querySelectorAll('#nrsPost .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPost));if(!$("pDate").value)setToday();syncEndTimeOptions();renderOpts();render()}
+function apply(d={}){if(d.pTime&&!d.pStartTime){d={...d,pStartTime:d.pTime,pEndTime:addThirtyMinutes(d.pTime)}}['pName','pVisit','pAgeSex','pDate','pStartTime','pEndTime','practitionerName','sChief','sOnset','aText','pTech','pResp'].forEach(id=>$(id).value=d[id]||'');regions=new Set(d.regions||[]);sel={st:new Set(d.st||[]),rom:new Set(d.rom||[]),mmt:new Set(d.mmt||[])};clusterActive=new Set(d.clusterActive||[]);clusterFindings={};Object.entries(d.clusterFindings||{}).forEach(([k,v])=>clusterFindings[k]=new Set(v||[]));nrsPre=d.nrsPre??null;nrsPost=d.nrsPost??null;currentId=d.currentId||null;document.querySelectorAll('.region-btn').forEach((b,i)=>b.classList.toggle('on',regions.has(REGION_ORDER[i])));document.querySelectorAll('#nrsPre .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPre));document.querySelectorAll('#nrsPost .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPost));if(!$("pDate").value)setToday();syncEndTimeOptions();renderOpts();render()}
 function persistDraft(){let s=state();s.draft=fields();saveState(s)}function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
 function openMoreSheet(){
   $('moreBackdrop').classList.add('show');
@@ -1001,11 +1729,169 @@ function closeMoreSheet(){
   document.body.classList.remove('sheet-open');
 }
 
-REGION_ORDER.forEach(r=>{const b=document.createElement('button');b.type='button';b.className='region-btn';b.innerHTML="<span class='rb-ko'>"+REGION_KO[r]+"</span><span class='rb-en'>"+r.replace('/',' / ')+"</span>";b.onclick=()=>{if(regions.has(r)){regions.delete(r);['st','rom','mmt'].forEach(k=>[...sel[k]].forEach(key=>{if(key.startsWith(r+'|'))sel[k].delete(key)}));}else regions.add(r);b.classList.toggle('on',regions.has(r));renderOpts();render();persistDraft()};$('regionGrid').appendChild(b)});
-function buildArea(areaId,key,isObj){const area=$(areaId);area.innerHTML='';const active=REGION_ORDER.filter(r=>regions.has(r));if(!active.length){area.innerHTML="<div class='hint'>부위를 먼저 선택하세요</div>";return}let any=false;active.forEach(r=>{const items=DATA[r][key];if(!items.length)return;any=true;if(active.length>1){let h=document.createElement('div');h.className='region-sub';h.textContent='▸ '+REGION_KO[r]+' ('+r+')';area.appendChild(h)}let g=document.createElement('div');g.className='opt-grid';items.forEach(item=>{const name=isObj?item.n:item,subT=isObj?item.s:'',k=r+'|'+name,c=document.createElement('div');c.className='opt'+(sel[key].has(k)?' on':'');c.innerHTML=name+(subT?'<small>'+subT+'</small>':'');c.onclick=()=>{sel[key].has(k)?sel[key].delete(k):sel[key].add(k);c.classList.toggle('on');render();persistDraft()};g.appendChild(c)});area.appendChild(g)});if(!any)area.innerHTML="<div class='hint'>해당 항목 없음</div>"}function renderOpts(){buildArea('stArea','st',true);buildArea('romArea','rom',false);buildArea('mmtArea','mmt',false)}
+REGION_ORDER.forEach(r=>{const b=document.createElement('button');b.type='button';b.className='region-btn';b.innerHTML="<span class='rb-ko'>"+REGION_KO[r]+"</span><span class='rb-en'>"+r.replace('/',' / ')+"</span>";b.onclick=()=>{if(regions.has(r)){regions.delete(r);['st','rom','mmt'].forEach(k=>[...sel[k]].forEach(key=>{if(key.startsWith(r+'|'))sel[k].delete(key)}));
+(CLUSTERS[r]||[]).forEach(cl=>{clusterActive.delete(cl.id);delete clusterFindings[cl.id]});}else regions.add(r);b.classList.toggle('on',regions.has(r));renderOpts();render();persistDraft()};$('regionGrid').appendChild(b)});
+
+function getClusterById(id){
+  for(const arr of Object.values(CLUSTERS))for(const cluster of arr)if(cluster.id===id)return cluster;
+  return null;
+}
+function clusterResult(cluster){
+  const positives=clusterFindings[cluster.id]||new Set();
+  if(cluster.custom==='altman'){
+    const a=['내회전 시 통증','조조강직 >60분','50세 이상'].every(x=>positives.has(x));
+    const b=['내회전 <15°','굴곡 ≤115°'].every(x=>positives.has(x));
+    return {positive:a||b,count:positives.size,total:cluster.components.length,label:(a||b)?'기준 충족':'기준 미충족'};
+  }
+  const positive=positives.size>=(cluster.threshold||cluster.components.length);
+  return {positive,count:positives.size,total:cluster.components.length,label:positive?'기준 충족':'기준 미충족'};
+}
+function syncStandaloneFromCluster(region,component,checked){
+  if(!component.link)return;
+  const key=region+'|'+component.link;
+  if(checked)sel.st.add(key);
+  else{
+    let usedElsewhere=false;
+    Object.entries(CLUSTERS).forEach(([r,clusters])=>clusters.forEach(cluster=>{
+      if(!clusterActive.has(cluster.id)||cluster.id===component._clusterId)return;
+      const findings=clusterFindings[cluster.id]||new Set();
+      cluster.components.forEach(c=>{if(c.link===component.link&&findings.has(c.label))usedElsewhere=true});
+    }));
+    if(!usedElsewhere)sel.st.delete(key);
+  }
+}
+function syncClustersFromStandalone(region,testName,checked){
+  (CLUSTERS[region]||[]).forEach(cluster=>{
+    const component=cluster.components.find(c=>c.link===testName);
+    if(!component||!clusterActive.has(cluster.id))return;
+    if(!clusterFindings[cluster.id])clusterFindings[cluster.id]=new Set();
+    checked?clusterFindings[cluster.id].add(component.label):clusterFindings[cluster.id].delete(component.label);
+  });
+}
+function renderClusterSection(area,region){
+  const clusters=CLUSTERS[region]||[];
+  if(!clusters.length)return;
+  const wrap=document.createElement('div');
+  wrap.className='cluster-section';
+  const title=document.createElement('div');
+  title.className='cluster-section-title';
+  title.textContent='임상 클러스터';
+  wrap.appendChild(title);
+
+  clusters.forEach(cluster=>{
+    const active=clusterActive.has(cluster.id);
+    const result=clusterResult(cluster);
+    const card=document.createElement('div');
+    card.className='cluster-card'+(active?' active':'')+(active&&result.positive?' positive':'');
+    const head=document.createElement('button');
+    head.type='button';
+    head.className='cluster-head';
+    head.innerHTML=`<span class="cluster-main"><strong>${cluster.name}</strong><small>${cluster.disease}</small><em>${cluster.evidence}</em></span><span class="cluster-toggle">${active?'접기':'선택'}</span>`;
+    head.onclick=()=>{
+      if(active){
+        clusterActive.delete(cluster.id);
+      }else{
+        clusterActive.add(cluster.id);
+        if(!clusterFindings[cluster.id])clusterFindings[cluster.id]=new Set();
+      }
+      renderOpts();render();persistDraft();
+    };
+    card.appendChild(head);
+
+    if(active){
+      const body=document.createElement('div');
+      body.className='cluster-body';
+      const findings=clusterFindings[cluster.id]||new Set();
+      cluster.components.forEach(component=>{
+        component._clusterId=cluster.id;
+        const row=document.createElement('label');
+        row.className='cluster-check'+(findings.has(component.label)?' checked':'');
+        const input=document.createElement('input');
+        input.type='checkbox';
+        input.checked=findings.has(component.label);
+        const text=document.createElement('span');
+        text.textContent=component.label;
+        input.onchange=()=>{
+          if(!clusterFindings[cluster.id])clusterFindings[cluster.id]=new Set();
+          if(input.checked)clusterFindings[cluster.id].add(component.label);
+          else clusterFindings[cluster.id].delete(component.label);
+          syncStandaloneFromCluster(region,component,input.checked);
+          renderOpts();render();persistDraft();
+        };
+        row.appendChild(input);row.appendChild(text);body.appendChild(row);
+      });
+      const status=document.createElement('div');
+      status.className='cluster-status '+(result.positive?'met':'not-met');
+      status.innerHTML=`<strong>${result.count}/${result.total} positive</strong><span>${result.label}</span>`;
+      body.appendChild(status);
+      card.appendChild(body);
+    }
+    wrap.appendChild(card);
+  });
+  area.appendChild(wrap);
+}
+function buildArea(areaId,key,isObj){
+  const area=$(areaId);area.innerHTML='';
+  const active=REGION_ORDER.filter(r=>regions.has(r));
+  if(!active.length){area.innerHTML="<div class='hint'>부위를 먼저 선택하세요</div>";return}
+  let any=false;
+  active.forEach(r=>{
+    if(key==='st')renderClusterSection(area,r);
+    const items=DATA[r][key];
+    if(!items.length)return;
+    any=true;
+    if(active.length>1){let h=document.createElement('div');h.className='region-sub';h.textContent='▸ '+REGION_KO[r]+' ('+r+')';area.appendChild(h)}
+    let g=document.createElement('div');g.className='opt-grid';
+    items.forEach(item=>{
+      const name=isObj?item.n:item,subT=isObj?item.s:'',k=r+'|'+name,c=document.createElement('div');
+      c.className='opt'+(sel[key].has(k)?' on':'');
+      c.innerHTML=name+(subT?'<small>'+subT+'</small>':'');
+      c.onclick=()=>{
+        const checked=!sel[key].has(k);
+        checked?sel[key].add(k):sel[key].delete(k);
+        if(key==='st')syncClustersFromStandalone(r,name,checked);
+        renderOpts();render();persistDraft()
+      };
+      g.appendChild(c)
+    });
+    area.appendChild(g)
+  });
+  if(!any&&key!=='st')area.innerHTML="<div class='hint'>해당 항목 없음</div>"
+}
+function renderOpts(){buildArea('stArea','st',true);buildArea('romArea','rom',false);buildArea('mmtArea','mmt',false)}
+
 function buildNRS(gridId,side){const g=$(gridId);for(let i=0;i<=10;i++){const c=document.createElement('div');c.className='nrs'+(side==='post'?' p-side':'');c.textContent=i;c.onclick=()=>{let cur=side==='pre'?nrsPre:nrsPost,val=cur===i?null:i;if(side==='pre')nrsPre=val;else nrsPost=val;[...g.children].forEach((el,idx)=>el.classList.toggle('on',idx===val));render();persistDraft()};g.appendChild(c)}}buildNRS('nrsPre','pre');buildNRS('nrsPost','post');
 const phrases={S:['통증은 이전보다 감소함','특정 동작 시 통증 잔존','야간통은 감소함','일상생활 불편감 감소'],A:['ROM 제한 및 통증으로 기능 저하','연부조직 긴장 및 관절가동성 저하','도수치료 및 운동교육 지속 필요','증상 호전 추세'],P:['STM 및 joint mobilization 시행','통증 범위 내 ROM exercise 교육','HEP 재교육','치료 후 통증 감소 및 움직임 개선']};function addPhrase(area,id){phrases[area].forEach(p=>{let b=document.createElement('button');b.className='phrase';b.textContent=p;b.onclick=()=>{const target=area==='S'?'sChief':area==='A'?'aText':'pResp';$(target).value=($(target).value?$(target).value+'\n':'')+p;render();persistDraft()};$(id).appendChild(b)})}addPhrase('S','phraseS');addPhrase('A','phraseA');addPhrase('P','phraseP');
-function groupText(key){const active=REGION_ORDER.filter(r=>regions.has(r)),parts=[];active.forEach(r=>{const names=[...sel[key]].filter(k=>k.startsWith(r+'|')).map(k=>k.split('|')[1]);if(names.length)parts.push(active.length>1?'['+r+'] '+names.join(', '):names.join(', '))});return parts.join(' / ')}function sections(){let f=fields(),S=[],O=[],A=[],P=[];let sLine=f.sChief.trim();if(nrsPre!==null)sLine+=(sLine?', ':'')+'NRS '+nrsPre+'/10';if(sLine)S.push('[S] 주호소: '+sLine);if(f.sOnset.trim())S.push('[S] 발병경위: '+f.sOnset.trim());let st=groupText('st');if(st)O.push('[O] 스페셜테스트(+): '+st);let rom=groupText('rom');if(rom)O.push('[O] ROM 제한: '+rom);let mmt=groupText('mmt');if(mmt)O.push('[O] MMT 약화: '+mmt);if(f.aText.trim())A.push('[A] 평가: '+f.aText.trim());if(f.pTech.trim())P.push('[P] 시행기법: '+f.pTech.trim());let respLine='';if(nrsPre!==null&&nrsPost!==null)respLine='NRS '+nrsPre+' → '+nrsPost+' post Tx';else if(nrsPost!==null)respLine='치료 후 NRS '+nrsPost+'/10';if(f.pResp.trim())respLine+=(respLine?', ':'')+f.pResp.trim();if(respLine)P.push('[P] 치료반응: '+respLine);return {S:S.join('\n'),O:O.join('\n'),A:A.join('\n'),P:P.join('\n')}}function buildText(){let f=fields(),head=[];let h=f.pName.trim();if(f.pVisit)h+=(h?' ':'')+f.pVisit+'회차';if(f.pDate)h+=(h?' ':'')+'('+f.pDate+')';if(h)head.push(h);if(f.pAgeSex.trim())head.push('나이/성별: '+f.pAgeSex.trim());if(regions.size)head.push('부위: '+REGION_ORDER.filter(r=>regions.has(r)).join(', '));const txTime=treatmentTimeText(f);if(txTime)head.push('치료시간: '+txTime);if(f.practitionerName.trim())head.push('시행자: '+f.practitionerName.trim()+' 물리치료사');let sec=sections(),body=[sec.S,sec.O,sec.A,sec.P].filter(Boolean).join('\n');return (head.length?head.join('\n')+(body?'\n\n':''):'')+body}function render(){const t=buildText(),p=$('preview');if(t){p.textContent=t;p.classList.remove('empty')}else{p.textContent='항목을 입력하면 여기에 차팅이 생성됩니다';p.classList.add('empty')}renderRecent()}document.querySelectorAll('input,textarea').forEach(el=>el.addEventListener('input',()=>{render();persistDraft()}));document.querySelectorAll('select').forEach(el=>el.addEventListener('change',()=>{if(el.id==='pStartTime')syncEndTimeOptions();render();persistDraft()}));
+function activeClusterLinkedTests(){
+  const linked=new Set();
+  clusterActive.forEach(id=>{
+    const cluster=getClusterById(id);if(!cluster)return;
+    const findings=clusterFindings[id]||new Set();
+    cluster.components.forEach(c=>{if(c.link&&findings.has(c.label))linked.add(c.link)});
+  });
+  return linked;
+}
+function groupText(key){
+  const active=REGION_ORDER.filter(r=>regions.has(r)),parts=[],linked=key==='st'?activeClusterLinkedTests():new Set();
+  active.forEach(r=>{
+    const names=[...sel[key]].filter(k=>k.startsWith(r+'|')).map(k=>k.split('|')[1]).filter(name=>!linked.has(name));
+    if(names.length)parts.push(active.length>1?'['+r+'] '+names.join(', '):names.join(', '))
+  });
+  return parts.join(' / ')
+}
+function clusterChartText(){
+  const blocks=[];
+  clusterActive.forEach(id=>{
+    const cluster=getClusterById(id);if(!cluster)return;
+    const findings=clusterFindings[id]||new Set();
+    const result=clusterResult(cluster);
+    const lines=[`[O] ${cluster.name} — ${cluster.disease}: ${result.count}/${result.total} positive · ${result.label}`];
+    cluster.components.filter(c=>findings.has(c.label)).forEach(c=>lines.push(`- ${c.label} (+)`));
+    lines.push(`판정: ${cluster.evidence}`);
+    blocks.push(lines.join('\n'));
+  });
+  return blocks.join('\n')
+}function sections(){let f=fields(),S=[],O=[],A=[],P=[];let sLine=f.sChief.trim();if(nrsPre!==null)sLine+=(sLine?', ':'')+'NRS '+nrsPre+'/10';if(sLine)S.push('[S] 주호소: '+sLine);if(f.sOnset.trim())S.push('[S] 발병경위: '+f.sOnset.trim());let clusterText=clusterChartText();if(clusterText)O.push(clusterText);let st=groupText('st');if(st)O.push('[O] 스페셜테스트(+): '+st);let rom=groupText('rom');if(rom)O.push('[O] ROM 제한: '+rom);let mmt=groupText('mmt');if(mmt)O.push('[O] MMT 약화: '+mmt);if(f.aText.trim())A.push('[A] 평가: '+f.aText.trim());if(f.pTech.trim())P.push('[P] 시행기법: '+f.pTech.trim());let respLine='';if(nrsPre!==null&&nrsPost!==null)respLine='NRS '+nrsPre+' → '+nrsPost+' post Tx';else if(nrsPost!==null)respLine='치료 후 NRS '+nrsPost+'/10';if(f.pResp.trim())respLine+=(respLine?', ':'')+f.pResp.trim();if(respLine)P.push('[P] 치료반응: '+respLine);return {S:S.join('\n'),O:O.join('\n'),A:A.join('\n'),P:P.join('\n')}}function buildText(){let f=fields(),head=[];let h=f.pName.trim();if(f.pVisit)h+=(h?' ':'')+f.pVisit+'회차';if(f.pDate)h+=(h?' ':'')+'('+f.pDate+')';if(h)head.push(h);if(f.pAgeSex.trim())head.push('나이/성별: '+f.pAgeSex.trim());if(regions.size)head.push('부위: '+REGION_ORDER.filter(r=>regions.has(r)).join(', '));const txTime=treatmentTimeText(f);if(txTime)head.push('치료시간: '+txTime);if(f.practitionerName.trim())head.push('시행자: '+f.practitionerName.trim()+' 물리치료사');let sec=sections(),body=[sec.S,sec.O,sec.A,sec.P].filter(Boolean).join('\n');return (head.length?head.join('\n')+(body?'\n\n':''):'')+body}function render(){const t=buildText(),p=$('preview');if(t){p.textContent=t;p.classList.remove('empty')}else{p.textContent='항목을 입력하면 여기에 차팅이 생성됩니다';p.classList.add('empty')}renderRecent()}document.querySelectorAll('input,textarea').forEach(el=>el.addEventListener('input',()=>{render();persistDraft()}));document.querySelectorAll('select').forEach(el=>el.addEventListener('change',()=>{if(el.id==='pStartTime')syncEndTimeOptions();render();persistDraft()}));
 async function copyText(t,msg='복사 완료'){if(!t){toast('복사할 내용이 없습니다');return}try{await navigator.clipboard.writeText(t);toast(msg)}catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast(msg)}}$('copyBtn').onclick=() => copyText(buildText(),'복사 완료 — EMR에 붙여넣으세요');$('copySubjectBtn').onclick=() => copyText(buildText(),'전체 복사 완료');document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>copyText(sections()[b.dataset.copy],b.dataset.copy+' 복사 완료'));
 $('saveBtn').onclick=()=>{let s=state(),f=fields(),id=currentId||String(Date.now());f.currentId=id;f.savedAt=new Date().toISOString();currentId=id;let idx=s.records.findIndex(r=>r.currentId===id);if(idx>=0)s.records[idx]=f;else s.records.unshift(f);s.records=s.records.slice(0,200);s.draft=f;saveState(s);toast('저장 완료')};
 function normalizeSearch(v){
