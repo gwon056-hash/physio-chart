@@ -1,10 +1,10 @@
-MOA Charting P quick phrase destination fix
-Version: 2026.07.05-10.3
+MOA Charting ROM normal reference update
+Version: 2026.09.03-2
 
-- STM 및 joint mobilization 시행 → 시행 기법
-- 통증 범위 내 ROM exercise 교육 → 시행 기법
-- HEP 재교육 → 시행 기법
-- 치료 후 통증 감소 및 움직임 개선 → 치료 반응
-- P 빠른 문구에 시행/반응 표시 추가
-- 기존 클러스터, 다크모드, 치료시간, 시행자, 검사 설명 표시 유지
-- 기존 저장 키 chartingPWA.v1 유지
+Changes
+- ROM selected item shows measured-angle input plus normal reference angle.
+- Example: Flexion [120] °  정상 180°
+- Normal values are shown as general reference values only.
+- The normal reference is UI-only and is not inserted into the chart text.
+- Existing supervision, practitioner, Special Tests/clusters, MMT grades, dark mode,
+  save/load, backup/restore and chartingPWA.v1 storage compatibility are preserved.

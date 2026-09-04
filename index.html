@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="app-version" content="2026.07.05-10.3">
+<meta name="app-version" content="2026.09.03-2">
 <meta name="theme-color" content="#0e7d74">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="차팅생성기">
@@ -1455,6 +1455,184 @@ body[data-theme="dark"]{
   background:rgba(62,179,167,.18);color:#8be0d7
 }
 
+
+/* 2026-09-03 supervision + ROM/MMT measurement UI */
+.supervision-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.suffix-input-wrap,
+.practitioner-input-wrap{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:8px;
+  align-items:center;
+}
+.suffix-input-wrap span,
+.practitioner-input-wrap span{
+  min-height:49px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 13px;
+  border:1.5px solid var(--line);
+  border-radius:11px;
+  background:#f4f7f8;
+  color:var(--ink-soft);
+  font-size:.8rem;
+  font-weight:900;
+  white-space:nowrap;
+}
+.subhead-note{
+  margin-left:6px;
+  font-size:.68rem;
+  font-weight:700;
+  color:var(--ink-soft);
+}
+.measure-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+.measure-item{
+  min-width:0;
+  border:1.5px solid var(--line);
+  border-radius:12px;
+  background:#fbfcfd;
+  overflow:hidden;
+  transition:.12s ease;
+}
+.measure-item.on{
+  border-color:var(--accent);
+  background:var(--accent-soft);
+  box-shadow:inset 3px 0 0 var(--accent);
+}
+.measure-toggle{
+  width:100%;
+  min-height:48px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:9px 10px;
+  border:0;
+  background:transparent;
+  color:var(--ink);
+  text-align:left;
+  font-family:inherit;
+  font-size:.8rem;
+  font-weight:850;
+  cursor:pointer;
+}
+.measure-check{
+  width:18px;
+  height:18px;
+  flex:0 0 18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1.5px solid #b7c5c9;
+  border-radius:5px;
+  color:#fff;
+  font-size:.7rem;
+  font-weight:900;
+}
+.measure-item.on .measure-check{
+  background:var(--accent);
+  border-color:var(--accent);
+}
+.measure-name{
+  min-width:0;
+  line-height:1.25;
+}
+.measure-value{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:6px;
+  padding:0 10px 10px 36px;
+}
+.measure-value input,
+.measure-value select{
+  min-height:38px;
+  padding:7px 9px;
+  border-radius:9px;
+  font-size:.82rem;
+}
+.measure-value span{
+  color:var(--accent-deep);
+  font-size:.9rem;
+  font-weight:900;
+}
+.measure-value select{
+  grid-column:1 / -1;
+}
+[data-theme="dark"] .suffix-input-wrap span,
+[data-theme="dark"] .practitioner-input-wrap span{
+  background:#101816;
+  border-color:#33453f;
+  color:#aabbb6;
+}
+[data-theme="dark"] .measure-item{
+  background:#101816;
+  border-color:#33453f;
+}
+[data-theme="dark"] .measure-item.on{
+  background:#193d38;
+  border-color:#4bb8ad;
+  box-shadow:inset 3px 0 0 #4bb8ad;
+}
+[data-theme="dark"] .measure-toggle{color:#dbe5e2}
+[data-theme="dark"] .measure-check{border-color:#61736e}
+[data-theme="dark"] .measure-item.on .measure-check{
+  background:#4bb8ad;
+  border-color:#4bb8ad;
+}
+@media(max-width:600px){
+  .supervision-grid{grid-template-columns:1fr}
+  .measure-grid{grid-template-columns:1fr}
+}
+
+
+/* ROM normal reference display */
+.measure-value{
+  grid-template-columns:minmax(76px,1fr) auto auto;
+}
+.measure-unit{
+  color:var(--accent-deep);
+  font-size:.9rem;
+  font-weight:900;
+}
+.rom-normal{
+  justify-self:end;
+  padding:5px 8px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#f5f8f8;
+  color:var(--ink-soft) !important;
+  font-size:.7rem !important;
+  font-weight:850 !important;
+  white-space:nowrap;
+}
+.measure-value select{
+  grid-column:1 / -1;
+}
+[data-theme="dark"] .rom-normal{
+  background:#111a18;
+  border-color:#33453f;
+  color:#9fb0ac !important;
+}
+@media(max-width:420px){
+  .measure-value{
+    grid-template-columns:minmax(68px,1fr) auto;
+  }
+  .rom-normal{
+    grid-column:1 / -1;
+    justify-self:start;
+    margin-top:1px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1506,23 +1684,34 @@ body[data-theme="dark"]{
   </div>
 </div>
 </div>
-<label class="fld">시행자</label>
-<div class="practitioner-input-wrap">
-  <input type="text" id="practitionerName" placeholder="예: 홍길동">
-  <span>물리치료사</span>
+<div class="supervision-grid">
+  <div>
+    <label class="fld">지시·감독 원장</label>
+    <div class="suffix-input-wrap">
+      <input type="text" id="directorName" placeholder="예: 홍길동">
+      <span>원장님</span>
+    </div>
+  </div>
+  <div>
+    <label class="fld">시행자</label>
+    <div class="practitioner-input-wrap">
+      <input type="text" id="practitionerName" placeholder="예: 홍길동">
+      <span>물리치료사</span>
+    </div>
+  </div>
 </div>
 <label class="fld">부위 (복수 선택 가능)</label><div class="regions" id="regionGrid"></div></div>
 
 <div class="card soap-card s-card"><div class="sec-tag"><span class="chip s">S</span>주관적 <span class="section-copy"><button data-copy="S">S 복사</button></span></div><div class="phrasebar" id="phraseS"></div><label class="fld">주호소</label><textarea id="sChief" placeholder="예: Rt. shoulder pain during abduction"></textarea><label class="fld">NRS (치료 전)</label><div class="nrs-grid" id="nrsPre"></div><label class="fld">발병 경위</label><textarea id="sOnset" placeholder="예: Onset after lifting heavy object 2 weeks ago"></textarea></div>
 
-<div class="card soap-card o-card"><div class="sec-tag"><span class="chip o">O</span>객관적 <span class="section-copy"><button data-copy="O">O 복사</button></span></div><div class="subhead">스페셜 테스트 (+)</div><div id="stArea"><div class="hint">부위를 먼저 선택하세요</div></div><div class="subhead">ROM 제한</div><div id="romArea"><div class="hint">부위를 먼저 선택하세요</div></div><div class="subhead">MMT 약화</div><div id="mmtArea"><div class="hint">부위를 먼저 선택하세요</div></div></div>
+<div class="card soap-card o-card"><div class="sec-tag"><span class="chip o">O</span>객관적 <span class="section-copy"><button data-copy="O">O 복사</button></span></div><div class="subhead">스페셜 테스트 (+)</div><div id="stArea"><div class="hint">부위를 먼저 선택하세요</div></div><div class="subhead">ROM 제한 <small class="subhead-note">제한 방향 선택 후 각도 입력 · 정상각도는 참고치</small></div><div id="romArea"><div class="hint">부위를 먼저 선택하세요</div></div><div class="subhead">MMT 약화 <small class="subhead-note">약화 항목 선택 후 등급 입력</small></div><div id="mmtArea"><div class="hint">부위를 먼저 선택하세요</div></div></div>
 
 <div class="card soap-card a-card"><div class="sec-tag"><span class="chip a">A</span>평가 <span class="section-copy"><button data-copy="A">A 복사</button></span></div><div class="phrasebar" id="phraseA"></div><textarea id="aText" placeholder="예: RCRSP suspected, continued manual therapy needed"></textarea></div>
 
 <div class="card soap-card p-card"><div class="sec-tag"><span class="chip p">P</span>계획 <span class="section-copy"><button data-copy="P">P 복사</button></span></div><div class="phrasebar" id="phraseP"></div><label class="fld">시행 기법</label><textarea id="pTech" placeholder="예: Grade III GH joint mobilization, 15 min"></textarea><label class="fld">NRS (치료 후)</label><div class="nrs-grid" id="nrsPost"></div><label class="fld">치료 반응</label><textarea id="pResp" placeholder="예: ROM improved, pain decreased post Tx"></textarea></div>
 
 <div class="card preview-card"><div class="sec-tag"><span class="chip i">출력</span>차팅 미리보기</div><div class="preview-tools"><button class="mini-btn" id="cleanBtn">문장 정리</button><button class="mini-btn" id="copySubjectBtn">S/O/A/P 전체 복사</button></div><div class="preview-note">선택한 내용이 아래에 실시간으로 정리됩니다.</div><div class="preview-shell"><div class="preview-label">미리 생성된 차팅</div><div id="preview" class="empty">항목을 입력하면 여기에 차팅이 생성됩니다</div></div></div>
-<footer class="app-footer">MOA Charting Beta v2026.07.05-10.3 · © MOA BUSAN · @physio_geun_1</footer>
+<footer class="app-footer">MOA Charting Beta v2026.09.03-2 · © MOA BUSAN · @physio_geun_1</footer>
 </div>
 <div class="bottombar">
   <div class="inner">
@@ -1530,7 +1719,7 @@ body[data-theme="dark"]{
     <button class="big" id="saveBtn">💾 저장</button>
     <button class="big" id="copyBtn">📋 복사</button>
   </div>
-  <div class="desktop-copyright">MOA Charting Beta v2026.07.05-10.3 · © MOA BUSAN · @physio_geun_1</div>
+  <div class="desktop-copyright">MOA Charting Beta v2026.09.03-2 · © MOA BUSAN · @physio_geun_1</div>
 </div><div class="toast" id="toast">복사 완료</div>
 
 <div class="more-backdrop" id="moreBackdrop"></div>
@@ -1572,7 +1761,7 @@ body[data-theme="dark"]{
     <button class="manage-item" id="updateCheckBtn" type="button">
       <div>
         <strong>업데이트 확인</strong>
-        <span id="updateMenuText">현재 버전 v2026.07.05-10.3 · 새 버전을 확인합니다.</span>
+        <span id="updateMenuText">현재 버전 v2026.09.03-2 · 새 버전을 확인합니다.</span>
       </div>
       <b>›</b>
     </button>
@@ -1588,7 +1777,7 @@ body[data-theme="dark"]{
 
   <div class="sheet-status">
     <span><i class="status-dot"></i> 온라인</span>
-    <strong id="currentVersionLabel">v2026.07.05-10.3</strong>
+    <strong id="currentVersionLabel">v2026.09.03-2</strong>
   </div>
   <p class="sheet-note">저장된 차팅은 이 기기·이 브라우저에 보관됩니다. 업데이트·앱 삭제·기기 변경 전 전체 백업을 권장합니다.</p>
   <button class="sheet-done" id="sheetDoneBtn" type="button">닫기</button>
@@ -1617,6 +1806,45 @@ body[data-theme="dark"]{
 
 <script>
 const DATA={"Cervical":{st:[{n:"Spurling test",s:"Rule-in · Sp .93"},{n:"Cervical distraction test",s:"Sp .90"},{n:"ULTT (median)",s:"Rule-out · Sn .97"},{n:"Flexion-rotation test",s:"CGH · Sn .90/Sp .88"},{n:"Sharp-Purser test",s:"상위경추 불안정"},{n:"Vertebral artery test",s:"VBI screening"},{n:"Cervical rotation <60°",s:"Wainner CPR 구성 항목"},{n:"Myotome/Dermatome/Reflex exam",s:"경추 신경근/경수증 스크리닝"},{n:"Hoffmann sign",s:"경수증 스크리닝"},{n:"Babinski sign",s:"상위운동신경원 스크리닝"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Cervical flexion","Cervical extension","Lt. lateral flexion","Rt. lateral flexion","Deep neck flexor (CCFT)"]},"Thoracic":{st:[{n:"Thoracic rotation test",s:""},{n:"Rib spring test",s:""},{n:"Adam forward bend test",s:"측만 screening"},{n:"Cervical rotation lateral flexion test",s:"1st rib"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Trunk extension","Scapular retraction"]},"Lumbar":{st:[{n:"SLR",s:"Rule-out · Sn .92/Sp .28"},{n:"Crossed SLR",s:"Rule-in · Sn .28/Sp .90"},{n:"Slump test",s:"Sn .84/Sp .83"},{n:"Femoral nerve tension test",s:"상위요추 신경근"},{n:"Kemp / Quadrant test",s:"Facet"},{n:"Extension-rotation test",s:"Facet"},{n:"PA spring test",s:"분절 irritability"},{n:"Prone instability test",s:"불안정성"},{n:"Passive lumbar extension test",s:"불안정성 · Sn .84/Sp .90"},{n:"Romberg test",s:"Stenosis screening"},{n:"Myotome/Dermatome/Reflex exam",s:"신경학적 검사"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Trunk flexion","Trunk extension","Hip flexion (L2-3)","Knee extension (L3-4)","Ankle dorsiflexion (L4-5)","Great toe extension (L5)","Plantarflexion/heel raise (S1)"]},"SI Joint":{st:[{n:"Distraction test",s:"Laslett cluster"},{n:"Compression test",s:"Laslett cluster"},{n:"Thigh thrust test",s:"Laslett cluster"},{n:"Sacral thrust test",s:"Laslett cluster"},{n:"Gaenslen test",s:"Laslett cluster"},{n:"FABER / Patrick test",s:""},{n:"Gillet test",s:""}],rom:[],mmt:["Hip extension","Hip abduction"]},"Shoulder":{st:[{n:"Neer test",s:"Sn .78"},{n:"Hawkins-Kennedy test",s:"Sn .79"},{n:"Painful arc",s:"Sn .74/Sp .81"},{n:"Empty can test",s:"Supraspinatus"},{n:"Full can test",s:"Supraspinatus"},{n:"Drop arm test",s:"Rule-in · Sp .92"},{n:"ER lag sign",s:"Infra/supra · Sp .94"},{n:"Lift-off test",s:"Subscapularis"},{n:"Belly press test",s:"Subscapularis"},{n:"Bear hug test",s:"Subscapularis · Sn .79"},{n:"Speed test",s:"Biceps/SLAP"},{n:"Yergason test",s:"Biceps · Sp .79"},{n:"O'Brien test",s:"SLAP"},{n:"Apprehension test",s:"전방 불안정"},{n:"Relocation test",s:"Sp .90"},{n:"Sulcus sign",s:"하방 불안정"},{n:"Cross-body adduction test",s:"AC joint"},{n:"Infraspinatus strength test",s:"Park cluster 구성 항목"}],rom:["Flexion","Extension","Abduction","Adduction","Internal rotation","External rotation","Horizontal adduction"],mmt:["Shoulder flexion","Shoulder abduction","Internal rotation","External rotation","Scapular protraction (SA)","Scapular retraction (MT/LT)"]},"Elbow":{st:[{n:"Cozen test",s:"Lateral epicondylalgia"},{n:"Mill test",s:"Lateral epicondylalgia"},{n:"Maudsley test",s:"3rd finger ext"},{n:"Moving valgus stress test",s:"UCL · Sn 1.0/Sp .75"},{n:"Valgus stress test",s:"UCL"},{n:"Varus stress test",s:"LCL"},{n:"Tinel sign (elbow)",s:"Ulnar n."}],rom:["Flexion","Extension","Pronation","Supination"],mmt:["Elbow flexion","Elbow extension","Pronation","Supination","Grip strength"]},"Wrist/Hand":{st:[{n:"Phalen test",s:"CTS · Sn .68"},{n:"Reverse Phalen test",s:"CTS"},{n:"Durkan compression test",s:"CTS · Sn .87/Sp .90"},{n:"Tinel sign (wrist)",s:"CTS"},{n:"Finkelstein/Eichhoff test",s:"De Quervain"},{n:"Watson scaphoid shift test",s:"SL 불안정"},{n:"TFCC compression test",s:"척측 손목통증"}],rom:["Flexion","Extension","Radial deviation","Ulnar deviation"],mmt:["Wrist flexion","Wrist extension","Radial deviation","Ulnar deviation","Grip strength","Finger flexion","Finger extension"]},"Hip":{st:[{n:"FADIR test",s:"FAI Rule-out · Sn .94-.99"},{n:"FABER test",s:"Sn .81-.82 · 서혜부 통증 재현"},{n:"Scour test",s:"관절내 병리"},{n:"Stinchfield test",s:"저항성 SLR 20-30°"},{n:"Squat pain",s:"Hip OA 지표"},{n:"Hip IR <25°",s:"Hip OA 지표"},{n:"30-sec single-leg stance",s:"GTPS Rule-in · Sn 1.0/Sp .97"},{n:"Greater trochanter palpation",s:"GTPS Rule-out · Sn .83"},{n:"Resisted abduction (ADD-R)",s:"GTPS · Sn .71/Sp .84"},{n:"FADER-R test",s:"GTPS Rule-in"},{n:"Thomas test",s:"굴곡구축/장요근"},{n:"Ober test",s:"ITB"},{n:"Trendelenburg test",s:"중둔근 기능"}],rom:["Flexion","Extension","Abduction","Adduction","Internal rotation","External rotation"],mmt:["Hip flexion","Hip extension","Hip abduction","Hip adduction","Internal rotation","External rotation"]},"Knee":{st:[{n:"Lachman test",s:"ACL · Sn .85/Sp .94"},{n:"Anterior drawer test",s:"ACL"},{n:"Pivot shift test",s:"ACL Rule-in · Sp .98"},{n:"Posterior drawer test",s:"PCL · Sn .90"},{n:"McMurray test",s:"Meniscus · Sp .78"},{n:"Thessaly test",s:"Meniscus"},{n:"Joint line tenderness",s:"Meniscus · Sn .83"},{n:"Valgus stress test",s:"MCL"},{n:"Varus stress test",s:"LCL"},{n:"Patellar apprehension test",s:"슬개골 불안정"},{n:"Clarke test",s:"PFPS"}],rom:["Flexion","Extension"],mmt:["Knee flexion","Knee extension"]},"Ankle/Foot":{st:[{n:"Anterior drawer test",s:"ATFL"},{n:"Talar tilt test",s:"CFL"},{n:"Thompson test",s:"Achilles rupture"},{n:"Squeeze test",s:"Syndesmosis"},{n:"External rotation test",s:"Syndesmosis"},{n:"Windlass test",s:"Plantar fascia"},{n:"Navicular drop test",s:"과회내"}],rom:["Dorsiflexion","Plantarflexion","Inversion","Eversion"],mmt:["Dorsiflexion","Plantarflexion/heel raise","Inversion","Eversion","Great toe extension"]}};
+
+
+const ROM_NORMALS={
+  "Cervical":{
+    "Flexion":"45°","Extension":"45°",
+    "Lt. lateral flexion":"45°","Rt. lateral flexion":"45°",
+    "Lt. rotation":"60°","Rt. rotation":"60°"
+  },
+  "Thoracic":{
+    "Flexion":"30°","Extension":"20°",
+    "Lt. lateral flexion":"25°","Rt. lateral flexion":"25°",
+    "Lt. rotation":"30°","Rt. rotation":"30°"
+  },
+  "Lumbar":{
+    "Flexion":"60°","Extension":"25°",
+    "Lt. lateral flexion":"25°","Rt. lateral flexion":"25°",
+    "Lt. rotation":"30°","Rt. rotation":"30°"
+  },
+  "Shoulder":{
+    "Flexion":"180°","Extension":"60°","Abduction":"180°","Adduction":"50°",
+    "Internal rotation":"70°","External rotation":"90°","Horizontal adduction":"135°"
+  },
+  "Elbow":{
+    "Flexion":"150°","Extension":"0°","Pronation":"80°","Supination":"80°"
+  },
+  "Wrist/Hand":{
+    "Flexion":"80°","Extension":"70°","Radial deviation":"20°","Ulnar deviation":"30°"
+  },
+  "Hip":{
+    "Flexion":"120°","Extension":"20°","Abduction":"45°","Adduction":"30°",
+    "Internal rotation":"35°","External rotation":"45°"
+  },
+  "Knee":{
+    "Flexion":"135°","Extension":"0°"
+  },
+  "Ankle/Foot":{
+    "Dorsiflexion":"20°","Plantarflexion":"50°","Inversion":"35°","Eversion":"15°"
+  }
+};
 
 const CLUSTERS={
   "Cervical":[
@@ -1693,7 +1921,7 @@ const CLUSTERS={
     }
   ]
 };
-const REGION_KO={"Cervical":"경추","Thoracic":"흉추","Lumbar":"요추","SI Joint":"천장관절","Shoulder":"어깨","Elbow":"팔꿈치","Wrist/Hand":"손목·손","Hip":"고관절","Knee":"무릎","Ankle/Foot":"발목·발"};const REGION_ORDER=Object.keys(DATA);const $=id=>document.getElementById(id);let regions=new Set(),sel={st:new Set(),rom:new Set(),mmt:new Set()},clusterActive=new Set(),clusterFindings={},nrsPre=null,nrsPost=null,currentId=null,manageRecords=false,selectedRecordIds=new Set(),chartSearchQuery='';const LS="chartingPWA.v1";const state=()=>JSON.parse(localStorage.getItem(LS)||'{"records":[],"draft":{},"theme":"light"}');const saveState=s=>localStorage.setItem(LS,JSON.stringify(s));function setToday(){let d=new Date();$("pDate").value=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}function initTimeOptions(){
+const REGION_KO={"Cervical":"경추","Thoracic":"흉추","Lumbar":"요추","SI Joint":"천장관절","Shoulder":"어깨","Elbow":"팔꿈치","Wrist/Hand":"손목·손","Hip":"고관절","Knee":"무릎","Ankle/Foot":"발목·발"};const REGION_ORDER=Object.keys(DATA);const $=id=>document.getElementById(id);let regions=new Set(),sel={st:new Set(),rom:new Set(),mmt:new Set()},romValues={},mmtValues={},clusterActive=new Set(),clusterFindings={},nrsPre=null,nrsPost=null,currentId=null,manageRecords=false,selectedRecordIds=new Set(),chartSearchQuery='';const LS="chartingPWA.v1";const state=()=>JSON.parse(localStorage.getItem(LS)||'{"records":[],"draft":{},"theme":"light"}');const saveState=s=>localStorage.setItem(LS,JSON.stringify(s));function setToday(){let d=new Date();$("pDate").value=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}function initTimeOptions(){
   const start=$('pStartTime'),end=$('pEndTime');
   if(!start||!end)return;
   const times=[];
@@ -1724,14 +1952,14 @@ function syncEndTimeOptions(){
     option.disabled=Boolean(startValue&&option.value<=startValue);
   });
   if(startValue&&end.value&&end.value<=startValue)end.value='';
-}function fields(){return {pName:$('pName').value,pVisit:$('pVisit').value,pAgeSex:$('pAgeSex').value,pDate:$('pDate').value,pStartTime:$('pStartTime').value,pEndTime:$('pEndTime').value,practitionerName:$('practitionerName').value,sChief:$('sChief').value,sOnset:$('sOnset').value,aText:$('aText').value,pTech:$('pTech').value,pResp:$('pResp').value,regions:[...regions],st:[...sel.st],rom:[...sel.rom],mmt:[...sel.mmt],clusterActive:[...clusterActive],clusterFindings:Object.fromEntries(Object.entries(clusterFindings).map(([k,v])=>[k,[...v]])),nrsPre,nrsPost,currentId}}function addThirtyMinutes(time){
+}function fields(){return {pName:$('pName').value,pVisit:$('pVisit').value,pAgeSex:$('pAgeSex').value,pDate:$('pDate').value,pStartTime:$('pStartTime').value,pEndTime:$('pEndTime').value,directorName:$('directorName').value,practitionerName:$('practitionerName').value,sChief:$('sChief').value,sOnset:$('sOnset').value,aText:$('aText').value,pTech:$('pTech').value,pResp:$('pResp').value,regions:[...regions],st:[...sel.st],rom:[...sel.rom],mmt:[...sel.mmt],romValues:{...romValues},mmtValues:{...mmtValues},clusterActive:[...clusterActive],clusterFindings:Object.fromEntries(Object.entries(clusterFindings).map(([k,v])=>[k,[...v]])),nrsPre,nrsPost,currentId}}function addThirtyMinutes(time){
   if(!time)return '';
   const [h,m]=time.split(':').map(Number);
   const total=h*60+m+30;
   if(total>=1440)return '';
   return String(Math.floor(total/60)).padStart(2,'0')+':'+String(total%60).padStart(2,'0');
 }
-function apply(d={}){if(d.pTime&&!d.pStartTime){d={...d,pStartTime:d.pTime,pEndTime:addThirtyMinutes(d.pTime)}}['pName','pVisit','pAgeSex','pDate','pStartTime','pEndTime','practitionerName','sChief','sOnset','aText','pTech','pResp'].forEach(id=>$(id).value=d[id]||'');regions=new Set(d.regions||[]);sel={st:new Set(d.st||[]),rom:new Set(d.rom||[]),mmt:new Set(d.mmt||[])};clusterActive=new Set(d.clusterActive||[]);clusterFindings={};Object.entries(d.clusterFindings||{}).forEach(([k,v])=>clusterFindings[k]=new Set(v||[]));nrsPre=d.nrsPre??null;nrsPost=d.nrsPost??null;currentId=d.currentId||null;document.querySelectorAll('.region-btn').forEach((b,i)=>b.classList.toggle('on',regions.has(REGION_ORDER[i])));document.querySelectorAll('#nrsPre .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPre));document.querySelectorAll('#nrsPost .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPost));if(!$("pDate").value)setToday();syncEndTimeOptions();renderOpts();render()}
+function apply(d={}){if(d.pTime&&!d.pStartTime){d={...d,pStartTime:d.pTime,pEndTime:addThirtyMinutes(d.pTime)}}['pName','pVisit','pAgeSex','pDate','pStartTime','pEndTime','directorName','practitionerName','sChief','sOnset','aText','pTech','pResp'].forEach(id=>$(id).value=d[id]||'');regions=new Set(d.regions||[]);sel={st:new Set(d.st||[]),rom:new Set(d.rom||[]),mmt:new Set(d.mmt||[])};romValues={...(d.romValues||{})};mmtValues={...(d.mmtValues||{})};clusterActive=new Set(d.clusterActive||[]);clusterFindings={};Object.entries(d.clusterFindings||{}).forEach(([k,v])=>clusterFindings[k]=new Set(v||[]));nrsPre=d.nrsPre??null;nrsPost=d.nrsPost??null;currentId=d.currentId||null;document.querySelectorAll('.region-btn').forEach((b,i)=>b.classList.toggle('on',regions.has(REGION_ORDER[i])));document.querySelectorAll('#nrsPre .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPre));document.querySelectorAll('#nrsPost .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPost));if(!$("pDate").value)setToday();syncEndTimeOptions();renderOpts();render()}
 function persistDraft(){let s=state();s.draft=fields();saveState(s)}function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
 function openMoreSheet(){
   $('moreBackdrop').classList.add('show');
@@ -1747,6 +1975,8 @@ function closeMoreSheet(){
 }
 
 REGION_ORDER.forEach(r=>{const b=document.createElement('button');b.type='button';b.className='region-btn';b.innerHTML="<span class='rb-ko'>"+REGION_KO[r]+"</span><span class='rb-en'>"+r.replace('/',' / ')+"</span>";b.onclick=()=>{if(regions.has(r)){regions.delete(r);['st','rom','mmt'].forEach(k=>[...sel[k]].forEach(key=>{if(key.startsWith(r+'|'))sel[k].delete(key)}));
+Object.keys(romValues).forEach(key=>{if(key.startsWith(r+'|'))delete romValues[key]});
+Object.keys(mmtValues).forEach(key=>{if(key.startsWith(r+'|'))delete mmtValues[key]});
 (CLUSTERS[r]||[]).forEach(cl=>{clusterActive.delete(cl.id);delete clusterFindings[cl.id]});}else regions.add(r);b.classList.toggle('on',regions.has(r));renderOpts();render();persistDraft()};$('regionGrid').appendChild(b)});
 
 function getClusterById(id){
@@ -1847,17 +2077,115 @@ function renderClusterSection(area,region){
   });
   area.appendChild(wrap);
 }
+function buildMeasureArea(area,region,key,items,activeRegionCount){
+  if(activeRegionCount>1){
+    const h=document.createElement('div');
+    h.className='region-sub';
+    h.textContent='▸ '+REGION_KO[region]+' ('+region+')';
+    area.appendChild(h);
+  }
+  const grid=document.createElement('div');
+  grid.className='measure-grid';
+
+  items.forEach(name=>{
+    const k=region+'|'+name;
+    const selected=sel[key].has(k);
+    const card=document.createElement('div');
+    card.className='measure-item'+(selected?' on':'');
+
+    const toggle=document.createElement('button');
+    toggle.type='button';
+    toggle.className='measure-toggle';
+    toggle.innerHTML='<span class="measure-check">'+(selected?'✓':'')+'</span><span class="measure-name">'+name+'</span>';
+    toggle.onclick=()=>{
+      const next=!sel[key].has(k);
+      if(next)sel[key].add(k);
+      else{
+        sel[key].delete(k);
+        if(key==='rom')delete romValues[k];
+        if(key==='mmt')delete mmtValues[k];
+      }
+      renderOpts();render();persistDraft();
+    };
+    card.appendChild(toggle);
+
+    if(selected){
+      const valueWrap=document.createElement('div');
+      valueWrap.className='measure-value';
+
+      if(key==='rom'){
+        const input=document.createElement('input');
+        input.type='number';
+        input.inputMode='decimal';
+        input.min='0';
+        input.step='1';
+        input.placeholder='각도';
+        input.value=romValues[k]||'';
+        input.setAttribute('aria-label',name+' ROM 각도');
+        const unit=document.createElement('span');
+        unit.className='measure-unit';
+        unit.textContent='°';
+
+        const normal=document.createElement('span');
+        normal.className='rom-normal';
+        const normalValue=(ROM_NORMALS[region]||{})[name]||'';
+        normal.textContent=normalValue?'정상 '+normalValue:'';
+
+        input.oninput=()=>{
+          romValues[k]=input.value;
+          render();persistDraft();
+        };
+        valueWrap.appendChild(input);
+        valueWrap.appendChild(unit);
+        if(normalValue)valueWrap.appendChild(normal);
+      }else{
+        const select=document.createElement('select');
+        select.setAttribute('aria-label',name+' MMT 등급');
+        const grades=['','0/5','1/5','2/5','3-/5','3/5','3+/5','4-/5','4/5','4+/5','5/5','NT'];
+        grades.forEach(g=>{
+          const option=document.createElement('option');
+          option.value=g;
+          option.textContent=g||'등급';
+          select.appendChild(option);
+        });
+        select.value=mmtValues[k]||'';
+        select.onchange=()=>{
+          mmtValues[k]=select.value;
+          render();persistDraft();
+        };
+        valueWrap.appendChild(select);
+      }
+      card.appendChild(valueWrap);
+    }
+    grid.appendChild(card);
+  });
+  area.appendChild(grid);
+}
+
 function buildArea(areaId,key,isObj){
   const area=$(areaId);area.innerHTML='';
   const active=REGION_ORDER.filter(r=>regions.has(r));
   if(!active.length){area.innerHTML="<div class='hint'>부위를 먼저 선택하세요</div>";return}
   let any=false;
+
   active.forEach(r=>{
     if(key==='st')renderClusterSection(area,r);
     const items=DATA[r][key];
     if(!items.length)return;
     any=true;
-    if(active.length>1){let h=document.createElement('div');h.className='region-sub';h.textContent='▸ '+REGION_KO[r]+' ('+r+')';area.appendChild(h)}
+
+    if(key==='rom'||key==='mmt'){
+      buildMeasureArea(area,r,key,items,active.length);
+      return;
+    }
+
+    if(active.length>1){
+      let h=document.createElement('div');
+      h.className='region-sub';
+      h.textContent='▸ '+REGION_KO[r]+' ('+r+')';
+      area.appendChild(h)
+    }
+
     let g=document.createElement('div');g.className='opt-grid';
     items.forEach(item=>{
       const name=isObj?item.n:item,subT=isObj?item.s:'',k=r+'|'+name,c=document.createElement('div');
@@ -1873,6 +2201,7 @@ function buildArea(areaId,key,isObj){
     });
     area.appendChild(g)
   });
+
   if(!any&&key!=='st')area.innerHTML="<div class='hint'>해당 항목 없음</div>"
 }
 function renderOpts(){buildArea('stArea','st',true);buildArea('romArea','rom',false);buildArea('mmtArea','mmt',false)}
@@ -1933,6 +2262,19 @@ function groupText(key){
   });
   return parts.join(' / ')
 }
+function measureText(key){
+  const active=REGION_ORDER.filter(r=>regions.has(r)),parts=[];
+  active.forEach(r=>{
+    const rows=[...sel[key]].filter(k=>k.startsWith(r+'|')).map(k=>{
+      const name=k.slice((r+'|').length);
+      const value=key==='rom'?(romValues[k]||''):(mmtValues[k]||'');
+      if(key==='rom')return name+(value?' '+value+'°':'');
+      return name+(value?' '+value:'');
+    });
+    if(rows.length)parts.push(active.length>1?'['+r+'] '+rows.join(', '):rows.join(', '));
+  });
+  return parts.join(' / ');
+}
 function clusterChartText(){
   const blocks=[];
   clusterActive.forEach(id=>{
@@ -1945,7 +2287,7 @@ function clusterChartText(){
     blocks.push(lines.join('\n'));
   });
   return blocks.join('\n')
-}function sections(){let f=fields(),S=[],O=[],A=[],P=[];let sLine=f.sChief.trim();if(nrsPre!==null)sLine+=(sLine?', ':'')+'NRS '+nrsPre+'/10';if(sLine)S.push('[S] 주호소: '+sLine);if(f.sOnset.trim())S.push('[S] 발병경위: '+f.sOnset.trim());let clusterText=clusterChartText();if(clusterText)O.push(clusterText);let st=groupText('st');if(st)O.push('[O] 스페셜테스트(+): '+st);let rom=groupText('rom');if(rom)O.push('[O] ROM 제한: '+rom);let mmt=groupText('mmt');if(mmt)O.push('[O] MMT 약화: '+mmt);if(f.aText.trim())A.push('[A] 평가: '+f.aText.trim());if(f.pTech.trim())P.push('[P] 시행기법: '+f.pTech.trim());let respLine='';if(nrsPre!==null&&nrsPost!==null)respLine='NRS '+nrsPre+' → '+nrsPost+' post Tx';else if(nrsPost!==null)respLine='치료 후 NRS '+nrsPost+'/10';if(f.pResp.trim())respLine+=(respLine?', ':'')+f.pResp.trim();if(respLine)P.push('[P] 치료반응: '+respLine);return {S:S.join('\n'),O:O.join('\n'),A:A.join('\n'),P:P.join('\n')}}function buildText(){let f=fields(),head=[];let h=f.pName.trim();if(f.pVisit)h+=(h?' ':'')+f.pVisit+'회차';if(f.pDate)h+=(h?' ':'')+'('+f.pDate+')';if(h)head.push(h);if(f.pAgeSex.trim())head.push('나이/성별: '+f.pAgeSex.trim());if(regions.size)head.push('부위: '+REGION_ORDER.filter(r=>regions.has(r)).join(', '));const txTime=treatmentTimeText(f);if(txTime)head.push('치료시간: '+txTime);if(f.practitionerName.trim())head.push('시행자: '+f.practitionerName.trim()+' 물리치료사');let sec=sections(),body=[sec.S,sec.O,sec.A,sec.P].filter(Boolean).join('\n');return (head.length?head.join('\n')+(body?'\n\n':''):'')+body}function render(){const t=buildText(),p=$('preview');if(t){p.textContent=t;p.classList.remove('empty')}else{p.textContent='항목을 입력하면 여기에 차팅이 생성됩니다';p.classList.add('empty')}renderRecent()}document.querySelectorAll('input,textarea').forEach(el=>el.addEventListener('input',()=>{render();persistDraft()}));document.querySelectorAll('select').forEach(el=>el.addEventListener('change',()=>{if(el.id==='pStartTime')syncEndTimeOptions();render();persistDraft()}));
+}function sections(){let f=fields(),S=[],O=[],A=[],P=[];let sLine=f.sChief.trim();if(nrsPre!==null)sLine+=(sLine?', ':'')+'NRS '+nrsPre+'/10';if(sLine)S.push('[S] 주호소: '+sLine);if(f.sOnset.trim())S.push('[S] 발병경위: '+f.sOnset.trim());let clusterText=clusterChartText();if(clusterText)O.push(clusterText);let st=groupText('st');if(st)O.push('[O] 스페셜테스트(+): '+st);let rom=measureText('rom');if(rom)O.push('[O] ROM 제한: '+rom);let mmt=measureText('mmt');if(mmt)O.push('[O] MMT 약화: '+mmt);if(f.aText.trim())A.push('[A] 평가: '+f.aText.trim());if(f.pTech.trim())P.push('[P] 시행기법: '+f.pTech.trim());let respLine='';if(nrsPre!==null&&nrsPost!==null)respLine='NRS '+nrsPre+' → '+nrsPost+' post Tx';else if(nrsPost!==null)respLine='치료 후 NRS '+nrsPost+'/10';if(f.pResp.trim())respLine+=(respLine?', ':'')+f.pResp.trim();if(respLine)P.push('[P] 치료반응: '+respLine);return {S:S.join('\n'),O:O.join('\n'),A:A.join('\n'),P:P.join('\n')}}function buildText(){let f=fields(),head=[];if(f.directorName.trim())head.push(f.directorName.trim()+' 원장님 지시 및 감독하에 도수치료 시행');let h=f.pName.trim();if(f.pVisit)h+=(h?' ':'')+f.pVisit+'회차';if(f.pDate)h+=(h?' ':'')+'('+f.pDate+')';if(h)head.push(h);if(f.pAgeSex.trim())head.push('나이/성별: '+f.pAgeSex.trim());if(regions.size)head.push('부위: '+REGION_ORDER.filter(r=>regions.has(r)).join(', '));const txTime=treatmentTimeText(f);if(txTime)head.push('치료시간: '+txTime);if(f.practitionerName.trim())head.push('시행자: '+f.practitionerName.trim()+' 물리치료사');let sec=sections(),body=[sec.S,sec.O,sec.A,sec.P].filter(Boolean).join('\n');return (head.length?head.join('\n')+(body?'\n\n':''):'')+body}function render(){const t=buildText(),p=$('preview');if(t){p.textContent=t;p.classList.remove('empty')}else{p.textContent='항목을 입력하면 여기에 차팅이 생성됩니다';p.classList.add('empty')}renderRecent()}document.querySelectorAll('input,textarea').forEach(el=>el.addEventListener('input',()=>{render();persistDraft()}));document.querySelectorAll('select').forEach(el=>el.addEventListener('change',()=>{if(el.id==='pStartTime')syncEndTimeOptions();render();persistDraft()}));
 async function copyText(t,msg='복사 완료'){if(!t){toast('복사할 내용이 없습니다');return}try{await navigator.clipboard.writeText(t);toast(msg)}catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast(msg)}}$('copyBtn').onclick=() => copyText(buildText(),'복사 완료 — EMR에 붙여넣으세요');$('copySubjectBtn').onclick=() => copyText(buildText(),'전체 복사 완료');document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>copyText(sections()[b.dataset.copy],b.dataset.copy+' 복사 완료'));
 $('saveBtn').onclick=()=>{let s=state(),f=fields(),id=currentId||String(Date.now());f.currentId=id;f.savedAt=new Date().toISOString();currentId=id;let idx=s.records.findIndex(r=>r.currentId===id);if(idx>=0)s.records[idx]=f;else s.records.unshift(f);s.records=s.records.slice(0,200);s.draft=f;saveState(s);toast('저장 완료')};
 function normalizeSearch(v){
@@ -1954,9 +2296,9 @@ function normalizeSearch(v){
 function searchableRecordText(r){
   const visitText=r.pVisit?`${r.pVisit}회차 ${r.pVisit}회`:'';
   return normalizeSearch([
-    r.pName,r.pVisit,visitText,r.pAgeSex,r.pDate,r.pStartTime,r.pEndTime,r.practitionerName,
+    r.pName,r.pVisit,visitText,r.pAgeSex,r.pDate,r.pStartTime,r.pEndTime,r.directorName,r.practitionerName,
     ...(r.regions||[]),
-    r.sChief,r.sOnset,r.aText,r.pTech,r.pResp
+    r.sChief,r.sOnset,r.aText,r.pTech,r.pResp,Object.values(r.romValues||{}).join(' '),Object.values(r.mmtValues||{}).join(' ')
   ].join(' '));
 }
 function filteredRecords(){
