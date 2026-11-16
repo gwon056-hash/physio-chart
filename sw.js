@@ -1,4 +1,4 @@
-const CACHE_NAME = 'moa-charting-2026.09.03-2';
+const CACHE_NAME = 'moa-charting-2026.11.16-6';
 const APP_SHELL = ['./','./index.html','./manifest.json','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(APP_SHELL))));
 self.addEventListener('message',e=>{if(e.data&&e.data.type==='SKIP_WAITING')self.skipWaiting()});

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="app-version" content="2026.09.03-2">
+<meta name="app-version" content="2026.11.16-6">
 <meta name="theme-color" content="#0e7d74">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="차팅생성기">
@@ -1633,6 +1633,42 @@ body[data-theme="dark"]{
   }
 }
 
+
+/* v2026.09.03-4: Bottom New Chart alongside Reset, Save and Copy */
+.bottombar .inner{
+  grid-template-columns:.82fr 1.04fr 1.18fr 1.18fr;
+  gap:8px;
+}
+#newChartBottomBtn{
+  background:var(--accent-soft);
+  color:var(--accent);
+  border:1.5px solid var(--accent);
+  padding:12px 6px;
+  white-space:nowrap;
+}
+#newChartBottomBtn:focus-visible,
+#resetBtn:focus-visible{
+  outline:3px solid var(--accent);
+  outline-offset:2px;
+}
+@media(max-width:760px){
+  .bottombar .inner{grid-template-columns:.7fr 1fr 1fr 1fr;gap:6px}
+  .bottombar .inner button.big{font-size:.85rem;padding:13px 5px;min-width:0}
+  #newChartBottomBtn{font-size:.78rem;letter-spacing:-.035em}
+}
+@media(max-width:360px){
+  .bottombar{padding-left:8px;padding-right:8px}
+  .bottombar .inner{gap:5px}
+  .bottombar .inner button.big{font-size:.77rem;padding:12px 3px}
+  #newChartBottomBtn{font-size:.73rem}
+}
+
+
+/* v2026.09.03-4: always-visible region controls and diagnostics */
+#regionGrid .region-btn{touch-action:manipulation;user-select:none;-webkit-user-select:none}
+#regionGrid .region-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+#regionRuntimeNotice{margin-top:10px}
+
 </style>
 </head>
 <body>
@@ -1700,7 +1736,21 @@ body[data-theme="dark"]{
     </div>
   </div>
 </div>
-<label class="fld">부위 (복수 선택 가능)</label><div class="regions" id="regionGrid"></div></div>
+<label class="fld">부위 (복수 선택 가능)</label>
+<div class="regions" id="regionGrid">
+  <button type="button" class="region-btn" data-region="Cervical" aria-pressed="false"><span class="rb-ko">경추</span><span class="rb-en">Cervical</span></button>
+  <button type="button" class="region-btn" data-region="Thoracic" aria-pressed="false"><span class="rb-ko">흉추</span><span class="rb-en">Thoracic</span></button>
+  <button type="button" class="region-btn" data-region="Lumbar" aria-pressed="false"><span class="rb-ko">요추</span><span class="rb-en">Lumbar</span></button>
+  <button type="button" class="region-btn" data-region="SI Joint" aria-pressed="false"><span class="rb-ko">천장관절</span><span class="rb-en">SI Joint</span></button>
+  <button type="button" class="region-btn" data-region="Shoulder" aria-pressed="false"><span class="rb-ko">어깨</span><span class="rb-en">Shoulder</span></button>
+  <button type="button" class="region-btn" data-region="Elbow" aria-pressed="false"><span class="rb-ko">팔꿈치</span><span class="rb-en">Elbow</span></button>
+  <button type="button" class="region-btn" data-region="Wrist/Hand" aria-pressed="false"><span class="rb-ko">손목·손</span><span class="rb-en">Wrist / Hand</span></button>
+  <button type="button" class="region-btn" data-region="Hip" aria-pressed="false"><span class="rb-ko">고관절</span><span class="rb-en">Hip</span></button>
+  <button type="button" class="region-btn" data-region="Knee" aria-pressed="false"><span class="rb-ko">무릎</span><span class="rb-en">Knee</span></button>
+  <button type="button" class="region-btn" data-region="Ankle/Foot" aria-pressed="false"><span class="rb-ko">발목·발</span><span class="rb-en">Ankle / Foot</span></button>
+</div>
+<div class="notice" id="regionRuntimeNotice" role="status">부위 버튼이 눌리지 않으면 파일 미리보기의 JavaScript 실행이 제한된 상태일 수 있습니다. Chrome·Safari에서 배포된 MOA Charting 웹주소로 열어주세요.</div>
+</div>
 
 <div class="card soap-card s-card"><div class="sec-tag"><span class="chip s">S</span>주관적 <span class="section-copy"><button data-copy="S">S 복사</button></span></div><div class="phrasebar" id="phraseS"></div><label class="fld">주호소</label><textarea id="sChief" placeholder="예: Rt. shoulder pain during abduction"></textarea><label class="fld">NRS (치료 전)</label><div class="nrs-grid" id="nrsPre"></div><label class="fld">발병 경위</label><textarea id="sOnset" placeholder="예: Onset after lifting heavy object 2 weeks ago"></textarea></div>
 
@@ -1711,15 +1761,16 @@ body[data-theme="dark"]{
 <div class="card soap-card p-card"><div class="sec-tag"><span class="chip p">P</span>계획 <span class="section-copy"><button data-copy="P">P 복사</button></span></div><div class="phrasebar" id="phraseP"></div><label class="fld">시행 기법</label><textarea id="pTech" placeholder="예: Grade III GH joint mobilization, 15 min"></textarea><label class="fld">NRS (치료 후)</label><div class="nrs-grid" id="nrsPost"></div><label class="fld">치료 반응</label><textarea id="pResp" placeholder="예: ROM improved, pain decreased post Tx"></textarea></div>
 
 <div class="card preview-card"><div class="sec-tag"><span class="chip i">출력</span>차팅 미리보기</div><div class="preview-tools"><button class="mini-btn" id="cleanBtn">문장 정리</button><button class="mini-btn" id="copySubjectBtn">S/O/A/P 전체 복사</button></div><div class="preview-note">선택한 내용이 아래에 실시간으로 정리됩니다.</div><div class="preview-shell"><div class="preview-label">미리 생성된 차팅</div><div id="preview" class="empty">항목을 입력하면 여기에 차팅이 생성됩니다</div></div></div>
-<footer class="app-footer">MOA Charting Beta v2026.09.03-2 · © MOA BUSAN · @physio_geun_1</footer>
+<footer class="app-footer">MOA Charting Beta v2026.11.16-6 · © MOA BUSAN · @physio_geun_1</footer>
 </div>
 <div class="bottombar">
   <div class="inner">
-    <button class="big" id="resetBtn">초기화</button>
+    <button class="big" id="resetBtn" type="button">초기화</button>
+    <button class="big" id="newChartBottomBtn" type="button" aria-label="새 차팅 시작">＋ 새 차팅</button>
     <button class="big" id="saveBtn">💾 저장</button>
     <button class="big" id="copyBtn">📋 복사</button>
   </div>
-  <div class="desktop-copyright">MOA Charting Beta v2026.09.03-2 · © MOA BUSAN · @physio_geun_1</div>
+  <div class="desktop-copyright">MOA Charting Beta v2026.11.16-6 · © MOA BUSAN · @physio_geun_1</div>
 </div><div class="toast" id="toast">복사 완료</div>
 
 <div class="more-backdrop" id="moreBackdrop"></div>
@@ -1761,7 +1812,7 @@ body[data-theme="dark"]{
     <button class="manage-item" id="updateCheckBtn" type="button">
       <div>
         <strong>업데이트 확인</strong>
-        <span id="updateMenuText">현재 버전 v2026.09.03-2 · 새 버전을 확인합니다.</span>
+        <span id="updateMenuText">현재 버전 v2026.11.16-6 · 새 버전을 확인합니다.</span>
       </div>
       <b>›</b>
     </button>
@@ -1777,7 +1828,7 @@ body[data-theme="dark"]{
 
   <div class="sheet-status">
     <span><i class="status-dot"></i> 온라인</span>
-    <strong id="currentVersionLabel">v2026.09.03-2</strong>
+    <strong id="currentVersionLabel">v2026.11.16-6</strong>
   </div>
   <p class="sheet-note">저장된 차팅은 이 기기·이 브라우저에 보관됩니다. 업데이트·앱 삭제·기기 변경 전 전체 백업을 권장합니다.</p>
   <button class="sheet-done" id="sheetDoneBtn" type="button">닫기</button>
@@ -1805,7 +1856,7 @@ body[data-theme="dark"]{
 </div>
 
 <script>
-const DATA={"Cervical":{st:[{n:"Spurling test",s:"Rule-in · Sp .93"},{n:"Cervical distraction test",s:"Sp .90"},{n:"ULTT (median)",s:"Rule-out · Sn .97"},{n:"Flexion-rotation test",s:"CGH · Sn .90/Sp .88"},{n:"Sharp-Purser test",s:"상위경추 불안정"},{n:"Vertebral artery test",s:"VBI screening"},{n:"Cervical rotation <60°",s:"Wainner CPR 구성 항목"},{n:"Myotome/Dermatome/Reflex exam",s:"경추 신경근/경수증 스크리닝"},{n:"Hoffmann sign",s:"경수증 스크리닝"},{n:"Babinski sign",s:"상위운동신경원 스크리닝"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Cervical flexion","Cervical extension","Lt. lateral flexion","Rt. lateral flexion","Deep neck flexor (CCFT)"]},"Thoracic":{st:[{n:"Thoracic rotation test",s:""},{n:"Rib spring test",s:""},{n:"Adam forward bend test",s:"측만 screening"},{n:"Cervical rotation lateral flexion test",s:"1st rib"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Trunk extension","Scapular retraction"]},"Lumbar":{st:[{n:"SLR",s:"Rule-out · Sn .92/Sp .28"},{n:"Crossed SLR",s:"Rule-in · Sn .28/Sp .90"},{n:"Slump test",s:"Sn .84/Sp .83"},{n:"Femoral nerve tension test",s:"상위요추 신경근"},{n:"Kemp / Quadrant test",s:"Facet"},{n:"Extension-rotation test",s:"Facet"},{n:"PA spring test",s:"분절 irritability"},{n:"Prone instability test",s:"불안정성"},{n:"Passive lumbar extension test",s:"불안정성 · Sn .84/Sp .90"},{n:"Romberg test",s:"Stenosis screening"},{n:"Myotome/Dermatome/Reflex exam",s:"신경학적 검사"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Trunk flexion","Trunk extension","Hip flexion (L2-3)","Knee extension (L3-4)","Ankle dorsiflexion (L4-5)","Great toe extension (L5)","Plantarflexion/heel raise (S1)"]},"SI Joint":{st:[{n:"Distraction test",s:"Laslett cluster"},{n:"Compression test",s:"Laslett cluster"},{n:"Thigh thrust test",s:"Laslett cluster"},{n:"Sacral thrust test",s:"Laslett cluster"},{n:"Gaenslen test",s:"Laslett cluster"},{n:"FABER / Patrick test",s:""},{n:"Gillet test",s:""}],rom:[],mmt:["Hip extension","Hip abduction"]},"Shoulder":{st:[{n:"Neer test",s:"Sn .78"},{n:"Hawkins-Kennedy test",s:"Sn .79"},{n:"Painful arc",s:"Sn .74/Sp .81"},{n:"Empty can test",s:"Supraspinatus"},{n:"Full can test",s:"Supraspinatus"},{n:"Drop arm test",s:"Rule-in · Sp .92"},{n:"ER lag sign",s:"Infra/supra · Sp .94"},{n:"Lift-off test",s:"Subscapularis"},{n:"Belly press test",s:"Subscapularis"},{n:"Bear hug test",s:"Subscapularis · Sn .79"},{n:"Speed test",s:"Biceps/SLAP"},{n:"Yergason test",s:"Biceps · Sp .79"},{n:"O'Brien test",s:"SLAP"},{n:"Apprehension test",s:"전방 불안정"},{n:"Relocation test",s:"Sp .90"},{n:"Sulcus sign",s:"하방 불안정"},{n:"Cross-body adduction test",s:"AC joint"},{n:"Infraspinatus strength test",s:"Park cluster 구성 항목"}],rom:["Flexion","Extension","Abduction","Adduction","Internal rotation","External rotation","Horizontal adduction"],mmt:["Shoulder flexion","Shoulder abduction","Internal rotation","External rotation","Scapular protraction (SA)","Scapular retraction (MT/LT)"]},"Elbow":{st:[{n:"Cozen test",s:"Lateral epicondylalgia"},{n:"Mill test",s:"Lateral epicondylalgia"},{n:"Maudsley test",s:"3rd finger ext"},{n:"Moving valgus stress test",s:"UCL · Sn 1.0/Sp .75"},{n:"Valgus stress test",s:"UCL"},{n:"Varus stress test",s:"LCL"},{n:"Tinel sign (elbow)",s:"Ulnar n."}],rom:["Flexion","Extension","Pronation","Supination"],mmt:["Elbow flexion","Elbow extension","Pronation","Supination","Grip strength"]},"Wrist/Hand":{st:[{n:"Phalen test",s:"CTS · Sn .68"},{n:"Reverse Phalen test",s:"CTS"},{n:"Durkan compression test",s:"CTS · Sn .87/Sp .90"},{n:"Tinel sign (wrist)",s:"CTS"},{n:"Finkelstein/Eichhoff test",s:"De Quervain"},{n:"Watson scaphoid shift test",s:"SL 불안정"},{n:"TFCC compression test",s:"척측 손목통증"}],rom:["Flexion","Extension","Radial deviation","Ulnar deviation"],mmt:["Wrist flexion","Wrist extension","Radial deviation","Ulnar deviation","Grip strength","Finger flexion","Finger extension"]},"Hip":{st:[{n:"FADIR test",s:"FAI Rule-out · Sn .94-.99"},{n:"FABER test",s:"Sn .81-.82 · 서혜부 통증 재현"},{n:"Scour test",s:"관절내 병리"},{n:"Stinchfield test",s:"저항성 SLR 20-30°"},{n:"Squat pain",s:"Hip OA 지표"},{n:"Hip IR <25°",s:"Hip OA 지표"},{n:"30-sec single-leg stance",s:"GTPS Rule-in · Sn 1.0/Sp .97"},{n:"Greater trochanter palpation",s:"GTPS Rule-out · Sn .83"},{n:"Resisted abduction (ADD-R)",s:"GTPS · Sn .71/Sp .84"},{n:"FADER-R test",s:"GTPS Rule-in"},{n:"Thomas test",s:"굴곡구축/장요근"},{n:"Ober test",s:"ITB"},{n:"Trendelenburg test",s:"중둔근 기능"}],rom:["Flexion","Extension","Abduction","Adduction","Internal rotation","External rotation"],mmt:["Hip flexion","Hip extension","Hip abduction","Hip adduction","Internal rotation","External rotation"]},"Knee":{st:[{n:"Lachman test",s:"ACL · Sn .85/Sp .94"},{n:"Anterior drawer test",s:"ACL"},{n:"Pivot shift test",s:"ACL Rule-in · Sp .98"},{n:"Posterior drawer test",s:"PCL · Sn .90"},{n:"McMurray test",s:"Meniscus · Sp .78"},{n:"Thessaly test",s:"Meniscus"},{n:"Joint line tenderness",s:"Meniscus · Sn .83"},{n:"Valgus stress test",s:"MCL"},{n:"Varus stress test",s:"LCL"},{n:"Patellar apprehension test",s:"슬개골 불안정"},{n:"Clarke test",s:"PFPS"}],rom:["Flexion","Extension"],mmt:["Knee flexion","Knee extension"]},"Ankle/Foot":{st:[{n:"Anterior drawer test",s:"ATFL"},{n:"Talar tilt test",s:"CFL"},{n:"Thompson test",s:"Achilles rupture"},{n:"Squeeze test",s:"Syndesmosis"},{n:"External rotation test",s:"Syndesmosis"},{n:"Windlass test",s:"Plantar fascia"},{n:"Navicular drop test",s:"과회내"}],rom:["Dorsiflexion","Plantarflexion","Inversion","Eversion"],mmt:["Dorsiflexion","Plantarflexion/heel raise","Inversion","Eversion","Great toe extension"]}};
+const DATA={"Cervical":{st:[{n:"Spurling test",s:"Rule-in · Sn .50/Sp .86-.93"},{n:"Cervical distraction test",s:"Rule-in · Sn .44/Sp .90-.97"},{n:"ULTT (median)",s:"Rule-out · Sn .97"},{n:"Flexion-rotation test",s:"CFRT · CGH · Sn .90/Sp .88 (한쪽 회전 <30-32° 양성)"},{n:"Sharp-Purser test",s:"상위경추 불안정 · Sn .69/Sp .96 (RA 환자)"},{n:"Vertebral artery test",s:"VBI screening · Sn 0%/Sp .67-.90 (Doppler 기준, 스크리닝 근거 약함)"},{n:"Cervical rotation <60°",s:"Wainner CPR 구성 · Sn .63/Sp .50"},{n:"Myotome/Dermatome/Reflex exam",s:"경추 신경근/경수증 스크리닝 · 검사 묶음 (단일 Sn/Sp 없음)"},{n:"Extension-rotation test (경추 facet)",s:"Facet · Sn .83/Sp .59 (Rule-out용)"},{n:"Hoffmann sign",s:"경수증 · Sn .59/Sp .81-.84"},{n:"Babinski sign",s:"UMN Rule-in · Sn .13/Sp 1.0"},{n:"Inverted supinator sign",s:"경수증 · Sn .51/Sp .81"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Cervical flexion","Cervical extension","Lt. lateral flexion","Rt. lateral flexion","Deep neck flexor (CCFT)"]},"Thoracic":{st:[{n:"Thoracic rotation test",s:"가동성 · Sn/Sp 보고 없음"},{n:"Rib spring test",s:"분절/늑골 가동성 · Sn/Sp 보고 없음"},{n:"Adam forward bend test",s:"측만 screening · Sn .84/Sp .93 (Cobb >10°, 단독은 위음성 多)"},{n:"Cervical rotation lateral flexion test",s:"1st rib · Sn/Sp 보고 없음 (cineradiography 일치 κ=1.0)"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Trunk extension","Scapular retraction"]},"Lumbar":{st:[{n:"SLR",s:"Rule-out · Sn .92/Sp .28"},{n:"Crossed SLR",s:"Rule-in · Sn .28/Sp .90"},{n:"Slump test",s:"Sn .84/Sp .83"},{n:"Femoral nerve tension test",s:"상위요추 신경근 · Sn .50/Sp 1.0"},{n:"Kemp / Quadrant test",s:"Facet · Sn .35-.46/Sp .47 (정확도 낮음)"},{n:"Extension-rotation test",s:"Facet · Sn .35-.46/Sp .47 (Kemp과 동일 계열)"},{n:"PA spring test",s:"분절 irritability · Sn/Sp 보고 없음"},{n:"Prone instability test",s:"불안정성 · Sn .71/Sp .57"},{n:"Passive lumbar extension test",s:"불안정성 · Sn .84/Sp .90"},{n:"Romberg test",s:"LSS · Sn .40/Sp .91"},{n:"Wide-based gait",s:"LSS Rule-in · Sn .42/Sp .97"},{n:"Two-stage treadmill test",s:"LSS Rule-in · Sn .50/Sp .92"},{n:"Myotome/Dermatome/Reflex exam",s:"신경학적 검사 · 검사 묶음 (단일 Sn/Sp 없음)"}],rom:["Flexion","Extension","Lt. lateral flexion","Rt. lateral flexion","Lt. rotation","Rt. rotation"],mmt:["Trunk flexion","Trunk extension","Hip flexion (L2-3)","Knee extension (L3-4)","Ankle dorsiflexion (L4-5)","Great toe extension (L5)","Plantarflexion/heel raise (S1)"]},"SI Joint":{st:[{n:"Distraction test",s:"Laslett · Sn .60/Sp .81"},{n:"Compression test",s:"Laslett · Sn .69/Sp .69"},{n:"Thigh thrust test",s:"Laslett · Sn .88/Sp .69"},{n:"Sacral thrust test",s:"Laslett · Sn .63/Sp .75"},{n:"Gaenslen test",s:"Laslett · Sn .50-.53/Sp .71-.77"},{n:"FABER / Patrick test",s:"SIJ · 단독 Sn/Sp 근거 약함 (Laslett 클러스터 미포함)"},{n:"Gillet test",s:"SIJ 가동성 · 신뢰도 낮음, Sn/Sp 근거 없음"}],rom:[],mmt:["Hip extension","Hip abduction"]},"Shoulder":{st:[{n:"Neer test",s:"Sn .78/Sp .58"},{n:"Hawkins-Kennedy test",s:"Sn .79"},{n:"Painful arc",s:"Sn .74/Sp .81"},{n:"Empty can test",s:"Supraspinatus · 전층파열 Sn .74/Sp .77"},{n:"Full can test",s:"Supraspinatus · 단독 Sn/Sp 근거 약함 (Empty can과 유사)"},{n:"Drop arm test",s:"Rule-in · Sp .92"},{n:"ER lag sign",s:"Infra/supra · Sp .94"},{n:"Lift-off test",s:"Subscapularis Rule-in · Sn .18/Sp 1.0"},{n:"Belly press test",s:"Subscapularis Rule-in · Sn .40/Sp .98"},{n:"Bear hug test",s:"Subscapularis · Sn .55-.60/Sp .92 (pooled Sp >.90)"},{n:"Speed test",s:"Biceps · Sn .54/Sp .81"},{n:"Yergason test",s:"Biceps · Sp .79"},{n:"O'Brien test",s:"SLAP · Sn .67/Sp .37"},{n:"Compression-rotation test",s:"SLAP Rule-in · Sn .43/Sp .89"},{n:"Apprehension test",s:"전방 불안정 · 단독 Sn/Sp 근거 약함 (Relocation과 병용)"},{n:"Relocation test",s:"Sp .90"},{n:"Sulcus sign",s:"하방 불안정 · Sn/Sp 보고 없음"},{n:"Cross-body adduction test",s:"AC joint · Sn .77/Sp .79"},{n:"Infraspinatus strength test",s:"Park cluster 구성 (단독 Sn/Sp 없음 · 클러스터 +LR 10.6/15.6)"}],rom:["Flexion","Extension","Abduction","Adduction","Internal rotation","External rotation","Horizontal adduction"],mmt:["Shoulder flexion","Shoulder abduction","Internal rotation","External rotation","Scapular protraction (SA)","Scapular retraction (MT/LT)"]},"Elbow":{st:[{n:"Cozen test",s:"Lateral epicondylalgia · Sn .91 (Sp 근거 제한)"},{n:"Mill test",s:"Lateral epicondylalgia · Sn .76 (Sp 근거 제한)"},{n:"Maudsley test",s:"3rd finger ext · Sn .70 (Sp 근거 제한)"},{n:"Moving valgus stress test",s:"UCL · Sn 1.0/Sp .75"},{n:"Valgus stress test",s:"UCL · 단독 Sn/Sp 보고 없음 (Moving valgus 권장)"},{n:"Varus stress test",s:"LCL · Sn/Sp 보고 없음"},{n:"Tinel sign (elbow)",s:"Ulnar n. · Sn/Sp 보고 없음"}],rom:["Flexion","Extension","Pronation","Supination"],mmt:["Elbow flexion","Elbow extension","Pronation","Supination","Grip strength"]},"Wrist/Hand":{st:[{n:"Phalen test",s:"CTS · Sn .68/Sp .73"},{n:"Reverse Phalen test",s:"CTS · Sn/Sp 보고 없음"},{n:"Durkan compression test",s:"CTS · Sn .64/Sp .83"},{n:"Tinel sign (wrist)",s:"CTS · Sn .50/Sp .77"},{n:"Finkelstein/Eichhoff test",s:"De Quervain · Sn .84/Sp .96 (단일 연구)"},{n:"Watson scaphoid shift test",s:"SL 불안정 · Sn .50-.61/Sp .62-.78"},{n:"TFCC compression test",s:"척측 손목통증 · 동일 Sn/Sp 없음 (Grind test Sn .50/Sp .86)"}],rom:["Flexion","Extension","Radial deviation","Ulnar deviation"],mmt:["Wrist flexion","Wrist extension","Radial deviation","Ulnar deviation","Grip strength","Finger flexion","Finger extension"]},"Hip":{st:[{n:"FADIR test",s:"FAI Rule-out · Sn .94-.99"},{n:"FABER test",s:"Sn .81-.82 · 서혜부 통증 재현"},{n:"Scour test",s:"관절내 병리 · Hip OA Sutlive cluster 구성"},{n:"Stinchfield test",s:"저항성 SLR 20-30° · Sn/Sp 보고 없음"},{n:"Squat pain",s:"Hip OA · Sutlive cluster 구성"},{n:"Hip IR <25°",s:"Hip OA · Sutlive cluster 구성"},{n:"30-sec single-leg stance",s:"GTPS Rule-in · Sn .94/Sp .99"},{n:"Greater trochanter palpation",s:"GTPS Rule-out · Sn .84/Sp .66"},{n:"Resisted abduction (ADD-R)",s:"GTPS · Sn .59/Sp .90"},{n:"FADER-R test",s:"GTPS Rule-in · Sn .68/Sp .96"},{n:"Thomas test",s:"굴곡구축/장요근 · Sn/Sp 보고 없음 (신뢰도 κ .6-.8)"},{n:"Ober test",s:"ITB · Sn/Sp 보고 없음"},{n:"Trendelenburg test",s:"중둔근 기능 · Sn .23-.73/Sp .77-.94"},{n:"Puranen-Orava test",s:"PHT · Sn .76/Sp .82"},{n:"Bent-knee stretch test",s:"PHT · Sn .84/Sp .87"},{n:"Modified bent-knee stretch test",s:"PHT · Sn .89/Sp .91"}],rom:["Flexion","Extension","Abduction","Adduction","Internal rotation","External rotation"],mmt:["Hip flexion","Hip extension","Hip abduction","Hip adduction","Internal rotation","External rotation"]},"Knee":{st:[{n:"Lachman test",s:"ACL · Sn .85/Sp .94"},{n:"Anterior drawer test",s:"ACL · 만성 Sn .92/Sp .91 (급성 낮음)"},{n:"Pivot shift test",s:"ACL Rule-in · Sn .24/Sp .98"},{n:"Posterior drawer test",s:"PCL · Sn .90"},{n:"McMurray test",s:"Meniscus · Sn .61/Sp .84"},{n:"Thessaly test",s:"Meniscus · Sn .75/Sp .87 (20°)"},{n:"Joint line tenderness",s:"Meniscus · Sn .83/Sp .83"},{n:"Valgus stress test",s:"MCL · Sn .86 (단일 연구)"},{n:"Varus stress test",s:"LCL · Sn/Sp 보고 없음"},{n:"Patellar apprehension test",s:"슬개골 불안정 · Sn <.50/Sp .72-1.0"},{n:"Clarke test",s:"PFPS · Sn/Sp 근거 약함"},{n:"Patellar tendon palpation",s:"슬개건병증 Rule-out · Sn .98/Sp .94"},{n:"Royal London Hospital test",s:"슬개건병증 Rule-in · Sn .88/Sp .98"}],rom:["Flexion","Extension"],mmt:["Knee flexion","Knee extension"]},"Ankle/Foot":{st:[{n:"Anterior drawer test",s:"ATFL · Sn .33/Sp .73"},{n:"Talar tilt test",s:"CFL · Sn/Sp 보고 없음"},{n:"Thompson test",s:"Achilles rupture · Sn .96/Sp .93"},{n:"Squeeze test",s:"Syndesmosis Rule-in · Sn .30/Sp .94"},{n:"External rotation test",s:"Syndesmosis · Sn .20/Sp .85"},{n:"Windlass test",s:"Plantar fascia Rule-in · Sn .32/Sp 1.0"},{n:"Ottawa ankle rules",s:"골절 Rule-out · Sn .98/Sp .32"},{n:"Royal London Hospital test",s:"Achilles tendinopathy · Sn .54/Sp .86"},{n:"Arc sign",s:"Achilles tendinopathy · Sn .42/Sp .88"},{n:"Navicular drop test",s:"과회내 · 진단 Sn/Sp 근거 없음"}],rom:["Dorsiflexion","Plantarflexion","Inversion","Eversion"],mmt:["Dorsiflexion","Plantarflexion/heel raise","Inversion","Eversion","Great toe extension"]}};
 
 
 const ROM_NORMALS={
@@ -1836,7 +1887,7 @@ const ROM_NORMALS={
   },
   "Hip":{
     "Flexion":"120°","Extension":"20°","Abduction":"45°","Adduction":"30°",
-    "Internal rotation":"35°","External rotation":"45°"
+    "Internal rotation":"45°","External rotation":"45°"
   },
   "Knee":{
     "Flexion":"135°","Extension":"0°"
@@ -1852,13 +1903,27 @@ const CLUSTERS={
       id:"wainner-cpr",
       name:"Wainner CPR",
       disease:"경추 신경근병증 · Cervical Radiculopathy",
-      evidence:"3/4 positive · Sp .94 / Sn .24 · +LR 6.1",
+      evidence:"3/4 positive · Sn .39 / Sp .94 · +LR 6.1 (4/4: Sp .99 · +LR 30.3)",
       threshold:3,
       components:[
         {label:"Spurling test",link:"Spurling test"},
         {label:"Cervical distraction test",link:"Cervical distraction test"},
         {label:"ULTT (median)",link:"ULTT (median)"},
         {label:"동측 경추회전 <60°",link:"Cervical rotation <60°"}
+      ]
+    },
+    {
+      id:"cook-csm",
+      name:"Cook CSM cluster",
+      disease:"경추 척수병증 · Cervical Spondylotic Myelopathy",
+      evidence:"≥3/5: Sp .99 · +LR 30.9 (Rule-in) / ≤1/5: Sn .94 · −LR 0.18 (Rule-out)",
+      threshold:3,
+      components:[
+        {label:"보행 이상 (Gait deviation)"},
+        {label:"Hoffmann sign",link:"Hoffmann sign"},
+        {label:"Inverted supinator sign",link:"Inverted supinator sign"},
+        {label:"Babinski sign",link:"Babinski sign"},
+        {label:"45세 초과"}
       ]
     }
   ],
@@ -1896,11 +1961,44 @@ const CLUSTERS={
       evidence:"Sn .86 / Sp .75",
       custom:"altman",
       components:[
+        {label:"고관절 통증"},
+        {label:"내회전 ≥15°"},
         {label:"내회전 시 통증"},
-        {label:"조조강직 >60분"},
-        {label:"50세 이상"},
+        {label:"조조강직 ≤60분"},
+        {label:"50세 초과"},
         {label:"내회전 <15°",link:"Hip IR <25°"},
         {label:"굴곡 ≤115°"}
+      ]
+    },
+    {
+      id:"sutlive-hip-oa",
+      name:"Sutlive cluster",
+      disease:"고관절 골관절염 · Hip Osteoarthritis",
+      evidence:"≥3/5: Sn .71 / Sp .86 · +LR 5.2 / ≥4/5: Sn .48 / Sp .98 · +LR 24.3",
+      threshold:3,
+      components:[
+        {label:"쪼그려 앉을 때 악화",link:"Squat pain"},
+        {label:"Scour test + 내전 시 통증",link:"Scour test"},
+        {label:"능동 굴곡 시 외측 통증"},
+        {label:"능동 신전 시 통증"},
+        {label:"수동 내회전 ≤25°",link:"Hip IR <25°"}
+      ]
+    }
+  ],
+  "Knee":[
+    {
+      id:"altman-knee-oa",
+      name:"Knee OA clinical criteria",
+      disease:"무릎 골관절염 · Knee Osteoarthritis",
+      evidence:"무릎 통증 + 3/6 이상: Sn .95 / Sp .69 · +LR 3.1",
+      threshold:3,
+      components:[
+        {label:"50세 이상"},
+        {label:"아침 강직 <30분"},
+        {label:"염발음"},
+        {label:"골압통"},
+        {label:"골성비대"},
+        {label:"열감 없음"}
       ]
     }
   ],
@@ -1921,7 +2019,44 @@ const CLUSTERS={
     }
   ]
 };
-const REGION_KO={"Cervical":"경추","Thoracic":"흉추","Lumbar":"요추","SI Joint":"천장관절","Shoulder":"어깨","Elbow":"팔꿈치","Wrist/Hand":"손목·손","Hip":"고관절","Knee":"무릎","Ankle/Foot":"발목·발"};const REGION_ORDER=Object.keys(DATA);const $=id=>document.getElementById(id);let regions=new Set(),sel={st:new Set(),rom:new Set(),mmt:new Set()},romValues={},mmtValues={},clusterActive=new Set(),clusterFindings={},nrsPre=null,nrsPost=null,currentId=null,manageRecords=false,selectedRecordIds=new Set(),chartSearchQuery='';const LS="chartingPWA.v1";const state=()=>JSON.parse(localStorage.getItem(LS)||'{"records":[],"draft":{},"theme":"light"}');const saveState=s=>localStorage.setItem(LS,JSON.stringify(s));function setToday(){let d=new Date();$("pDate").value=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}function initTimeOptions(){
+const REGION_KO={"Cervical":"경추","Thoracic":"흉추","Lumbar":"요추","SI Joint":"천장관절","Shoulder":"어깨","Elbow":"팔꿈치","Wrist/Hand":"손목·손","Hip":"고관절","Knee":"무릎","Ankle/Foot":"발목·발"};const REGION_ORDER=Object.keys(DATA);const $=id=>document.getElementById(id);let regions=new Set(),sel={st:new Set(),rom:new Set(),mmt:new Set()},romValues={},mmtValues={},clusterActive=new Set(),clusterFindings={},nrsPre=null,nrsPost=null,currentId=null,manageRecords=false,selectedRecordIds=new Set(),chartSearchQuery='';const LS="chartingPWA.v1";
+let volatileChartState={records:[],draft:{},theme:'light'};
+let storageError=null;
+function displayRegionRuntimeNotice(message){
+  const notice=$('regionRuntimeNotice');
+  if(!notice)return;
+  notice.textContent=message;
+  notice.classList.remove('hidden');
+}
+function state(){
+  if(storageError)return volatileChartState;
+  try{
+    const raw=localStorage.getItem(LS);
+    if(!raw)return volatileChartState;
+    const stored=JSON.parse(raw);
+    if(!stored||typeof stored!=='object'||!Array.isArray(stored.records))throw new Error('Invalid saved data format');
+    return stored;
+  }catch(error){
+    storageError=error;
+    displayRegionRuntimeNotice('저장공간을 읽을 수 없습니다. 현재 화면의 부위 선택은 사용 가능하지만 기록이 영구 저장되지 않을 수 있습니다. 기존 데이터는 삭제하지 않았습니다.');
+    console.error('[MOA Charting] storage read failed:',error);
+    return volatileChartState;
+  }
+}
+function saveState(s){
+  volatileChartState=s;
+  if(storageError)return false;
+  try{
+    localStorage.setItem(LS,JSON.stringify(s));
+    return true;
+  }catch(error){
+    storageError=error;
+    console.error('[MOA Charting] storage write failed:',error);
+    displayRegionRuntimeNotice('이 브라우저에서 저장공간 접근이 차단되었습니다. 부위 선택은 작동하지만 기록은 이 화면에만 임시 보관됩니다.');
+    return false;
+  }
+}
+function setToday(){let d=new Date();$("pDate").value=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}function initTimeOptions(){
   const start=$('pStartTime'),end=$('pEndTime');
   if(!start||!end)return;
   const times=[];
@@ -1959,7 +2094,7 @@ function syncEndTimeOptions(){
   if(total>=1440)return '';
   return String(Math.floor(total/60)).padStart(2,'0')+':'+String(total%60).padStart(2,'0');
 }
-function apply(d={}){if(d.pTime&&!d.pStartTime){d={...d,pStartTime:d.pTime,pEndTime:addThirtyMinutes(d.pTime)}}['pName','pVisit','pAgeSex','pDate','pStartTime','pEndTime','directorName','practitionerName','sChief','sOnset','aText','pTech','pResp'].forEach(id=>$(id).value=d[id]||'');regions=new Set(d.regions||[]);sel={st:new Set(d.st||[]),rom:new Set(d.rom||[]),mmt:new Set(d.mmt||[])};romValues={...(d.romValues||{})};mmtValues={...(d.mmtValues||{})};clusterActive=new Set(d.clusterActive||[]);clusterFindings={};Object.entries(d.clusterFindings||{}).forEach(([k,v])=>clusterFindings[k]=new Set(v||[]));nrsPre=d.nrsPre??null;nrsPost=d.nrsPost??null;currentId=d.currentId||null;document.querySelectorAll('.region-btn').forEach((b,i)=>b.classList.toggle('on',regions.has(REGION_ORDER[i])));document.querySelectorAll('#nrsPre .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPre));document.querySelectorAll('#nrsPost .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPost));if(!$("pDate").value)setToday();syncEndTimeOptions();renderOpts();render()}
+function apply(d={}){if(d.pTime&&!d.pStartTime){d={...d,pStartTime:d.pTime,pEndTime:addThirtyMinutes(d.pTime)}}['pName','pVisit','pAgeSex','pDate','pStartTime','pEndTime','directorName','practitionerName','sChief','sOnset','aText','pTech','pResp'].forEach(id=>$(id).value=d[id]||'');regions=new Set(d.regions||[]);sel={st:new Set(d.st||[]),rom:new Set(d.rom||[]),mmt:new Set(d.mmt||[])};romValues={...(d.romValues||{})};mmtValues={...(d.mmtValues||{})};clusterActive=new Set(d.clusterActive||[]);clusterFindings={};Object.entries(d.clusterFindings||{}).forEach(([k,v])=>clusterFindings[k]=new Set(v||[]));nrsPre=d.nrsPre??null;nrsPost=d.nrsPost??null;currentId=d.currentId||null;document.querySelectorAll('#regionGrid .region-btn').forEach(b=>{const active=regions.has(b.dataset.region);b.classList.toggle('on',active);b.setAttribute('aria-pressed',active?'true':'false')});document.querySelectorAll('#nrsPre .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPre));document.querySelectorAll('#nrsPost .nrs').forEach((e,i)=>e.classList.toggle('on',i===nrsPost));if(!$("pDate").value)setToday();syncEndTimeOptions();renderOpts();render()}
 function persistDraft(){let s=state();s.draft=fields();saveState(s)}function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
 function openMoreSheet(){
   $('moreBackdrop').classList.add('show');
@@ -1974,10 +2109,36 @@ function closeMoreSheet(){
   document.body.classList.remove('sheet-open');
 }
 
-REGION_ORDER.forEach(r=>{const b=document.createElement('button');b.type='button';b.className='region-btn';b.innerHTML="<span class='rb-ko'>"+REGION_KO[r]+"</span><span class='rb-en'>"+r.replace('/',' / ')+"</span>";b.onclick=()=>{if(regions.has(r)){regions.delete(r);['st','rom','mmt'].forEach(k=>[...sel[k]].forEach(key=>{if(key.startsWith(r+'|'))sel[k].delete(key)}));
-Object.keys(romValues).forEach(key=>{if(key.startsWith(r+'|'))delete romValues[key]});
-Object.keys(mmtValues).forEach(key=>{if(key.startsWith(r+'|'))delete mmtValues[key]});
-(CLUSTERS[r]||[]).forEach(cl=>{clusterActive.delete(cl.id);delete clusterFindings[cl.id]});}else regions.add(r);b.classList.toggle('on',regions.has(r));renderOpts();render();persistDraft()};$('regionGrid').appendChild(b)});
+// Region buttons are static HTML, so they stay visible even if JS initialization fails.
+function refreshRegionButtons(){
+  $('regionGrid').querySelectorAll('button[data-region]').forEach(b=>{
+    const active=regions.has(b.dataset.region);
+    b.classList.toggle('on',active);
+    b.setAttribute('aria-pressed',active?'true':'false');
+  });
+}
+function toggleRegionSelection(region){
+  if(!REGION_ORDER.includes(region))return;
+  if(regions.has(region)){
+    regions.delete(region);
+    ['st','rom','mmt'].forEach(k=>[...sel[k]].forEach(key=>{if(key.startsWith(region+'|'))sel[k].delete(key)}));
+    Object.keys(romValues).forEach(key=>{if(key.startsWith(region+'|'))delete romValues[key]});
+    Object.keys(mmtValues).forEach(key=>{if(key.startsWith(region+'|'))delete mmtValues[key]});
+    (CLUSTERS[region]||[]).forEach(cl=>{clusterActive.delete(cl.id);delete clusterFindings[cl.id]});
+  }else regions.add(region);
+  refreshRegionButtons();
+  try{renderOpts();render();persistDraft()}
+  catch(error){
+    console.error('[MOA Charting] region update failed:',error);
+    displayRegionRuntimeNotice('부위 선택 후 다른 항목을 갱신하는 중 오류가 발생했습니다. 콘솔 오류를 확인해주세요: '+error.message);
+  }
+}
+$('regionGrid').addEventListener('click',event=>{
+  const button=event.target.closest('button[data-region]');
+  if(!button||!$('regionGrid').contains(button))return;
+  toggleRegionSelection(button.dataset.region);
+});
+$('regionRuntimeNotice').classList.add('hidden');
 
 function getClusterById(id){
   for(const arr of Object.values(CLUSTERS))for(const cluster of arr)if(cluster.id===id)return cluster;
@@ -1986,9 +2147,11 @@ function getClusterById(id){
 function clusterResult(cluster){
   const positives=clusterFindings[cluster.id]||new Set();
   if(cluster.custom==='altman'){
-    const a=['내회전 시 통증','조조강직 >60분','50세 이상'].every(x=>positives.has(x));
-    const b=['내회전 <15°','굴곡 ≤115°'].every(x=>positives.has(x));
-    return {positive:a||b,count:positives.size,total:cluster.components.length,label:(a||b)?'기준 충족':'기준 미충족'};
+    const hipPain=positives.has('고관절 통증');
+    const a=hipPain&&['내회전 ≥15°','내회전 시 통증','조조강직 ≤60분','50세 초과'].every(x=>positives.has(x));
+    const b=hipPain&&['내회전 <15°','굴곡 ≤115°'].every(x=>positives.has(x));
+    const validCount=cluster.components.filter(c=>positives.has(c.label)).length;
+    return {positive:a||b,count:validCount,total:cluster.components.length,label:(a||b)?'기준 충족':'기준 미충족'};
   }
   const positive=positives.size>=(cluster.threshold||cluster.components.length);
   return {positive,count:positives.size,total:cluster.components.length,label:positive?'기준 충족':'기준 미충족'};
@@ -2062,6 +2225,10 @@ function renderClusterSection(area,region){
           if(!clusterFindings[cluster.id])clusterFindings[cluster.id]=new Set();
           if(input.checked)clusterFindings[cluster.id].add(component.label);
           else clusterFindings[cluster.id].delete(component.label);
+          if(cluster.id==='altman-hip-oa'&&input.checked){
+            if(component.label==='내회전 ≥15°')clusterFindings[cluster.id].delete('내회전 <15°');
+            if(component.label==='내회전 <15°')clusterFindings[cluster.id].delete('내회전 ≥15°');
+          }
           syncStandaloneFromCluster(region,component,input.checked);
           renderOpts();render();persistDraft();
         };
@@ -2289,7 +2456,7 @@ function clusterChartText(){
   return blocks.join('\n')
 }function sections(){let f=fields(),S=[],O=[],A=[],P=[];let sLine=f.sChief.trim();if(nrsPre!==null)sLine+=(sLine?', ':'')+'NRS '+nrsPre+'/10';if(sLine)S.push('[S] 주호소: '+sLine);if(f.sOnset.trim())S.push('[S] 발병경위: '+f.sOnset.trim());let clusterText=clusterChartText();if(clusterText)O.push(clusterText);let st=groupText('st');if(st)O.push('[O] 스페셜테스트(+): '+st);let rom=measureText('rom');if(rom)O.push('[O] ROM 제한: '+rom);let mmt=measureText('mmt');if(mmt)O.push('[O] MMT 약화: '+mmt);if(f.aText.trim())A.push('[A] 평가: '+f.aText.trim());if(f.pTech.trim())P.push('[P] 시행기법: '+f.pTech.trim());let respLine='';if(nrsPre!==null&&nrsPost!==null)respLine='NRS '+nrsPre+' → '+nrsPost+' post Tx';else if(nrsPost!==null)respLine='치료 후 NRS '+nrsPost+'/10';if(f.pResp.trim())respLine+=(respLine?', ':'')+f.pResp.trim();if(respLine)P.push('[P] 치료반응: '+respLine);return {S:S.join('\n'),O:O.join('\n'),A:A.join('\n'),P:P.join('\n')}}function buildText(){let f=fields(),head=[];if(f.directorName.trim())head.push(f.directorName.trim()+' 원장님 지시 및 감독하에 도수치료 시행');let h=f.pName.trim();if(f.pVisit)h+=(h?' ':'')+f.pVisit+'회차';if(f.pDate)h+=(h?' ':'')+'('+f.pDate+')';if(h)head.push(h);if(f.pAgeSex.trim())head.push('나이/성별: '+f.pAgeSex.trim());if(regions.size)head.push('부위: '+REGION_ORDER.filter(r=>regions.has(r)).join(', '));const txTime=treatmentTimeText(f);if(txTime)head.push('치료시간: '+txTime);if(f.practitionerName.trim())head.push('시행자: '+f.practitionerName.trim()+' 물리치료사');let sec=sections(),body=[sec.S,sec.O,sec.A,sec.P].filter(Boolean).join('\n');return (head.length?head.join('\n')+(body?'\n\n':''):'')+body}function render(){const t=buildText(),p=$('preview');if(t){p.textContent=t;p.classList.remove('empty')}else{p.textContent='항목을 입력하면 여기에 차팅이 생성됩니다';p.classList.add('empty')}renderRecent()}document.querySelectorAll('input,textarea').forEach(el=>el.addEventListener('input',()=>{render();persistDraft()}));document.querySelectorAll('select').forEach(el=>el.addEventListener('change',()=>{if(el.id==='pStartTime')syncEndTimeOptions();render();persistDraft()}));
 async function copyText(t,msg='복사 완료'){if(!t){toast('복사할 내용이 없습니다');return}try{await navigator.clipboard.writeText(t);toast(msg)}catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);toast(msg)}}$('copyBtn').onclick=() => copyText(buildText(),'복사 완료 — EMR에 붙여넣으세요');$('copySubjectBtn').onclick=() => copyText(buildText(),'전체 복사 완료');document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>copyText(sections()[b.dataset.copy],b.dataset.copy+' 복사 완료'));
-$('saveBtn').onclick=()=>{let s=state(),f=fields(),id=currentId||String(Date.now());f.currentId=id;f.savedAt=new Date().toISOString();currentId=id;let idx=s.records.findIndex(r=>r.currentId===id);if(idx>=0)s.records[idx]=f;else s.records.unshift(f);s.records=s.records.slice(0,200);s.draft=f;saveState(s);toast('저장 완료')};
+$('saveBtn').onclick=()=>{let s=state(),f=fields(),id=currentId||String(Date.now());f.currentId=id;f.savedAt=new Date().toISOString();let idx=s.records.findIndex(r=>r.currentId===id);if(idx>=0)s.records[idx]=f;else s.records.unshift(f);s.records=s.records.slice(0,200);s.draft=f;if(saveState(s)){currentId=id;toast('저장 완료')}else{toast('저장 실패 · 백업 후 저장공간을 확인하세요')}};
 function normalizeSearch(v){
   return String(v||'').toLowerCase().replace(/\s+/g,' ').trim();
 }
@@ -2496,7 +2663,7 @@ $('updateCheckBtn').onclick=async()=>{
   }
 };
 
-$('newChartBtn').onclick=()=>{apply({});setToday();persistDraft();toast('새 차팅')};$('duplicateLastBtn').onclick=()=>{let s=state(),r=s.records[0];if(!r){toast('저장된 차팅이 없습니다');return}let copy={...r,currentId:null,pVisit:r.pVisit?String(Number(r.pVisit)+1):'',pDate:''};apply(copy);setToday();persistDraft();toast('마지막 차팅 이어쓰기')};$('resetBtn').onclick=()=>{apply({});setToday();persistDraft();toast('초기화 완료')};
+$('newChartBtn').onclick=()=>{apply({});setToday();persistDraft();toast('새 차팅')};$('newChartBottomBtn').onclick=()=>$('newChartBtn').click();$('duplicateLastBtn').onclick=()=>{let s=state(),r=s.records[0];if(!r){toast('저장된 차팅이 없습니다');return}let copy={...r,currentId:null,pVisit:r.pVisit?String(Number(r.pVisit)+1):'',pDate:''};apply(copy);setToday();persistDraft();toast('마지막 차팅 이어쓰기')};$('resetBtn').onclick=()=>{apply({});setToday();persistDraft();toast('초기화 완료')};
 $('cleanBtn').onclick=()=>{let map=[['좀 좋아짐','증상은 이전보다 호전됨'],['좋아짐','호전됨'],['아픔','통증 호소'],['줄음','감소함'],['늘음','증가함']];['sChief','sOnset','aText','pTech','pResp'].forEach(id=>{let v=$(id).value;map.forEach(([a,b])=>v=v.replaceAll(a,b));$(id).value=v.trim()});render();persistDraft();toast('문장 정리 완료')};
 $('themeBtn').onclick=()=>{let s=state();s.theme=s.theme==='dark'?'light':'dark';saveState(s);applyTheme()};function applyTheme(){let s=state();document.documentElement.dataset.theme=s.theme==='dark'?'dark':'light';$('themeBtn').textContent=s.theme==='dark'?'☀️ 라이트':'🌙 다크'}
 $('backupBtn').onclick=()=>{const blob=new Blob([JSON.stringify(state(),null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='charting-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href)};$('restoreBtn').onclick=()=>$('restoreFile').click();$('restoreFile').onchange=e=>{let file=e.target.files[0];if(!file)return;let fr=new FileReader();fr.onload=()=>{try{saveState(JSON.parse(fr.result));applyTheme();apply(state().draft||{});toast('복원 완료')}catch(e){toast('복원 실패')}};fr.readAsText(file)};
@@ -2639,6 +2806,37 @@ const APP_VERSION=document.querySelector('meta[name="app-version"]')?.content||'
 if($('currentVersionLabel'))$('currentVersionLabel').textContent='v'+APP_VERSION;
 if($('updateMenuText'))$('updateMenuText').textContent='현재 버전 v'+APP_VERSION+' · 새 버전을 확인합니다.';
 
+/* Release notice: shown once per NOTICE.id after an update. Change id + items for each new announcement. */
+const NOTICE={
+  id:'2026-11-16',
+  title:'업데이트 안내',
+  items:[
+    ['스페셜 테스트 수치 보강','모든 검사에 민감도·특이도(Sn/Sp)를 표시했고, 수치가 보고되지 않은 검사는 그렇게 명시했습니다.'],
+    ['새 검사 추가','PHT 3종, 경추 Extension-rotation, Inverted supinator, Wide-based gait, Two-stage treadmill, Royal London Hospital test 등'],
+    ['새 클러스터','Cook 경수증, Sutlive 고관절 OA, 무릎 OA 임상기준'],
+    ['수정','Wainner CPR 표기(3/4: Sn .39/Sp .94), 고관절 내회전 정상각도 45°, GTPS 검사 수치(MRS 기준)']
+  ]
+};
+const NOTICE_KEY='moaNoticeSeen.v1';
+let noticeShownThisSession=false;
+function noticeAlreadySeen(){
+  try{return localStorage.getItem(NOTICE_KEY)===NOTICE.id}catch(e){return noticeShownThisSession}
+}
+function markNoticeSeen(){
+  noticeShownThisSession=true;
+  try{localStorage.setItem(NOTICE_KEY,NOTICE.id)}catch(e){}
+}
+function showReleaseNotice(force=false){
+  if(!force&&(noticeShownThisSession||noticeAlreadySeen()))return;
+  const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  const body='<div class="modal-center" style="margin-bottom:10px">v'+esc(APP_VERSION)+' 업데이트 내용입니다.</div>'+
+    NOTICE.items.map(([t,d])=>'<div style="text-align:left;margin:9px 0"><strong>'+esc(t)+'</strong><br><span style="font-size:.86em;opacity:.85">'+esc(d)+'</span></div>').join('')+
+    '<div class="modal-center" style="margin-top:14px;font-size:.86em;opacity:.85">문의 사항은 인스타그램 @physio_geun_1 으로 문의 주세요.</div>';
+  openAppModal({icon:'NEW',title:NOTICE.title,body});
+  markNoticeSeen();
+}
+window.addEventListener('load',()=>setTimeout(()=>{try{showReleaseNotice()}catch(e){console.error('[MOA Charting] notice failed:',e)}},600));
+
 let swRegistration=null;
 let updateAvailable=false;
 
@@ -2720,7 +2918,19 @@ $('updateNowBtn').onclick=async()=>{
 
   setTimeout(()=>location.reload(),700);
 };
-initTimeOptions();applyTheme();let s=state();apply(s.draft||{});if(!s.draft?.pDate)setToday();renderOpts();render();
+try{
+  initTimeOptions();
+  applyTheme();
+  const bootState=state();
+  apply(bootState.draft||{});
+  if(!bootState.draft?.pDate)setToday();
+  renderOpts();render();
+}catch(error){
+  console.error('[MOA Charting] initialization failed:',error);
+  displayRegionRuntimeNotice('일부 초기화 기능에 오류가 발생했습니다. 부위 선택은 가능합니다. 오류: '+error.message);
+  refreshRegionButtons();
+  try{renderOpts();render()}catch(other){console.error('[MOA Charting] recovery render failed:',other)}
+}
 </script>
 </body>
 </html>
